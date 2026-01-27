@@ -1,0 +1,23 @@
+# cartella build locale
+build/
+out/
+
+# file temporanei LaTeX
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.nav
+*.snm
+*.vrb
+*.bbl
+*.blg
+*.pdf
+
+# roba di macOS
+.DS_Store

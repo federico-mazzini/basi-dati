@@ -1,0 +1,599 @@
+\documentclass[a4paper,12pt]{article}
+
+% Lingua e codifica
+\usepackage[italian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+
+% Impaginazione e matematica
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage{amsmath, amssymb}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage{tikz}              % Pacchetto principale per i disegni
+\usetikzlibrary{arrows.meta}   % Per frecce avanzate (tipo freccia piena o tratteggiata)
+\usetikzlibrary{positioning}   % Per posizionare i nodi rispetto ad altri nodi
+\usetikzlibrary{shapes}        % Per avere nodi con forme arrotondate, rettangoli, cerchi, ecc.
+\usetikzlibrary{backgrounds,decorations.pathreplacing,calc}
+
+% Comandi utili
+\newcommand{\code}[1]{\texttt{#1}}
+
+
+
+\begin{document}
+
+\begin{titlepage}
+\centering
+{\Large I.I.S. ``Francesco Alberghetti'' -- Imola}\\[0.3cm]
+{\normalsize Informatica -- Basi di Dati}\\[2cm]
+
+\rule{0.9\textwidth}{0.6pt}\\[0.8cm]
+
+{\huge\bfseries BASI DI DATI RELAZIONALI}\\[0.4cm]
+{\Large Dispense complete su DBMS e Modello Relazionale}\\[0.6cm]
+
+\rule{0.9\textwidth}{0.6pt}\\[2cm]
+
+{\large Materiale per lo studio approfondito}\\[1.5cm]
+
+\vfill
+{\large Prof. Federico Mazzini}\\
+{\large A.S. 2025--2026}
+\end{titlepage}
+
+\newpage
+\tableofcontents
+\newpage
+
+\section{Introduzione ai sistemi informativi e ai database}
+Le basi di dati costituiscono l’infrastruttura invisibile della società digitale moderna.  
+Ogni applicazione informatica che gestisce informazioni persistenti --- dal registro elettronico ai social network, dai sistemi bancari alle piattaforme di streaming --- si basa su una o più basi di dati.
+
+Studiare le basi di dati significa capire:
+\begin{itemize}
+\item come vengono memorizzate le informazioni;
+\item come vengono mantenute corrette nel tempo;
+\item come possono essere interrogate in modo efficiente;
+\item come vengono protette da errori e accessi non autorizzati.
+\end{itemize}
+
+Questa disciplina non riguarda solo la programmazione, ma il \textbf{modo in cui rappresentiamo la realtà} all’interno di un sistema informatico.
+%==============================================================================
+\section{Dato e Informazione}
+%==============================================================================
+
+Per iniziare lo studio delle basi di dati, è fondamentale chiarire la differenza tra due concetti che spesso vengono confusi: il dato e l'informazione.
+
+Un \textbf{dato} è una rappresentazione oggettiva e non interpretata della realtà. Può essere un numero, una stringa di testo, un simbolo o un'immagine. Di per sé, il dato non ha un significato completo perché manca di contesto. Ad esempio, se scriviamo il numero "8" su un foglio, questo è un dato puro, ma non sappiamo se indica un orario, un voto scolastico o una quantità.
+
+L'\textbf{informazione}, invece, è ciò che otteniamo quando interpretiamo un dato all'interno di un contesto specifico. È il dato che arricchisce la nostra conoscenza. Tornando all'esempio precedente, se specifichiamo che "8" è il voto preso nella verifica di Informatica da uno studente specifico, abbiamo trasformato il dato in informazione.
+
+Le basi di dati si occupano principalmente di memorizzare e gestire i dati, ma il loro obiettivo finale è fornire informazioni utili agli utenti.
+
+%==============================================================================
+\section{Sistemi Informativi e Sistemi Informatici}
+%==============================================================================
+
+Un \textbf{Sistema Informativo (SI)} è l’insieme delle risorse, delle procedure e delle persone che un’organizzazione (come un’azienda, una scuola o un ente pubblico) utilizza per raccogliere, archiviare ed elaborare le informazioni necessarie alle sue attività. È importante notare che un sistema informativo esiste a prescindere dall’uso dei computer: anche un archivio cartaceo gestito a mano è un sistema informativo.
+
+Per capire meglio a cosa serve, immaginiamo di avere un’azienda che produce scarpe. Il nostro sistema informativo diventa uno strumento fondamentale per gestire tutto ciò che riguarda l’attività aziendale. Ad esempio, possiamo memorizzare informazioni sui clienti: chi sono, cosa hanno comprato, quali taglie preferiscono. Possiamo gestire i dipendenti: dati anagrafici, ruoli, orari di lavoro, stipendi. Possiamo monitorare i prodotti: tipi di scarpe, materiali, colori disponibili, quantità in magazzino. Possiamo tenere traccia dei fornitori: chi ci fornisce i materiali, prezzi, tempi di consegna. Infine, possiamo registrare gli acquisti e le vendite, così da sapere sempre quanto abbiamo venduto e cosa dobbiamo riordinare.
+
+In pratica, il sistema informativo è la “mappa” completa di tutte le informazioni necessarie per prendere decisioni rapide e corrette. Senza di esso, sarebbe difficile sapere se abbiamo abbastanza scarpe in magazzino, quali modelli sono più venduti o quali fornitori sono più affidabili.
+
+
+\begin{center}
+\resizebox{0.95\textwidth}{!}{
+\begin{tikzpicture}[node distance=2cm, every node/.style={draw, rounded corners, align=center, minimum width=3cm, minimum height=1cm}]
+    % Nodo centrale
+    \node[fill=yellow!30] (Azienda) {Azienda di Scarpe\\Sistema Informativo};
+    
+    % Nodi sopra
+    \node [above left=of Azienda, fill=green!20] (Fornitori) {Fornitori\\(chi, prezzi, consegne)};
+    \node [above right=of Azienda, fill=green!20] (Marketing) {Marketing\\(promozioni, pubblicità)};
+    
+    % Nodi sotto
+    \node [below left=of Azienda, fill=green!20] (Clienti) {Clienti\\(dati anagrafici, acquisti, preferenze)};
+    \node [below=of Azienda, fill=green!20] (Dipendenti) {Dipendenti\\(orari, ruoli, stipendi)};
+    \node [below right=of Azienda, fill=green!20] (Prodotti) {Prodotti\\(modelli, materiali, quantità)};
+    \node [left=of Clienti, xshift=-2.5cm, fill=green!20] (Acquisti) {Acquisti e Vendite\\(quantità vendute, riordini)};
+    
+    % Frecce dal nodo centrale
+    \draw[->, thick] (Azienda) -- (Fornitori);
+    \draw[->, thick] (Azienda) -- (Marketing);
+    \draw[->, thick] (Azienda) -- (Clienti);
+    \draw[->, thick] (Azienda) -- (Dipendenti);
+    \draw[->, thick] (Azienda) -- (Prodotti);
+    \draw[->, thick] (Azienda) -- (Acquisti);
+\end{tikzpicture}
+}
+\end{center}
+
+Un \textbf{Sistema Informatico}, invece, è la parte del sistema informativo che viene gestita in modo automatico attraverso tecnologie digitali, cioè computer, software e reti. Oggi, quando parliamo di basi di dati, ci riferiamo proprio a sistemi informatici che permettono di raccogliere, archiviare e analizzare grandi quantità di informazioni in modo veloce e sicuro. Tuttavia, è bene ricordare che la logica di gestione delle informazioni nasce molto prima dei computer: l’idea di organizzare, registrare e consultare dati è un concetto antico, i sistemi informatici hanno aumentato la velocità e la disponibilità con cui è possibile utilizzare i sistemi informativi.
+
+
+⸻
+
+%==============================================================================
+\section{L'evoluzione della gestione dei dati}
+%==============================================================================
+
+Fino a migliaia di anni fa i romani utilizzano tavole di ... per registrare censimenti (+ fare altri esempi). Fino all'arrivo dei computer e del digitale, ogni azienda aveva il proprio sistema informativo completamente su carta, all'interno di archivi cartacei all'interno degli uffici dell'azienda stessa. La tecnologia informatica ha permesso di salvare e utilizzare questi dati tramite i sistemi informatici. 
+
+\subsection{L’approccio basato sui File (File System)}
+Nei primi sistemi informatici, i dati erano gestiti separatamente da ciascun programma, mediante file dedicati, sia di tipo testuale sia binario. Ad esempio, il software per la gestione degli stipendi conservava i dati dei dipendenti in un file specifico, mentre il programma destinato alla gestione dei corsi di formazione utilizzava un file differente.
+
+Questo approccio risulta semplice e veloce da implementare, ma presenta notevoli limitazioni in termini di gestione e manutenzione dei dati. In contesti di maggiore complessità, come nel caso di un’organizzazione di grandi dimensioni, emergono problematiche significative. Ad esempio, risulta complicato coordinare le informazioni sulle vendite di un prodotto quando i dati dei clienti sono distribuiti su file distinti e, talvolta, su sedi differenti.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.3\textwidth]{images/independent-files.png}
+    \caption{Ogni applicazione gestisce i propri file in modo indipendente}
+\end{figure}
+
+Inoltre, nei sistemi completamente informatizzati odierni, come quelli utilizzati per le transazioni bancarie o per la gestione di piattaforme e-commerce, è necessario garantire requisiti fondamentali quali sicurezza, affidabilità e accesso concorrente da parte di più utenti. Ogni applicazione implementa la sua logica per gestire questi aspetti, il che può portare a inefficienze e a un aumento della complessità del sistema.
+
+
+\subsection{L'approccio DBMS (Database Management System)}
+Per gestire tutti i problemi che emergono con i sistemi basati su file, oggi ci si affida a software specializzati chiamati DBMS (Database Management System).
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.45\textwidth]{images/integrated-database-DBMS.png}
+    \caption{App che dialogano con un DBMS}
+\end{figure}
+Questi programmi permettono di organizzare e gestire i dati in maniera professionale, garantendo che tutto sia corretto, aggiornato e accessibile in sicurezza anche a più utenti contemporaneamente. In pratica, il DBMS fa da “gestore centrale” dei dati, evitando confusione, duplicazioni e errori. Ogni applicazione che ha bisogno di dati (come un sito web, un’app bancaria o un sistema di gestione scolastica) si collega al DBMS per leggere o scrivere le informazioni necessarie.
+
+\newpage
+%==============================================================================
+%==============================================================================
+%==============================================================================
+\section{Caratteristiche di un DBMS}
+%==============================================================================
+
+Un Database Management System (DBMS) è un software progettato per gestire collezioni di dati in modo affidabile, efficiente e sicuro.  
+Per essere utilizzabile in contesti reali (aziendali, scolastici o industriali), un DBMS deve garantire alcune caratteristiche fondamentali, che risolvono i principali problemi della gestione dei dati su larga scala.
+
+\begin{center}
+\begin{tikzpicture}[
+    node distance=2cm,
+    every node/.style={
+        draw,
+        rounded corners,
+        align=center,
+        minimum width=3cm,
+        minimum height=0.9cm
+    }
+]
+
+% Nodo centrale
+\node[fill=yellow!30] (DBMS) {\textbf{DBMS}\\Database Management System};
+
+% Nodi esterni
+\node[above=of DBMS, fill=green!20] (Eff) {Efficienza\\(velocità e grandi volumi di dati)};
+\node[right=of DBMS, fill=green!20] (Conc) {Concorrenza\\(più utenti)};
+\node[below=of DBMS, fill=green!20] (Aff) {Affidabilità\\(tutto o niente)};
+\node[left=of DBMS, fill=green!20] (Sec) {Sicurezza\\(accessi)};
+
+% Frecce
+\draw[->, thick] (DBMS) -- (Eff);
+\draw[->, thick] (DBMS) -- (Conc);
+\draw[->, thick] (DBMS) -- (Aff);
+\draw[->, thick] (DBMS) -- (Sec);
+
+\end{tikzpicture}
+\end{center}
+
+\subsection{Efficienza}
+Un DBMS deve essere in grado di gestire grandi quantità di dati mantenendo tempi di risposta molto ridotti.  
+I dati devono essere persistenti, cioè conservati nel tempo anche dopo la chiusura dei programmi o lo spegnimento del sistema, e devono poter essere recuperati rapidamente quando richiesti.
+
+Nella realtà moderna, i volumi di dati possono raggiungere dimensioni enormi. Alcuni esempi indicativi sono:
+\begin{itemize}
+    \item Amazon Prime: oltre 240 milioni di abbonati;
+    \item Facebook: più di 3 miliardi di utenti attivi mensili;
+    \item Instagram: oltre 1,3 miliardi di immagini caricate ogni giorno.
+\end{itemize}
+
+Anche in presenza di questi volumi, un DBMS deve consentire operazioni rapide, come la ricerca di un contenuto o l’accesso a un profilo utente, senza che l’utente percepisca rallentamenti.
+
+\subsection{Concorrenza}
+Un DBMS deve gestire correttamente l’accesso simultaneo ai dati da parte di più utenti o applicazioni. Se più operazioni vengono eseguite sugli stessi dati nello stesso istante, il rischio è ottenere risultati errati o incoerenti.  
+
+\subsubsection*{Esempio di concorrenza: prelievi simultanei}
+
+Si consideri un sistema informativo bancario in cui due utenti effettuano un prelievo dallo stesso conto corrente nello stesso istante.
+
+\begin{itemize}
+    \item Saldo iniziale del conto X: 120 €
+    \item Operazione OP1: prelievo di 100 €
+    \item Operazione OP2: prelievo di 80 €
+\end{itemize}
+
+
+\begin{center}
+\begin{tabular}{c c c}
+\toprule
+Tempo & Operazione & Valore di X \\
+\midrule
+$t_1$ & OP1: Leggi $saldo$ & 120 \\
+$t_2$ & OP2: Leggi $saldo$ & 120 \\
+$t_3$ & OP1: Calcola $saldo - 100$ & 120 \\
+$t_4$ & OP2: Calcola $saldo - 80$ & 120 \\
+$t_5$ & OP1: Scrivi $saldo finale$ & 20 \\
+$t_6$ & OP2: Scrivi $saldo finale$ & 40 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{center}
+$Saldo finale = 40 \rightarrow ERRORE!$
+\end{center}
+
+
+Il sistema dovrebbe permettere che solamente una delle due operazioni venga completata, poiché il saldo non è sufficiente per entrambe.
+
+Per risolvere questo problema, i DBMS utilizzano meccanismi di controllo della concorrenza che garantiscono che l’esecuzione simultanea delle operazioni produca lo stesso risultato di un’esecuzione una alla volta (seriale).
+
+\subsection{Affidabilità}
+Un DBMS deve garantire che i dati rimangano corretti e coerenti anche in presenza di errori, interruzioni di corrente o arresti improvvisi del sistema.  
+Molte operazioni sui dati sono infatti critiche e non possono essere eseguite parzialmente: devono rispettare la regola del \textbf{tutto o niente}.
+
+
+\subsubsection*{Esempio di concorrenza: prelievi simultanei}
+Si consideri un sistema informativo bancario che gestisce il trasferimento di denaro tra due conti correnti. Un trasferimento non è una singola operazione, ma una sequenza di passi che devono essere eseguiti in modo coordinato.
+
+\bigskip
+\begin{itemize}
+    \item Conto A (mittente): saldo iniziale 500 €
+    \item Conto B (destinatario): saldo iniziale 300 €
+    \item Importo del trasferimento: 200 €
+\end{itemize}
+\bigskip
+Il trasferimento prevede due operazioni fondamentali:
+\begin{itemize}
+    \item addebitare 200 € dal conto A;
+    \item accreditare 200 € sul conto B.
+\end{itemize}
+\bigskip
+Se il sistema dovesse interrompersi dopo l’addebito ma prima dell’accredito, il database si troverebbe in uno stato non corretto: il denaro risulterebbe sottratto dal conto A ma non accreditato sul conto B.\\\\
+Un DBMS affidabile deve garantire che \textbf{solo uno dei due scenari seguenti}:
+\begin{itemize}
+    \item entrambe le operazioni vengano completate correttamente;
+    \item nessuna delle due operazioni venga effettuata.
+\end{itemize}
+
+Per ottenere questo comportamento, il DBMS utilizza meccanismi di gestione delle \textbf{transazioni}, che permettono di annullare automaticamente le operazioni incomplete e ripristinare uno stato consistente dei dati.
+
+\subsection{Sicurezza}
+Un DBMS deve proteggere i dati da accessi non autorizzati.  
+Non tutti gli utenti devono poter leggere o modificare tutte le informazioni presenti nel database.
+
+Per questo motivo, i DBMS implementano sistemi di autorizzazione basati su permessi, che stabiliscono:
+\begin{itemize}
+    \item quali dati un utente può visualizzare;
+    \item quali operazioni può eseguire (lettura, inserimento, modifica, cancellazione).
+\end{itemize}
+
+
+\subsection{Proprietà ACID (da non mettere qui)}
+Per garantire l’integrità dei dati, un DBMS si basa sul concetto di transazione: una sequenza di operazioni che deve essere completata interamente oppure annullata completamente in caso di errore. Le proprietà fondamentali delle transazioni sono note con l’acronimo \textbf{ACID}:
+
+\begin{itemize}
+    \item \textbf{Atomicità:} ogni transazione è indivisibile; o viene completata completamente, o non ha alcun effetto.
+    \item \textbf{Coerenza:} le transazioni portano il database da uno stato valido a un altro stato valido.
+    \item \textbf{Isolamento:} le operazioni eseguite da un utente non interferiscono con quelle di altri utenti fino al completamento della transazione.
+    \item \textbf{Durabilità:} una volta confermate, le modifiche ai dati rimangono permanenti anche in caso di guasti del sistema.
+\end{itemize}
+
+\begin{center}
+\begin{tikzpicture}[node distance=2cm, every node/.style={draw, rounded corners, align=center, minimum width=3cm, minimum height=1cm}]
+    % Nodo centrale
+    \node[fill=yellow!30] (ACID) {Transazione ACID};
+
+    % Ramificazioni
+    \node [above left=of ACID, fill=green!20] (A) {Atomicità};
+    \node [above right=of ACID, fill=green!20] (C) {Coerenza};
+    \node [below left=of ACID, fill=green!20] (I) {Isolamento};
+    \node [below right=of ACID, fill=green!20] (D) {Durabilità};
+
+    % Frecce
+    \draw[->, thick] (ACID) -- (A);
+    \draw[->, thick] (ACID) -- (C);
+    \draw[->, thick] (ACID) -- (I);
+    \draw[->, thick] (ACID) -- (D);
+\end{tikzpicture}
+\end{center}
+
+\newpage
+%==============================================================================
+\section{L'astrazione fornita dai DBMS}
+%==============================================================================
+
+
+I DBMS operano su tre livelli, permettendo agli utenti e alle applicazioni che hanno bisogno dei dati, di non doversi preoccupare di come i dati sono memorizzati fisicamente, ma solamente di un modo per dialogare con il DBMS per ottenere quello che vogliono.
+
+\subsubsection*{Livelli di astrazione di un DBMS}
+\begin{enumerate}
+    \item \textbf{Livello Fisico:} È il livello più basso. Riguarda come i dati sono effettivamente memorizzati nei file su disco. È gestito dal DBMS e trasparente all'utente.
+    \item \textbf{Livello Logico:} Descrive la struttura dei dati così come la vede il progettista (tabelle, colonne, tipi di dato). 
+    \item \textbf{Livello Esterno (o delle Viste):} È il livello dell'utente/applicazione finale. Spesso un utente/applicazione non vede tutto il database, ma solo una porzione (vista) limitata ai dati che gli servono per il suo lavoro (si collega al concetto di affidabilità e sicurezza visto sopra).
+\end{enumerate}
+
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{images/three-levels-database-architecture.jpg}
+    \caption{Ogni applicazione gestisce i propri file in modo indipendente}
+\end{figure}
+
+\subsection*{Livello Logico di un DBMS}
+Il livello logico descrive come i dati sono organizzati e strutturati dal punto di vista del progettista, indipendentemente da come vengono memorizzati fisicamente. Include le tabelle, le colonne, i tipi di dati e le relazioni tra le informazioni.  
+Il modello più comune è il modello relazionale, che utilizza \textbf{relazioni} (tabelle) per rappresentare le informazioni.
+
+\textbf{Esempio: social network}  
+Supponiamo di avere un social network che gestisce utenti, post e amicizie. Nel modello relazionale, potremmo avere queste tabelle principali:
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Codice Utente} & \textbf{Nome} & \textbf{Cognome} & \textbf{Email} \\
+\hline
+1 & Marco & Rossi & marco.rossi@mail.com \\
+2 & Anna & Bianchi & anna.bianchi@mail.com \\
+3 & Luca & Verdi & luca.verdi@mail.com \\
+\hline
+\end{tabular}
+
+\vspace{0.5cm}
+
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Codice Post} & \textbf{Codice Utente} & \textbf{Testo} & \textbf{Data} \\
+\hline
+101 & 1 & "Buongiorno a tutti!" & 2026-01-27 \\
+102 & 2 & "Oggi studio informatica" & 2026-01-26 \\
+103 & 3 & "Nuovo post sul ciclismo" & 2026-01-25 \\
+\hline
+\end{tabular}
+
+\vspace{0.5cm}
+
+\begin{tabular}{|c|c|}
+\hline
+\textbf{Codice Utente1} & \textbf{Codice Utente2} \\
+\hline
+1 & 2 \\
+1 & 3 \\
+2 & 3 \\
+\hline
+\end{tabular}
+
+\vspace{0.5cm}
+\textit{Tabelle: Utenti, Post, Amicizie}
+\end{center}
+
+Queste relazioni permettono di rappresentare l’intera struttura logica del social network: chi sono gli utenti, quali post hanno pubblicato e quali relazioni di amicizia esistono tra loro.  
+
+
+\subsection*{Il linguaggio dei DBMS}
+I DBMS forniscono astrazione sui dati, permettendo di lavorare senza preoccuparsi di come le informazioni sono memorizzate fisicamente.  
+
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/language dbms.png}
+    \caption{Ogni utente/applicazione interagisce con il DBMS tramite un linguaggio specifico}
+\end{figure}
+
+
+Per interagire con un database, il linguaggio più diffuso è \textbf{SQL} (Structured Query Language), che consente di comunicare con il DBMS in maniera semplice e orientata ai dati.
+
+Il linguaggio SQL è utilizzato da tutti i database relazionali, anche se con alcune variazioni specifiche per ciascun DBMS (ad esempio MySQL, PostgreSQL, Oracle, SQL Server). Basta quindi imparare un solo linguaggio per poter lavorare con diversi sistemi di basi di dati.
+
+
+SQL si suddivide in tre principali categorie di comandi:
+
+\begin{itemize}
+    \item \textbf{DDL (Data Definition Language):} comandi per definire e modificare la struttura del database, ad esempio \texttt{CREATE TABLE}, \texttt{ALTER TABLE}, \texttt{DROP TABLE}.
+    \item \textbf{DML (Data Manipulation Language):} comandi per inserire, aggiornare e cancellare i dati nelle tabelle, ad esempio \texttt{INSERT}, \texttt{UPDATE}, \texttt{DELETE}.
+    \item \textbf{DQL (Data Query Language):} comandi per interrogare il database e ottenere informazioni, principalmente tramite \texttt{SELECT}.
+\end{itemize}
+
+Grazie a SQL, è possibile lavorare direttamente sui dati in modo astratto e uniforme, senza dover conoscere i dettagli fisici di memorizzazione, come file o indici su disco.
+
+
+
+
+\newpage
+%====================================================================
+%====================================================================
+\section{Modelli di dati}
+%====================================================================
+
+Per progettare una base di dati in modo corretto non è sufficiente conoscere un DBMS o saper scrivere interrogazioni SQL.  
+Prima ancora della fase tecnica è necessario costruire un \textbf{modello di dati}, cioè una rappresentazione astratta e formale della realtà che si intende descrivere.
+
+Un modello di dati permette di rispondere a tre domande fondamentali:
+\begin{itemize}
+\item quali informazioni devono essere memorizzate;
+\item quali relazioni esistono tra queste informazioni;
+\item quali regole devono essere rispettate affinché i dati siano corretti e coerenti.
+\end{itemize}
+
+Senza un modello di dati, la base di dati nasce come un insieme disordinato di tabelle, difficile da comprendere, da mantenere e da estendere nel tempo.
+
+\subsection{Il ruolo dei modelli di dati}
+
+La realtà è complessa, ambigua e ricca di dettagli.  
+Un sistema informativo, invece, deve essere preciso, non ambiguo e coerente.
+
+Il modello di dati ha proprio questo ruolo: \textbf{semplificare la realtà senza tradirla}.  
+Non tutto ciò che esiste nel mondo reale deve essere rappresentato, ma solo ciò che è rilevante per gli obiettivi del sistema.
+
+Attraverso un modello di dati:
+\begin{itemize}
+\item si selezionano le informazioni significative;
+\item si eliminano ridondanze inutili;
+\item si rende esplicita la struttura dei dati;
+\item si crea un linguaggio comune tra analisti, progettisti e sviluppatori.
+\end{itemize}
+
+\subsection{Livelli di astrazione}
+
+La progettazione di una base di dati avviene su più livelli di astrazione, ognuno con uno scopo preciso.
+
+\paragraph{Livello concettuale}
+Descrive la realtà in modo indipendente dalla tecnologia.  
+In questo livello si parla di oggetti, relazioni e proprietà, usando un linguaggio comprensibile anche a chi non è un informatico.
+
+\paragraph{Livello logico}
+Descrive come i dati sono organizzati secondo un modello specifico, ad esempio il modello relazionale.  
+In questo livello compaiono tabelle, attributi e chiavi.
+
+\paragraph{Livello fisico}
+Descrive come i dati sono effettivamente memorizzati dal DBMS su disco.  
+È il livello più vicino all’hardware ed è dipendente dal DBMS utilizzato.
+
+La separazione tra questi livelli permette di modificare un livello senza dover intervenire sugli altri.
+
+\subsection{Indipendenza dei dati}
+
+Uno dei principali vantaggi dell’uso dei DBMS è l’indipendenza dei dati.  
+Questo concetto indica la possibilità di modificare la struttura o l’organizzazione dei dati senza dover riscrivere le applicazioni.
+
+Si distinguono due tipi di indipendenza.
+
+\paragraph{Indipendenza fisica}
+Le applicazioni non dipendono da come i dati sono memorizzati fisicamente.  
+È possibile cambiare file, indici o modalità di memorizzazione senza modificare i programmi.
+
+\paragraph{Indipendenza logica}
+Le applicazioni non dipendono dalla struttura logica della base di dati.  
+È possibile aggiungere attributi o tabelle senza compromettere il funzionamento delle applicazioni esistenti.
+
+Il DBMS si occupa di garantire entrambe.
+
+%====================================================================
+\section{Il modello relazionale}
+%====================================================================
+
+Il modello relazionale è stato introdotto da Edgar Frank Codd nel 1970 ed è tuttora il modello più utilizzato nei sistemi di basi di dati.
+
+La sua forza sta nella semplicità concettuale unita a un forte rigore matematico.
+
+\subsection{Relazioni}
+
+Nel modello relazionale i dati sono rappresentati tramite \textbf{relazioni}, che possono essere visualizzate come tabelle.
+
+Ogni relazione rappresenta un insieme di oggetti omogenei del mondo reale.  
+Ad esempio, una relazione \code{Studente} rappresenta l’insieme di tutti gli studenti.
+
+\subsection{Attributi}
+
+Gli attributi rappresentano le proprietà degli oggetti.  
+Ogni attributo ha un nome e un dominio di valori ammessi.
+
+La scelta degli attributi è cruciale: attributi inutili rendono la base di dati complessa, attributi mancanti la rendono incompleta.
+
+\subsection{Tuple}
+
+Una tupla rappresenta un singolo oggetto reale.  
+Ogni riga della tabella è una tupla distinta.
+
+Ad esempio:
+\begin{center}
+\code{Studente(Matricola, Nome, Cognome, DataNascita)}
+\end{center}
+
+Una tupla valida è:
+\begin{center}
+\code{(12345, Mario, Rossi, 2006-03-12)}
+\end{center}
+
+\subsection{Schema e istanza}
+
+Lo schema descrive la struttura della relazione ed è definito una sola volta.  
+L’istanza rappresenta il contenuto effettivo della relazione in un dato momento.
+
+Questa distinzione permette di separare struttura e dati.
+
+%====================================================================
+\section{Esempi guidati: dalla realtà alle tabelle}
+%====================================================================
+
+Per comprendere realmente il modello relazionale è fondamentale applicarlo a casi concreti.
+
+Consideriamo la progettazione di una base di dati per una scuola.
+
+\subsection{Descrizione informale}
+
+In una scuola esistono studenti che frequentano classi, studiano diverse materie e ricevono valutazioni nel tempo.
+
+Questa descrizione è volutamente informale e incompleta, come accade nella realtà.
+
+\subsection{Individuazione delle entità}
+
+Dalla descrizione emergono chiaramente alcune entità fondamentali:
+\begin{itemize}
+\item Studente
+\item Classe
+\item Materia
+\item Voto
+\end{itemize}
+
+Ogni entità rappresenta un insieme di oggetti con caratteristiche comuni.
+
+\subsection{Scelta degli attributi}
+
+Per ogni entità selezioniamo solo gli attributi realmente necessari.
+
+Ad esempio, per \textbf{Studente} scegliamo una matricola come identificatore univoco, insieme a nome, cognome e data di nascita.
+
+\subsection{Traduzione in relazioni}
+
+Ogni entità viene tradotta in una relazione del modello relazionale.  
+Le relazioni risultanti costituiscono lo schema logico della base di dati.
+
+Questo passaggio segna il passaggio dalla comprensione del problema alla sua formalizzazione.
+
+%====================================================================
+\section{Progettazione di una base di dati}
+%====================================================================
+
+La progettazione di una base di dati non è un’attività improvvisata, ma segue una metodologia precisa.
+
+\subsection{Analisi dei requisiti}
+
+In questa fase si raccolgono le informazioni sul problema, si chiariscono le esigenze degli utenti e si definiscono gli obiettivi del sistema.
+
+\subsection{Progettazione concettuale}
+
+Si costruisce una rappresentazione astratta della realtà, indipendente dal DBMS.  
+In questa fase si privilegia la chiarezza rispetto ai dettagli tecnici.
+
+\subsection{Progettazione logica}
+
+Il modello concettuale viene tradotto nel modello relazionale.  
+Si definiscono tabelle, chiavi e vincoli.
+
+\subsection{Progettazione fisica}
+
+Si decide come i dati saranno memorizzati e ottimizzati dal DBMS.
+
+%====================================================================
+\section{Dal modello relazionale a SQL}
+%====================================================================
+
+Il linguaggio SQL è stato progettato per operare direttamente sul modello relazionale.
+
+Ogni comando SQL ha una motivazione teorica ben precisa.
+
+SQL è un linguaggio dichiarativo: descrive il risultato desiderato, non il procedimento.
+
+Questa caratteristica permette al DBMS di ottimizzare le operazioni e garantire l’indipendenza dei dati.
+
+\end{document}
