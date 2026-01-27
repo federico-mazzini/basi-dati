@@ -26,10 +26,10 @@ jobs:
       
       - name: Compile LaTeX
         run: |
-          latexmk -pdf -interaction=nonstopmode codifica-informazione.tex
+          latexmk -pdf -interaction=nonstopmode basi-dati.tex
 
       - name: Upload PDF artifact
         uses: actions/upload-artifact@v4
         with:
-          name: codifica-informazione
-          path: codifica-informazione.pdf
+          name: basi-dati
+          path: basi-dati.pdf
