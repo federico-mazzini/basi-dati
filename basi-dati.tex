@@ -64,7 +64,7 @@ Studiare le basi di dati significa capire:
 
 Questa disciplina non riguarda solo la programmazione, ma il \textbf{modo in cui rappresentiamo la realtà} all’interno di un sistema informatico.
 %==============================================================================
-\section{Dato e Informazione}
+\subsection{Dato e Informazione}
 %==============================================================================
 
 Per iniziare lo studio delle basi di dati, è fondamentale chiarire la differenza tra due concetti che spesso vengono confusi: il dato e l'informazione.
@@ -76,7 +76,7 @@ L'\textbf{informazione}, invece, è ciò che otteniamo quando interpretiamo un d
 Le basi di dati si occupano principalmente di memorizzare e gestire i dati, ma il loro obiettivo finale è fornire informazioni utili agli utenti.
 
 %==============================================================================
-\section{Sistemi Informativi e Sistemi Informatici}
+\subsection{Sistemi Informativi e Sistemi Informatici}
 %==============================================================================
 
 Un \textbf{Sistema Informativo (SI)} è l’insieme delle risorse, delle procedure e delle persone che un’organizzazione (come un’azienda, una scuola o un ente pubblico) utilizza per raccogliere, archiviare ed elaborare le informazioni necessarie alle sue attività. È importante notare che un sistema informativo esiste a prescindere dall’uso dei computer: anche un archivio cartaceo gestito a mano è un sistema informativo.
@@ -119,12 +119,12 @@ Un \textbf{Sistema Informatico}, invece, è la parte del sistema informativo che
 ⸻
 
 %==============================================================================
-\section{L'evoluzione della gestione dei dati}
+\subsection{L'evoluzione della gestione dei dati}
 %==============================================================================
 
 Fino a migliaia di anni fa i romani utilizzano tavole di ... per registrare censimenti (+ fare altri esempi). Fino all'arrivo dei computer e del digitale, ogni azienda aveva il proprio sistema informativo completamente su carta, all'interno di archivi cartacei all'interno degli uffici dell'azienda stessa. La tecnologia informatica ha permesso di salvare e utilizzare questi dati tramite i sistemi informatici. 
 
-\subsection{L’approccio basato sui File (File System)}
+\subsubsection{L’approccio basato sui File (File System)}
 Nei primi sistemi informatici, i dati erano gestiti separatamente da ciascun programma, mediante file dedicati, sia di tipo testuale sia binario. Ad esempio, il software per la gestione degli stipendi conservava i dati dei dipendenti in un file specifico, mentre il programma destinato alla gestione dei corsi di formazione utilizzava un file differente.
 
 Questo approccio risulta semplice e veloce da implementare, ma presenta notevoli limitazioni in termini di gestione e manutenzione dei dati. In contesti di maggiore complessità, come nel caso di un’organizzazione di grandi dimensioni, emergono problematiche significative. Ad esempio, risulta complicato coordinare le informazioni sulle vendite di un prodotto quando i dati dei clienti sono distribuiti su file distinti e, talvolta, su sedi differenti.
@@ -138,7 +138,7 @@ Questo approccio risulta semplice e veloce da implementare, ma presenta notevoli
 Inoltre, nei sistemi completamente informatizzati odierni, come quelli utilizzati per le transazioni bancarie o per la gestione di piattaforme e-commerce, è necessario garantire requisiti fondamentali quali sicurezza, affidabilità e accesso concorrente da parte di più utenti. Ogni applicazione implementa la sua logica per gestire questi aspetti, il che può portare a inefficienze e a un aumento della complessità del sistema.
 
 
-\subsection{L'approccio DBMS (Database Management System)}
+\subsubsection{L'approccio DBMS (Database Management System)}
 Per gestire tutti i problemi che emergono con i sistemi basati su file, oggi ci si affida a software specializzati chiamati DBMS (Database Management System).
 \begin{figure}[!h]
     \centering
@@ -151,7 +151,7 @@ Questi programmi permettono di organizzare e gestire i dati in maniera professio
 %==============================================================================
 %==============================================================================
 %==============================================================================
-\section{Caratteristiche di un DBMS}
+\section{Database Management System (DBMS)}
 %==============================================================================
 
 Un Database Management System (DBMS) è un software progettato per gestire collezioni di dati in modo affidabile, efficiente e sicuro.  
@@ -187,7 +187,8 @@ Per essere utilizzabile in contesti reali (aziendali, scolastici o industriali),
 \end{tikzpicture}
 \end{center}
 
-\subsection{Efficienza}
+\subsection{Caratteristiche di un DBMS}
+\subsection*{Efficienza}
 Un DBMS deve essere in grado di gestire grandi quantità di dati mantenendo tempi di risposta molto ridotti.  
 I dati devono essere persistenti, cioè conservati nel tempo anche dopo la chiusura dei programmi o lo spegnimento del sistema, e devono poter essere recuperati rapidamente quando richiesti.
 
@@ -200,7 +201,7 @@ Nella realtà moderna, i volumi di dati possono raggiungere dimensioni enormi. A
 
 Anche in presenza di questi volumi, un DBMS deve consentire operazioni rapide, come la ricerca di un contenuto o l’accesso a un profilo utente, senza che l’utente percepisca rallentamenti.
 
-\subsection{Concorrenza}
+\subsection*{Concorrenza}
 Un DBMS deve gestire correttamente l’accesso simultaneo ai dati da parte di più utenti o applicazioni. Se più operazioni vengono eseguite sugli stessi dati nello stesso istante, il rischio è ottenere risultati errati o incoerenti.  
 
 \subsubsection*{Esempio di concorrenza: prelievi simultanei}
@@ -238,7 +239,7 @@ Il sistema dovrebbe permettere che solamente una delle due operazioni venga comp
 
 Per risolvere questo problema, i DBMS utilizzano meccanismi di controllo della concorrenza che garantiscono che l’esecuzione simultanea delle operazioni produca lo stesso risultato di un’esecuzione una alla volta (seriale).
 
-\subsection{Affidabilità}
+\subsection*{Affidabilità}
 Un DBMS deve garantire che i dati rimangano corretti e coerenti anche in presenza di errori, interruzioni di corrente o arresti improvvisi del sistema.  
 Molte operazioni sui dati sono infatti critiche e non possono essere eseguite parzialmente: devono rispettare la regola del \textbf{tutto o niente}.
 
@@ -268,7 +269,7 @@ Un DBMS affidabile deve garantire che \textbf{solo uno dei due scenari seguenti}
 
 Per ottenere questo comportamento, il DBMS utilizza meccanismi di gestione delle \textbf{transazioni}, che permettono di annullare automaticamente le operazioni incomplete e ripristinare uno stato consistente dei dati.
 
-\subsection{Sicurezza}
+\subsection*{Sicurezza}
 Un DBMS deve proteggere i dati da accessi non autorizzati.  
 Non tutti gli utenti devono poter leggere o modificare tutte le informazioni presenti nel database.
 
@@ -279,34 +280,34 @@ Per questo motivo, i DBMS implementano sistemi di autorizzazione basati su perme
 \end{itemize}
 
 
-\subsection{Proprietà ACID (da non mettere qui)}
-Per garantire l’integrità dei dati, un DBMS si basa sul concetto di transazione: una sequenza di operazioni che deve essere completata interamente oppure annullata completamente in caso di errore. Le proprietà fondamentali delle transazioni sono note con l’acronimo \textbf{ACID}:
-
-\begin{itemize}
-    \item \textbf{Atomicità:} ogni transazione è indivisibile; o viene completata completamente, o non ha alcun effetto.
-    \item \textbf{Coerenza:} le transazioni portano il database da uno stato valido a un altro stato valido.
-    \item \textbf{Isolamento:} le operazioni eseguite da un utente non interferiscono con quelle di altri utenti fino al completamento della transazione.
-    \item \textbf{Durabilità:} una volta confermate, le modifiche ai dati rimangono permanenti anche in caso di guasti del sistema.
-\end{itemize}
-
-\begin{center}
-\begin{tikzpicture}[node distance=2cm, every node/.style={draw, rounded corners, align=center, minimum width=3cm, minimum height=1cm}]
-    % Nodo centrale
-    \node[fill=yellow!30] (ACID) {Transazione ACID};
-
-    % Ramificazioni
-    \node [above left=of ACID, fill=green!20] (A) {Atomicità};
-    \node [above right=of ACID, fill=green!20] (C) {Coerenza};
-    \node [below left=of ACID, fill=green!20] (I) {Isolamento};
-    \node [below right=of ACID, fill=green!20] (D) {Durabilità};
-
-    % Frecce
-    \draw[->, thick] (ACID) -- (A);
-    \draw[->, thick] (ACID) -- (C);
-    \draw[->, thick] (ACID) -- (I);
-    \draw[->, thick] (ACID) -- (D);
-\end{tikzpicture}
-\end{center}
+%\subsubsection*{Proprietà ACID (da non mettere qui)}
+%Per garantire l’integrità dei dati, un DBMS si basa sul concetto di transazione: una sequenza %di operazioni che deve essere completata interamente oppure annullata completamente in caso di %errore. Le proprietà fondamentali delle transazioni sono note con l’acronimo \textbf{ACID}:
+%
+%\begin{itemize}
+%    \item \textbf{Atomicità:} ogni transazione è indivisibile; o viene completata %completamente, o non ha alcun effetto.
+%    \item \textbf{Coerenza:} le transazioni portano il database da uno stato valido a un altro %stato valido.
+%    \item \textbf{Isolamento:} le operazioni eseguite da un utente non interferiscono con %quelle di altri utenti fino al completamento della transazione.
+%    \item \textbf{Durabilità:} una volta confermate, le modifiche ai dati rimangono permanenti %anche in caso di guasti del sistema.
+%\end{itemize}
+%
+%\begin{center}
+%\begin{tikzpicture}[node distance=2cm, every node/.style={draw, rounded corners, align=center, %minimum width=3cm, minimum height=1cm}]
+%    % Nodo centrale
+%    \node[fill=yellow!30] (ACID) {Transazione ACID};
+%
+%    % Ramificazioni
+%    \node [above left=of ACID, fill=green!20] (A) {Atomicità};
+%    \node [above right=of ACID, fill=green!20] (C) {Coerenza};
+%    \node [below left=of ACID, fill=green!20] (I) {Isolamento};
+%    \node [below right=of ACID, fill=green!20] (D) {Durabilità};
+%
+%    % Frecce
+%    \draw[->, thick] (ACID) -- (A);
+%    \draw[->, thick] (ACID) -- (C);
+%    \draw[->, thick] (ACID) -- (I);
+%    \draw[->, thick] (ACID) -- (D);
+%\end{tikzpicture}
+%\end{center}
 
 \newpage
 %==============================================================================
@@ -314,19 +315,58 @@ Per garantire l’integrità dei dati, un DBMS si basa sul concetto di transazio
 %==============================================================================
 
 
-I DBMS sono creati con diversi livelli di astrazione, permettendo agli utenti e alle applicazioni che hanno bisogno dei dati, di non doversi preoccupare di come i dati sono memorizzati fisicamente, ma solamente di chiedere e dialogare con il DBMS per ottenere quello che vogliono.
+I Database Management System (DBMS) sono progettati secondo una \textbf{struttura a livelli di astrazione}, che consente di separare nettamente le problematiche legate alla memorizzazione fisica dei dati da quelle relative alla loro organizzazione logica e alla loro presentazione agli utenti o alle applicazioni.
 
-\textbf{Questa separazione, tra come i dati sono salvati in memoria (livello fisico) e come sono organizzati (livello logico)} permette di poter comunicare con il DBMS in modo astratto, senza preoccuparsi di come i dati sono memorizzati fisicamente, in una sorta di "richieste" tipo \textit{"dammi i dati di tutti i clienti"} oppure \textit{"dammi i prodotti più venduti questo mese"}.
+Questa architettura a livelli permette a chi utilizza il database (sia persone sia programmi) di \textbf{interagire con i dati senza doversi preoccupare di come essi sono effettivamente salvati nei dispositivi di memoria}. In altre parole, gli utenti possono concentrarsi su \textit{cosa} vogliono ottenere dal database, senza dover sapere \textit{come} i dati sono archiviati o gestiti internamente. Ad esempio possono chiedere \textit{"dammi i dati di tutti i clienti"} oppure \textit{"dammi i prodotti più venduti questo mese"}, e non dire \textit{recupera dati dal file x}.
 
 
 \begin{figure}[!h]
     \centering
-    \includegraphics[width=0.8\textwidth]{images/language dbms.png}
-    \caption{Ogni utente/applicazione interagisce con il DBMS tramite un linguaggio specifico}
+    \includegraphics[width=1\textwidth]{images/language dbms.png}
+    \caption{Ogni utente/applicazione interagisce con il DBMS tramite un linguaggio specifico che nasconde dettagli}
 \end{figure}
 
 
-\subsection*{Il linguaggio dei DBMS}
+\subsection{Livelli di astrazione di un DBMS}
+\begin{enumerate}
+    \item \textbf{Livello Fisico:} È il livello più basso. Riguarda come i dati sono effettivamente memorizzati nei file su disco. A questo livello si gestiscono dettagli tecnici come la compressione, la disposizione dei record nei file, le strategie di accesso rapido. Gli utenti e gli sviluppatori di applicazioni in genere non si occupano di questo livello, che è gestito direttamente dal DBMS.
+    \item \textbf{Livello Logico:} Descrive la struttura logica globale del database e non dipende dai dettagli fisici di memorizzazione. Si parla di tabelle, attributi, relazioni e vincoli. Gli sviluppatori e i progettisti del database lavorano principalmente a questo livello, definendo schemi, relazioni e regole che modellano la realtà da rappresentare.
+    \item \textbf{Livello Esterno (o delle Viste):} È il livello più vicino agli \textbf{utenti e alle applicazioni}. Qui si definiscono le ``\textbf{viste}'' personalizzate, cioè porzioni del database che ciascun utente può vedere e manipolare. Ogni utente/applicazione può avere una vista diversa, limitata ai dati che gli servono o che è autorizzato a consultare. Questo livello è fondamentale per la sicurezza e la semplicità d’uso.
+\end{enumerate}
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.4\textwidth]{images/three-levels-database-architecture.jpg}
+    \caption{La struttura a tre livelli di un DBMS}
+\end{figure}
+
+
+
+\subsection*{Livello Logico di un DBMS}
+Il livello logico descrive \textbf{come i dati sono organizzati e strutturati, indipendentemente da come vengono memorizzati fisicamente}. 
+Questo livello è fondamentale perché definisce la \textbf{struttura globale} del database, ovvero lo \textbf{schema logico}, che rappresenta la realtà che si vuole modellare (ad esempio: utenti, prodotti, ordini, ecc.).
+
+In pratica, il livello logico permette di modellare la realtà in modo astratto e indipendente dai dettagli tecnici di memorizzazione. Questo favorisce la \textbf{modularità} e la \textbf{manutenibilità} del database: è possibile modificare la struttura fisica dei dati senza cambiare la loro organizzazione logica, e viceversa.
+
+Il modello più comune è il  \textbf{modello relazionale}, che utilizza \textbf{relazioni} (tabelle) per rappresentare le informazioni.
+
+\subsubsection*{Esempio}  
+Supponiamo di avere un social network. Nel modello relazionale, potremmo avere la seguente tabella per gestire e memorizzare gli utenti:
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Codice Utente} & \textbf{Nome} & \textbf{Cognome} & \textbf{Email} \\
+\hline
+1 & Marco & Rossi & marco.rossi@mail.com \\
+2 & Anna & Bianchi & anna.bianchi@mail.com \\
+3 & Luca & Verdi & luca.verdi@mail.com \\
+\hline
+\end{tabular}
+
+\end{center}
+ 
+\subsection{Il linguaggio dei DBMS}
 Per interagire con un database, il linguaggio più diffuso è \textbf{SQL} (Structured Query Language), che consente di comunicare con il DBMS in maniera semplice e orientata ai dati.
 
 Il linguaggio SQL è utilizzato da tutti i database relazionali, anche se con alcune variazioni specifiche per ciascun DBMS (ad esempio MySQL, PostgreSQL, Oracle, SQL Server). Basta quindi imparare un solo linguaggio per poter lavorare con diversi sistemi di basi di dati.
@@ -343,49 +383,10 @@ SQL si suddivide in tre principali categorie di comandi:
 Grazie a SQL, è possibile lavorare direttamente sui dati in modo astratto e uniforme, senza dover conoscere i dettagli fisici di memorizzazione, come file o indici su disco.
 
 
-\subsection*{Livelli di astrazione di un DBMS}
-\begin{enumerate}
-    \item \textbf{Livello Fisico:} È il livello più basso. Riguarda come i dati sono effettivamente memorizzati nei file su disco. È gestito dal DBMS e trasparente all'utente.
-    \item \textbf{Livello Logico:} Descrive la struttura logica globale del database e non dipende dai dettagli fisici di memorizzazione. Si parla di tabelle, attributi, relazioni e vincoli.
-    \item \textbf{Livello Esterno (o delle Viste):} È il livello dell'utente/applicazione finale. Spesso un utente/applicazione non vede tutto il database, ma solo una porzione (vista) limitata ai dati che gli servono per il suo lavoro (si collega al concetto di affidabilità e sicurezza visto sopra).
-\end{enumerate}
-
-
-\begin{figure}[!h]
-    \centering
-    \includegraphics[width=0.5\textwidth]{images/three-levels-database-architecture.jpg}
-    \caption{La struttura a tre livelli di un DBMS}
-\end{figure}
-
-
-
-\subsection*{Livello Logico di un DBMS}
-Il livello logico descrive \textbf{come i dati sono organizzati e strutturati, indipendentemente da come vengono memorizzati fisicamente}. Include le tabelle, le colonne, i tipi di dati e le relazioni tra le informazioni.  
-Il modello più comune è il  \textbf{modello relazionale}, che utilizza \textbf{relazioni} (tabelle) per rappresentare le informazioni.
-
-\textbf{Esempio}  
-Supponiamo di avere un social network. Nel modello relazionale, potremmo avere la seguente tabella per gestire e memorizzare gli utenti:
-
-\begin{center}
-\begin{tabular}{|c|c|c|c|}
-\hline
-\textbf{Codice Utente} & \textbf{Nome} & \textbf{Cognome} & \textbf{Email} \\
-\hline
-1 & Marco & Rossi & marco.rossi@mail.com \\
-2 & Anna & Bianchi & anna.bianchi@mail.com \\
-3 & Luca & Verdi & luca.verdi@mail.com \\
-\hline
-\end{tabular}
-
-\end{center}
- 
-
-
-
 
 \newpage
 \newpage
-\section{Il modello relazionale: concetti intuitivi e esempi}
+\section{Il modello relazionale}
 %==============================================================================
 
 Il modello relazionale è stato introdotto negli anni '70 dal professor \textbf{Edgar F. Codd} presso IBM.  
@@ -394,7 +395,6 @@ I database che seguono questo modello sono chiamati \textbf{RDBMS} (Relational D
 
 L'idea principale del modello relazionale è semplice: rappresentare le informazioni tramite \textbf{tabelle}, chiamate \textbf{relazioni}, dove ogni riga corrisponde a un oggetto reale e ogni colonna a una proprietà di quell'oggetto.
 
-\subsection{Dalla realtà alle tabelle}
 
 Per rendere l'idea, consideriamo un contesto scolastico. Gli oggetti principali sono studenti, materie e voti.  
 
@@ -440,66 +440,368 @@ FIS03 & Fisica \\
 \end{tabular}
 \end{center}
 
+In termini formali del modello relazionale, la tabella è chiamata \textbf{relazione}.  
+Le colonne della tabella sono chiamate \textbf{attributi}, mentre le righe corrispondono alle \textbf{tuple} o \textbf{istanze della relazione}.  
+La relazione ha uno \textbf{schema}, che definisce i nomi degli attributi e i tipi di dati associati. Lo schema resta fisso, mentre le istanze della relazione possono cambiare nel tempo.
+
 Queste tabelle rappresentano la \textbf{struttura logica} dei dati: ogni riga è una \textbf{tupla}, ogni colonna un \textbf{attributo}, e insieme formano una relazione.
 
-\subsection{Schema e istanza}
+\subsubsection*{Schema e istanza}
 
-- Lo \textbf{schema} della relazione definisce i nomi delle colonne e i tipi di dati, ad esempio:
+Lo \textbf{schema} della relazione definisce i nomi delle colonne e i tipi di dati, ad esempio:
 \begin{center}
 \code{Studente(Matricola, Nome, Cognome)}
 \end{center}
-
-- L'\textbf{istanza} della relazione è l'insieme delle righe effettivamente presenti in un certo momento:
+L'\textbf{istanza} della relazione è l'insieme delle righe effettivamente presenti in un certo momento:
 \begin{center}
 \code{(101, Marco, Rossi), (102, Anna, Bianchi), (103, Luca, Verdi)}
 \end{center}
 
+
 Questa distinzione tra schema e istanza è fondamentale: lo schema descrive la struttura, mentre l'istanza è ciò che contiene i dati reali.
 
-\newpage
-\section{Introduzione all'algebra relazionale}
+\subsubsection*{Vincoli sull'ordine dei dati}
+È importante sottolineare che nel modello relazionale non esistono vincoli sull'ordine dei dati: 
+l'ordinamento delle righe è irrilevante, così come l'ordinamento delle colonne.  
+Una relazione è definita dal contenuto delle tuple e dagli attributi, non dalla loro posizione nella tabella.
+
+
+\subsubsection*{Vincoli sulla relazione}
+na relazione ha alcune regole fondamentali:
+
+\begin{itemize}
+    \item \textbf{Ogni attributo deve essere unico:} non possono esistere due colonne con lo stesso nome all'interno della stessa relazione.
+    \item \textbf{Ogni tupla deve essere unica:} non possono esistere due righe identiche all'interno della relazione.
+    \item \textbf{Omogeneità dei dati per colonna:} tutti i valori di una colonna devono appartenere allo stesso dominio (tipo di dato).  
+    \textbf{Esempio:} nella colonna \texttt{Matricola} devono esserci solo numeri interi, mentre nella colonna \texttt{Nome} solo stringhe di testo.
+\end{itemize}
+
+\subsection{Formalizzazione del Modello Relazionale}
+Il termine \textbf{relazione} non è casuale: deriva dalla \textit{teoria degli insiemi} in matematica.  
+In matematica, una relazione tra insiemi è un insieme di n-uple ordinate, che collegano elementi di insiemi diversi.  
+Allo stesso modo, una tabella in un database relazionale rappresenta un insieme di tuple che collegano valori di attributi, ciascuno dei quali appartiene a un dominio specifico.
+
+\subsubsection{Definizione di Relazione}
+
+Sia dato un insieme finito di attributi \( \{A_1, A_2, \dots, A_n\} \), 
+dove ciascun attributo \(A_i\) è associato a un dominio \(D_i\) di valori possibili.
+
+
+\vspace{0.5cm}
+
+Una \textbf{relazione} \(R\) su questi attributi è un insieme di tuple \(t\) tali che
+\[
+t = (v_1, v_2, \dots, v_n), \quad \text{con } v_i \in D_i \text{ per } i=1,\dots,n.
+\]
+
+\vspace{0.2cm}
+
+In altre parole, una relazione è un sottoinsieme del prodotto cartesiano dei domini:
+\[
+R \subseteq D_1 \times D_2 \times \dots \times D_n
+\]
+\textbf{Nota:}  
+\begin{itemize}
+
+    \item Ogni tupla \(t \in R\) corrisponde a una riga della relazione.  
+
+    \item Ogni attributo \(A_i\) corrisponde a una colonna.  
+
+    \item Non ci sono tuple duplicate: \(R\) è un insieme.  
+
+    \item Lo schema della relazione è dato dall'insieme \(\{A_1, A_2, \dots, A_n\}\) e dai domini associati \(\{D_1, D_2, \dots, D_n\}\).
+\end{itemize}
+\textbf{Esempio:} consideriamo due insiemi
+\[
+A = \{101, 102, 103\}, \quad B = \{\text{Matematica}, \text{Informatica}, \text{Fisica}\}
+\]
+e una relazione \texttt{Voto} tra studenti e materie:
+\[
+\text{Voto} = \{ (101, \text{Matematica}, 8), (102, \text{Informatica}, 7), (103, \text{Fisica}, 9) \}
+\]
+Ogni tupla associa uno studente a una materia e a un voto, proprio come una n-upla matematica.
+
+
+%==============================================================================
+%==============================================================================
 %==============================================================================
 
-Per lavorare formalmente con le relazioni, esiste l'\textbf{algebra relazionale}.  
-Non entreremo nei dettagli avanzati, ma vediamo le operazioni più importanti che permettono di interrogare le tabelle.
+\subsection{Vincoli d'integrità intra-relazionali}
+%==============================================================================
 
-\subsection{Selezione}
+Nel modello relazionale, oltre a definire gli attributi e le tuple, è fondamentale imporre regole che garantiscano **l'unicità e la coerenza dei dati**. Queste regole si chiamano \textbf{vincoli d'integrità}.
 
-La selezione permette di estrarre le righe che soddisfano una certa condizione.  
+% Vincoli di tupla
+\subsubsection{Vincoli di tupla}
 
-\textbf{Esempio:} trovare tutti gli studenti con nome "Marco":
-\[
-\sigma_{\text{Nome='Marco'}}(\text{Studente})
-\]
+I \textbf{vincoli di tupla} (o vincoli di ennupla) impongono condizioni che devono essere soddisfatte \textbf{da ogni singola tupla} della relazione, indipendentemente dalle altre.
 
-\subsection{Proiezione}
+Questi vincoli riguardano:
+\begin{itemize}
+    \item il \textbf{dominio} dei valori ammessi;
+    \item la \textbf{presenza obbligatoria} di un valore (non nullo);
+    \item eventuali \textbf{intervalli o condizioni logiche}.
+\end{itemize}
 
-La proiezione permette di estrarre solo alcune colonne di una relazione.  
+\textbf{Esempio 1 -- Vincolo di dominio:}
 
-\textbf{Esempio:} visualizzare solo nomi e cognomi degli studenti:
-\[
-\pi_{\text{Nome, Cognome}}(\text{Studente})
-\]
+Relazione \texttt{Voto(Matricola, CodiceMateria, Voto)}:
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Matricola} & \textbf{CodiceMateria} & \textbf{Voto} \\
+\hline
+101 & MAT01 & 8 \\
+102 & INF02 & 11 \\
+103 & FIS03 & 9 \\
+\hline
+\end{tabular}
+\end{center}
 
-\subsection{Join}
-
-Il join combina informazioni di due relazioni sulla base di attributi comuni.  
-
-\textbf{Esempio:} unire studenti e voti per sapere quali voti ha preso ogni studente:
-\[
-\text{Studente} \ \bowtie_{\text{Matricola}} \ \text{Voto}
-\]
-
-Il risultato è una tabella completa con tutte le informazioni necessarie.
+Il valore \texttt{11} viola il vincolo di tupla, perché il voto deve appartenere all’intervallo \([0,10]\).
 
 \bigskip
-Con queste tre operazioni di base (selezione, proiezione e join) è già possibile esprimere gran parte delle interrogazioni sui dati, senza preoccuparsi di come sono memorizzati fisicamente nel database.
+
+\textbf{Esempio 2 -- Vincolo di non nullità:}
+
+Relazione \texttt{Studente(Matricola, Nome, Cognome)}:
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Matricola} & \textbf{Nome} & \textbf{Cognome} \\
+\hline
+101 & Marco & Rossi \\
+102 &  & Bianchi \\
+103 & Luca & Verdi \\
+\hline
+\end{tabular}
+\end{center}
+
+La seconda tupla viola il vincolo di tupla perché l’attributo \texttt{Nome} non può essere vuoto o nullo.
+
+\bigskip
+
+In generale, un vincolo di tupla deve essere verificato \textbf{per ogni riga singolarmente}, senza confrontarla con le altre tuple della relazione.
+\subsubsection{Vincoli di chiave (Primary Key)}
+
+Nel modello relazionale, il concetto di \textbf{chiave} nasce dall’esigenza di identificare in modo univoco le ennuple (tuple) di una relazione. Infatti per \textbf{chiave di una relazione} si intende un insieme di attributi che consente di identificare in maniera univoca le ennuple di una relazione.\mbox{}\\\\
+Per essere più precisi, definiamo due concetti fondamentali:
+\begin{itemize}
+    
+    \item \textbf{Superchiave}: una superchiave è un insieme di attributi che identifica in modo univoco le ennuple di una relazione, ma che può contenere attributi ridondanti, cioè non strettamente necessari all’identificazione.
+    
+    \item \textbf{Superchiave minimale}: una superchiave minimale è una superchiave tale che non esiste un’altra superchiave \(K'\) contenuta in essa.
+    In altre parole, è una superchiave priva di attributi superflui.
+\end{itemize}\\\\
+\textbf{Esempio:} consideriamo la relazione \texttt{Studente(Matricola, Nome, Cognome)}.
+
+
+% Esempio tabulare delle tuple della relazione Studente
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Matricola} & \textbf{Nome} & \textbf{Cognome} \\
+\hline
+101 & Marco & Rossi \\
+102 & Anna & Bianchi \\
+103 & Luca & Verdi \\
+104 & Anna & Verdi \\
+\hline
+\end{tabular}
+\end{center}
+\begin{itemize}
+    \item \{\texttt{Matricola}\} è una superchiave minimale, quindi una chiave.
+    \item \{\texttt{Matricola, Nome}\} è una superchiave, ma non minimale.
+    \item \{\texttt{Matricola, Nome, Cognome}\} è ancora una superchiave, ma contiene attributi ridondanti.
+\end{itemize}
+Una relazione può avere più chiavi (superchiavi minimali). Tra queste, una viene scelta come \textbf{chiave primaria}.
 
 
 
+\subsubsection*{Esiste sempre almeno una superchiave per ogni relazione?}
+
+\textbf{Sì.}
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Matricola} & \textbf{Nome} & \textbf{Cognome} \\
+\hline
+101 & Marco & Rossi \\
+102 & Anna & Bianchi \\
+103 & Luca & Verdi \\
+\hline
+\end{tabular}
+\end{center}
+L’insieme di tutti gli attributi della relazione, in questo caso \{\texttt{Matricola, Nome, Cognome}\} è sempre una superchiave.
+
+\bigskip
+
+\subsubsection*{Possono esistere più superchiavi per la stessa relazione?}
+
+\textbf{Sì.}
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Matricola} & \textbf{Nome} & \textbf{Cognome} \\
+\hline
+101 & Marco & Rossi \\
+102 & Anna & Bianchi \\
+103 & Luca & Verdi \\
+\hline
+\end{tabular}
+\end{center}
+Sono superchiavi:
+\begin{itemize}
+    \item \{\texttt{Matricola}\}
+    \item \{\texttt{Matricola, Nome}\}
+    \item \{\texttt{Matricola, Cognome}\}
+    \item \{\texttt{Matricola, Nome, Cognome}\}
+\end{itemize}
+
+\bigskip
+
+\subsubsection*{Esiste sempre almeno una chiave per ogni relazione?}
+
+\textbf{Sì.}
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Matricola} & \textbf{Nome} & \textbf{Cognome} \\
+\hline
+101 & Marco & Rossi \\
+102 & Anna & Bianchi \\
+103 & Luca & Verdi \\
+\hline
+\end{tabular}
+\end{center}
+
+L’attributo \texttt{Matricola} identifica univocamente ogni tupla ed è una superchiave minimale, quindi una chiave.
+
+\bigskip
+
+\subsubsection*{Possono esistere più chiavi per la stessa relazione?}
+
+\textbf{Sì.}
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{CodiceUtente} & \textbf{Email} & \textbf{Username} \\
+\hline
+U001 & marco@mail.com & marcoR \\
+U002 & anna@mail.com & annaB \\
+U003 & luca@mail.com & lucaV \\
+\hline
+\end{tabular}
+\end{center}
+
+In questa relazione sono chiavi:
+\begin{itemize}
+    \item \{\texttt{CodiceUtente}\}
+    \item \{\texttt{Email}\}
+    \item \{\texttt{Username}\}
+\end{itemize}
+Una di queste viene scelta come chiave primaria.
 
 
 \newpage
+\subsection{Vincoli d'integrità inter-relazionali}
+
+\subsubsection{Chiavi esterne (Foreign Key)}
+
+Una chiave esterna è un tipo di vincolo referenziale che garantisce che i valori inseriti all'interno di una relazione corrispondano ai valori inseriti all'interno di un'atra relazione, mantenendo così l'integrità referenziale del database.
+
+\paragraph{Passo 1 -- Relazioni separate}\mbox{}\\
+ Nel modello relazionale, una base di dati è in genere composta da \textbf{più relazioni} collegate tra loro.  
+
+\vspace{0.5cm}
+\textbf{Studente}
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Matricola} & \textbf{Nome} & \textbf{Cognome} \\
+\hline
+101 & Marco & Rossi \\
+102 & Anna & Bianchi \\
+103 & Luca & Verdi \\
+\hline
+\end{tabular}
+\end{center}
+
+\textbf{Materia}
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{CodiceMateria} & \textbf{NomeMateria} \\
+\hline
+MAT01 & Matematica \\
+INF02 & Informatica \\
+FIS03 & Fisica \\
+\hline
+\end{tabular}
+\end{center}
+In entrambe le relazioni, \texttt{Matricola} e \texttt{CodiceMateria} sono chiavi primarie.
+
+\paragraph{Passo 2 -- Relazione che collega le altre}\mbox{}\\
+Introduciamo ora una terza relazione che collega studenti e materie:
+
+\vspace{0.5cm}
+\textbf{Voto}
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Matricola} & \textbf{CodiceMateria} & \textbf{Voto} \\
+\hline
+101 & MAT01 & 8 \\
+102 & INF02 & 7 \\
+103 & FIS03 & 9 \\
+101 & INF02 & 9 \\
+\hline
+\end{tabular}
+\end{center}
+
+
+\paragraph{Passo 3 -- Identificazione delle chiavi esterne}\mbox{}\\
+Nella relazione \texttt{Voto}:
+\begin{itemize}
+    \item \texttt{Matricola} è una \textbf{chiave esterna} che fa riferimento alla chiave primaria \texttt{Matricola} della relazione \texttt{Studente};
+    \item \texttt{CodiceMateria} è una \textbf{chiave esterna} che fa riferimento alla chiave primaria \texttt{CodiceMateria} della relazione \texttt{Materia}.
+\end{itemize}
+
+\bigskip
+\paragraph{Perché servono le chiavi esterne}\mbox{}\\
+Le chiavi esterne garantiscono l’\textbf{integrità referenziale}, cioè:
+\begin{itemize}
+    \item non è possibile inserire un voto per uno studente che non esiste;
+    \item non è possibile inserire un voto per una materia che non esiste.
+\end{itemize}
+Ogni valore di chiave esterna deve quindi corrispondere a un valore esistente nella relazione di riferimento.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%====================================================================
+%====================================================================
+%====================================================================
+\newpage
+\newpage
+\newpage
+\newpage
+%====================================================================
+%====================================================================
 %====================================================================
 \section{Progettazione di una base di dati}
 %====================================================================
@@ -535,5 +837,215 @@ Ogni comando SQL ha una motivazione teorica ben precisa.
 SQL è un linguaggio dichiarativo: descrive il risultato desiderato, non il procedimento.
 
 Questa caratteristica permette al DBMS di ottimizzare le operazioni e garantire l’indipendenza dei dati.
+
+\newpage
+
+% ==========================
+%         ESERCIZI
+% ==========================
+\thispagestyle{empty}
+\begin{center}
+    \vspace*{5cm}
+    {\Huge\bfseries Esercizi}
+\end{center}
+\newpage
+
+
+% ==========================
+\section{Esercizi -- Modello relazionale}
+% ==========================
+
+\begin{enumerate}
+
+% Esercizio 1 fornito dall'utente
+\item \textbf{Esercizio 1}
+
+Considera la seguente tabella \texttt{Libro}:
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Codice} & \textbf{Titolo} & \textbf{Autore} & \textbf{Anno} \\
+\hline
+L01 & Il nome della rosa & Umberto Eco & 1980 \\
+L02 & Il fu Mattia Pascal & Luigi Pirandello & 1904 \\
+L03 & Se questo è un uomo & Primo Levi & 1947 \\
+L04 & Il barone rampante & Italo Calvino & 1957 \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{enumerate}
+    \item Quale attributo può essere scelto come chiave primaria? Motiva la risposta.
+    \item Esistono superchiavi diverse dalla chiave primaria? Fai almeno un esempio.
+    \item È possibile che la combinazione \{\texttt{Titolo}, \texttt{Autore}\} sia una chiave primaria? Quando?
+\end{enumerate}
+
+\vspace{0.5cm}
+
+% Esercizio 2 fornito dall'utente
+\item \textbf{Esercizio 2}
+
+Considera la seguente relazione \texttt{Prenotazione}:
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{IDPrenotazione} & \textbf{Data} & \textbf{Ora} & \textbf{Tavolo} \\
+\hline
+1 & 2024-05-10 & 20:00 & 12 \\
+2 & 2024-05-10 & 21:00 & 7 \\
+3 & 2024-05-11 & 19:30 & 5 \\
+4 & 2024-05-11 & 21:00 & 12 \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{enumerate}
+    \item Indica una possibile chiave primaria per la relazione.
+    \item La combinazione \{\texttt{Data}, \texttt{Ora}, \texttt{Tavolo}\} può essere una chiave candidata? Motiva la risposta.
+    \item Esistono attributi che possono assumere valori nulli? Spiega.
+\end{enumerate}
+
+\vspace{0.5cm}
+
+% Esercizio 3 fornito dall'utente
+\item \textbf{Esercizio 3}
+
+Considera la seguente tabella \texttt{Film}:
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{CodiceFilm} & \textbf{Titolo} & \textbf{Regista} & \textbf{Anno} \\
+\hline
+F01 & La vita è bella & Roberto Benigni & 1997 \\
+F02 & Il postino & Michael Radford & 1994 \\
+F03 & Nuovo Cinema Paradiso & Giuseppe Tornatore & 1988 \\
+F04 & La grande bellezza & Paolo Sorrentino & 2013 \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{enumerate}
+    \item Quali tra i seguenti insiemi di attributi possono essere superchiavi? Motiva la risposta.\\
+    a) \{\texttt{CodiceFilm}\} \\
+    b) \{\texttt{Titolo}, \texttt{Regista}\} \\
+    c) \{\texttt{Anno}, \texttt{Titolo}\}
+    \item Indica tutte le possibili chiavi primarie.
+\end{enumerate}
+
+\vspace{0.5cm}
+
+% Esercizio originale 4
+\item \textbf{Esercizio 4}
+
+Osserva la seguente relazione \texttt{Studente}:
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Matricola} & \textbf{Nome} & \textbf{Cognome} & \textbf{Email} \\
+\hline
+101 & Sara & Neri & sara.neri@mail.com \\
+102 & Luca & Bianchi & luca.bianchi@mail.com \\
+103 & Marco & Verdi & marco.verdi@mail.com \\
+104 & Sara & Neri & sara.neri2@mail.com \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{enumerate}
+    \item Quale attributo può essere scelto come chiave primaria? Motiva la risposta.
+    \item La combinazione \{\texttt{Nome}, \texttt{Cognome}\} può essere chiave? Perché?
+    \item Esistono superchiavi composte da più attributi? Fai un esempio.
+    \item L’attributo \texttt{Email} può essere chiave? In quali condizioni?
+\end{enumerate}
+
+\vspace{0.5cm}
+
+% Esercizio originale 5
+\item \textbf{Esercizio 5}
+
+Considera la tabella \texttt{Ordine}:
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{NumeroOrdine} & \textbf{Data} & \textbf{Cliente} & \textbf{Importo} \\
+\hline
+5001 & 2024-06-01 & Rossi & 120.00 \\
+5002 & 2024-06-02 & Bianchi & 85.50 \\
+5003 & 2024-06-02 & Neri & 42.00 \\
+5004 & 2024-06-03 & Rossi & 75.00 \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{enumerate}
+    \item Qual è la chiave primaria più naturale per questa relazione?
+    \item La coppia \{\texttt{Data}, \texttt{Cliente}\} può essere una chiave? Giustifica.
+    \item Se possono esistere più ordini nello stesso giorno per lo stesso cliente, quali attributi dovresti usare per identificare univocamente ogni ordine?
+\end{enumerate}
+
+\vspace{0.5cm}
+
+% Esercizio originale 6
+\item \textbf{Esercizio 6}
+
+Osserva la seguente tabella \texttt{PrenotazioneHotel}:
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\textbf{IDPrenotazione} & \textbf{Cliente} & \textbf{Camera} & \textbf{DataInizio} & \textbf{DataFine} \\
+\hline
+10 & Verdi & 201 & 2024-07-01 & 2024-07-05 \\
+11 & Bianchi & 105 & 2024-07-02 & 2024-07-03 \\
+12 & Neri & 201 & 2024-07-06 & 2024-07-10 \\
+13 & Verdi & 105 & 2024-07-10 & 2024-07-12 \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{enumerate}
+    \item Quale attributo può essere scelto come chiave primaria? Esistono altre possibilità?
+    \item La combinazione \{\texttt{Camera}, \texttt{DataInizio}\} può essere una chiave? In quali condizioni?
+    \item L’attributo \texttt{Cliente} può essere chiave? Perché?
+\end{enumerate}
+
+\vspace{0.5cm}
+
+% Esercizio originale 7
+\item \textbf{Esercizio 7}
+
+Considera la tabella \texttt{IscrizioneCorso}:
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Matricola} & \textbf{CodiceCorso} & \textbf{DataIscrizione} \\
+\hline
+201 & INF01 & 2024-09-01 \\
+202 & MAT02 & 2024-09-01 \\
+201 & MAT02 & 2024-09-02 \\
+203 & INF01 & 2024-09-03 \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{enumerate}
+    \item Quale insieme di attributi può essere scelto come chiave primaria?
+    \item Esistono altre superchiavi? Forniscine almeno una.
+    \item L’attributo \texttt{DataIscrizione} può essere chiave? Perché?
+\end{enumerate}
+
+\item \textbf{Esercizio 8}
+
+Dato lo schema relazionale seguente:
+
+\begin{itemize}
+    \item \texttt{AGENZIA(Nome, Indirizzo, Telefono)}
+    \item \texttt{CASA(Indirizzo, NrInterno, CodProprietario, Prezzo)}
+    \item \texttt{INSERZIONI(Codice, IndirizzoCasa, InternoCasa, NomeAgenzia, \\DataInserzione)}
+    \item \texttt{PROPRIETARIO(Codice, Nome, Cognome, Telefono)}
+\end{itemize}
+
+\textbf{Richiesta:} Individuare i vincoli di integrità referenziale presenti tra le relazioni.
+
+\end{enumerate}
 
 \end{document}
