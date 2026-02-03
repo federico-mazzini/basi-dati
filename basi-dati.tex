@@ -314,73 +314,9 @@ Per garantire l’integrità dei dati, un DBMS si basa sul concetto di transazio
 %==============================================================================
 
 
-I DBMS operano su tre livelli, permettendo agli utenti e alle applicazioni che hanno bisogno dei dati, di non doversi preoccupare di come i dati sono memorizzati fisicamente, ma solamente di un modo per dialogare con il DBMS per ottenere quello che vogliono.
+I DBMS sono creati con diversi livelli di astrazione, permettendo agli utenti e alle applicazioni che hanno bisogno dei dati, di non doversi preoccupare di come i dati sono memorizzati fisicamente, ma solamente di chiedere e dialogare con il DBMS per ottenere quello che vogliono.
 
-\subsubsection*{Livelli di astrazione di un DBMS}
-\begin{enumerate}
-    \item \textbf{Livello Fisico:} È il livello più basso. Riguarda come i dati sono effettivamente memorizzati nei file su disco. È gestito dal DBMS e trasparente all'utente.
-    \item \textbf{Livello Logico:} Descrive la struttura dei dati così come la vede il progettista (tabelle, colonne, tipi di dato). 
-    \item \textbf{Livello Esterno (o delle Viste):} È il livello dell'utente/applicazione finale. Spesso un utente/applicazione non vede tutto il database, ma solo una porzione (vista) limitata ai dati che gli servono per il suo lavoro (si collega al concetto di affidabilità e sicurezza visto sopra).
-\end{enumerate}
-
-
-\begin{figure}[!h]
-    \centering
-    \includegraphics[width=0.5\textwidth]{images/three-levels-database-architecture.jpg}
-    \caption{Ogni applicazione gestisce i propri file in modo indipendente}
-\end{figure}
-
-\subsection*{Livello Logico di un DBMS}
-Il livello logico descrive come i dati sono organizzati e strutturati dal punto di vista del progettista, indipendentemente da come vengono memorizzati fisicamente. Include le tabelle, le colonne, i tipi di dati e le relazioni tra le informazioni.  
-Il modello più comune è il modello relazionale, che utilizza \textbf{relazioni} (tabelle) per rappresentare le informazioni.
-
-\textbf{Esempio: social network}  
-Supponiamo di avere un social network che gestisce utenti, post e amicizie. Nel modello relazionale, potremmo avere queste tabelle principali:
-
-\begin{center}
-\begin{tabular}{|c|c|c|c|}
-\hline
-\textbf{Codice Utente} & \textbf{Nome} & \textbf{Cognome} & \textbf{Email} \\
-\hline
-1 & Marco & Rossi & marco.rossi@mail.com \\
-2 & Anna & Bianchi & anna.bianchi@mail.com \\
-3 & Luca & Verdi & luca.verdi@mail.com \\
-\hline
-\end{tabular}
-
-\vspace{0.5cm}
-
-\begin{tabular}{|c|c|c|c|}
-\hline
-\textbf{Codice Post} & \textbf{Codice Utente} & \textbf{Testo} & \textbf{Data} \\
-\hline
-101 & 1 & "Buongiorno a tutti!" & 2026-01-27 \\
-102 & 2 & "Oggi studio informatica" & 2026-01-26 \\
-103 & 3 & "Nuovo post sul ciclismo" & 2026-01-25 \\
-\hline
-\end{tabular}
-
-\vspace{0.5cm}
-
-\begin{tabular}{|c|c|}
-\hline
-\textbf{Codice Utente1} & \textbf{Codice Utente2} \\
-\hline
-1 & 2 \\
-1 & 3 \\
-2 & 3 \\
-\hline
-\end{tabular}
-
-\vspace{0.5cm}
-\textit{Tabelle: Utenti, Post, Amicizie}
-\end{center}
-
-Queste relazioni permettono di rappresentare l’intera struttura logica del social network: chi sono gli utenti, quali post hanno pubblicato e quali relazioni di amicizia esistono tra loro.  
-
-
-\subsection*{Il linguaggio dei DBMS}
-I DBMS forniscono astrazione sui dati, permettendo di lavorare senza preoccuparsi di come le informazioni sono memorizzate fisicamente.  
+\textbf{Questa separazione, tra come i dati sono salvati in memoria (livello fisico) e come sono organizzati (livello logico)} permette di poter comunicare con il DBMS in modo astratto, senza preoccuparsi di come i dati sono memorizzati fisicamente, in una sorta di "richieste" tipo \textit{"dammi i dati di tutti i clienti"} oppure \textit{"dammi i prodotti più venduti questo mese"}.
 
 
 \begin{figure}[!h]
@@ -390,6 +326,7 @@ I DBMS forniscono astrazione sui dati, permettendo di lavorare senza preoccupars
 \end{figure}
 
 
+\subsection*{Il linguaggio dei DBMS}
 Per interagire con un database, il linguaggio più diffuso è \textbf{SQL} (Structured Query Language), che consente di comunicare con il DBMS in maniera semplice e orientata ai dati.
 
 Il linguaggio SQL è utilizzato da tutti i database relazionali, anche se con alcune variazioni specifiche per ciascun DBMS (ad esempio MySQL, PostgreSQL, Oracle, SQL Server). Basta quindi imparare un solo linguaggio per poter lavorare con diversi sistemi di basi di dati.
@@ -406,160 +343,163 @@ SQL si suddivide in tre principali categorie di comandi:
 Grazie a SQL, è possibile lavorare direttamente sui dati in modo astratto e uniforme, senza dover conoscere i dettagli fisici di memorizzazione, come file o indici su disco.
 
 
+\subsection*{Livelli di astrazione di un DBMS}
+\begin{enumerate}
+    \item \textbf{Livello Fisico:} È il livello più basso. Riguarda come i dati sono effettivamente memorizzati nei file su disco. È gestito dal DBMS e trasparente all'utente.
+    \item \textbf{Livello Logico:} Descrive la struttura logica globale del database e non dipende dai dettagli fisici di memorizzazione. Si parla di tabelle, attributi, relazioni e vincoli.
+    \item \textbf{Livello Esterno (o delle Viste):} È il livello dell'utente/applicazione finale. Spesso un utente/applicazione non vede tutto il database, ma solo una porzione (vista) limitata ai dati che gli servono per il suo lavoro (si collega al concetto di affidabilità e sicurezza visto sopra).
+\end{enumerate}
+
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{images/three-levels-database-architecture.jpg}
+    \caption{La struttura a tre livelli di un DBMS}
+\end{figure}
+
+
+
+\subsection*{Livello Logico di un DBMS}
+Il livello logico descrive \textbf{come i dati sono organizzati e strutturati, indipendentemente da come vengono memorizzati fisicamente}. Include le tabelle, le colonne, i tipi di dati e le relazioni tra le informazioni.  
+Il modello più comune è il  \textbf{modello relazionale}, che utilizza \textbf{relazioni} (tabelle) per rappresentare le informazioni.
+
+\textbf{Esempio}  
+Supponiamo di avere un social network. Nel modello relazionale, potremmo avere la seguente tabella per gestire e memorizzare gli utenti:
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Codice Utente} & \textbf{Nome} & \textbf{Cognome} & \textbf{Email} \\
+\hline
+1 & Marco & Rossi & marco.rossi@mail.com \\
+2 & Anna & Bianchi & anna.bianchi@mail.com \\
+3 & Luca & Verdi & luca.verdi@mail.com \\
+\hline
+\end{tabular}
+
+\end{center}
+ 
+
+
 
 
 \newpage
-%====================================================================
-%====================================================================
-\section{Modelli di dati}
-%====================================================================
+\newpage
+\section{Il modello relazionale: concetti intuitivi e esempi}
+%==============================================================================
 
-Per progettare una base di dati in modo corretto non è sufficiente conoscere un DBMS o saper scrivere interrogazioni SQL.  
-Prima ancora della fase tecnica è necessario costruire un \textbf{modello di dati}, cioè una rappresentazione astratta e formale della realtà che si intende descrivere.
+Il modello relazionale è stato introdotto negli anni '70 dal professor \textbf{Edgar F. Codd} presso IBM.  
+La sua idea rivoluzionaria era di rappresentare le informazioni tramite tabelle (relazioni) anziché attraverso strutture ad hoc o file sequenziali.  
+I database che seguono questo modello sono chiamati \textbf{RDBMS} (Relational Database Management System) e costituiscono ancora oggi lo standard per la maggior parte delle applicazioni professionali.
 
-Un modello di dati permette di rispondere a tre domande fondamentali:
+L'idea principale del modello relazionale è semplice: rappresentare le informazioni tramite \textbf{tabelle}, chiamate \textbf{relazioni}, dove ogni riga corrisponde a un oggetto reale e ogni colonna a una proprietà di quell'oggetto.
+
+\subsection{Dalla realtà alle tabelle}
+
+Per rendere l'idea, consideriamo un contesto scolastico. Gli oggetti principali sono studenti, materie e voti.  
+
 \begin{itemize}
-\item quali informazioni devono essere memorizzate;
-\item quali relazioni esistono tra queste informazioni;
-\item quali regole devono essere rispettate affinché i dati siano corretti e coerenti.
+    \item \textbf{Studente:} identificato da matricola, nome e cognome.
+    \item \textbf{Materia:} identificata da codice e nome.
+    \item \textbf{Voto:} associa uno studente a una materia in un certo periodo, con il punteggio ottenuto.
 \end{itemize}
 
-Senza un modello di dati, la base di dati nasce come un insieme disordinato di tabelle, difficile da comprendere, da mantenere e da estendere nel tempo.
+Rappresentiamo queste entità come tabelle:
 
-\subsection{Il ruolo dei modelli di dati}
-
-La realtà è complessa, ambigua e ricca di dettagli.  
-Un sistema informativo, invece, deve essere preciso, non ambiguo e coerente.
-
-Il modello di dati ha proprio questo ruolo: \textbf{semplificare la realtà senza tradirla}.  
-Non tutto ciò che esiste nel mondo reale deve essere rappresentato, ma solo ciò che è rilevante per gli obiettivi del sistema.
-
-Attraverso un modello di dati:
-\begin{itemize}
-\item si selezionano le informazioni significative;
-\item si eliminano ridondanze inutili;
-\item si rende esplicita la struttura dei dati;
-\item si crea un linguaggio comune tra analisti, progettisti e sviluppatori.
-\end{itemize}
-
-\subsection{Livelli di astrazione}
-
-La progettazione di una base di dati avviene su più livelli di astrazione, ognuno con uno scopo preciso.
-
-\paragraph{Livello concettuale}
-Descrive la realtà in modo indipendente dalla tecnologia.  
-In questo livello si parla di oggetti, relazioni e proprietà, usando un linguaggio comprensibile anche a chi non è un informatico.
-
-\paragraph{Livello logico}
-Descrive come i dati sono organizzati secondo un modello specifico, ad esempio il modello relazionale.  
-In questo livello compaiono tabelle, attributi e chiavi.
-
-\paragraph{Livello fisico}
-Descrive come i dati sono effettivamente memorizzati dal DBMS su disco.  
-È il livello più vicino all’hardware ed è dipendente dal DBMS utilizzato.
-
-La separazione tra questi livelli permette di modificare un livello senza dover intervenire sugli altri.
-
-\subsection{Indipendenza dei dati}
-
-Uno dei principali vantaggi dell’uso dei DBMS è l’indipendenza dei dati.  
-Questo concetto indica la possibilità di modificare la struttura o l’organizzazione dei dati senza dover riscrivere le applicazioni.
-
-Si distinguono due tipi di indipendenza.
-
-\paragraph{Indipendenza fisica}
-Le applicazioni non dipendono da come i dati sono memorizzati fisicamente.  
-È possibile cambiare file, indici o modalità di memorizzazione senza modificare i programmi.
-
-\paragraph{Indipendenza logica}
-Le applicazioni non dipendono dalla struttura logica della base di dati.  
-È possibile aggiungere attributi o tabelle senza compromettere il funzionamento delle applicazioni esistenti.
-
-Il DBMS si occupa di garantire entrambe.
-
-%====================================================================
-\section{Il modello relazionale}
-%====================================================================
-
-Il modello relazionale è stato introdotto da Edgar Frank Codd nel 1970 ed è tuttora il modello più utilizzato nei sistemi di basi di dati.
-
-La sua forza sta nella semplicità concettuale unita a un forte rigore matematico.
-
-\subsection{Relazioni}
-
-Nel modello relazionale i dati sono rappresentati tramite \textbf{relazioni}, che possono essere visualizzate come tabelle.
-
-Ogni relazione rappresenta un insieme di oggetti omogenei del mondo reale.  
-Ad esempio, una relazione \code{Studente} rappresenta l’insieme di tutti gli studenti.
-
-\subsection{Attributi}
-
-Gli attributi rappresentano le proprietà degli oggetti.  
-Ogni attributo ha un nome e un dominio di valori ammessi.
-
-La scelta degli attributi è cruciale: attributi inutili rendono la base di dati complessa, attributi mancanti la rendono incompleta.
-
-\subsection{Tuple}
-
-Una tupla rappresenta un singolo oggetto reale.  
-Ogni riga della tabella è una tupla distinta.
-
-Ad esempio:
 \begin{center}
-\code{Studente(Matricola, Nome, Cognome, DataNascita)}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Matricola} & \textbf{Nome} & \textbf{Cognome} \\
+\hline
+101 & Marco & Rossi \\
+102 & Anna & Bianchi \\
+103 & Luca & Verdi \\
+\hline
+\end{tabular}
+\hspace{1cm}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{Codice} & \textbf{Materia} \\
+\hline
+MAT01 & Matematica \\
+INF02 & Informatica \\
+FIS03 & Fisica \\
+\hline
+\end{tabular}
 \end{center}
 
-Una tupla valida è:
 \begin{center}
-\code{(12345, Mario, Rossi, 2006-03-12)}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Matricola} & \textbf{Codice Materia} & \textbf{Voto} \\
+\hline
+101 & MAT01 & 8 \\
+102 & INF02 & 7 \\
+103 & FIS03 & 9 \\
+\hline
+\end{tabular}
 \end{center}
+
+Queste tabelle rappresentano la \textbf{struttura logica} dei dati: ogni riga è una \textbf{tupla}, ogni colonna un \textbf{attributo}, e insieme formano una relazione.
 
 \subsection{Schema e istanza}
 
-Lo schema descrive la struttura della relazione ed è definito una sola volta.  
-L’istanza rappresenta il contenuto effettivo della relazione in un dato momento.
+- Lo \textbf{schema} della relazione definisce i nomi delle colonne e i tipi di dati, ad esempio:
+\begin{center}
+\code{Studente(Matricola, Nome, Cognome)}
+\end{center}
 
-Questa distinzione permette di separare struttura e dati.
+- L'\textbf{istanza} della relazione è l'insieme delle righe effettivamente presenti in un certo momento:
+\begin{center}
+\code{(101, Marco, Rossi), (102, Anna, Bianchi), (103, Luca, Verdi)}
+\end{center}
 
-%====================================================================
-\section{Esempi guidati: dalla realtà alle tabelle}
-%====================================================================
+Questa distinzione tra schema e istanza è fondamentale: lo schema descrive la struttura, mentre l'istanza è ciò che contiene i dati reali.
 
-Per comprendere realmente il modello relazionale è fondamentale applicarlo a casi concreti.
+\newpage
+\section{Introduzione all'algebra relazionale}
+%==============================================================================
 
-Consideriamo la progettazione di una base di dati per una scuola.
+Per lavorare formalmente con le relazioni, esiste l'\textbf{algebra relazionale}.  
+Non entreremo nei dettagli avanzati, ma vediamo le operazioni più importanti che permettono di interrogare le tabelle.
 
-\subsection{Descrizione informale}
+\subsection{Selezione}
 
-In una scuola esistono studenti che frequentano classi, studiano diverse materie e ricevono valutazioni nel tempo.
+La selezione permette di estrarre le righe che soddisfano una certa condizione.  
 
-Questa descrizione è volutamente informale e incompleta, come accade nella realtà.
+\textbf{Esempio:} trovare tutti gli studenti con nome "Marco":
+\[
+\sigma_{\text{Nome='Marco'}}(\text{Studente})
+\]
 
-\subsection{Individuazione delle entità}
+\subsection{Proiezione}
 
-Dalla descrizione emergono chiaramente alcune entità fondamentali:
-\begin{itemize}
-\item Studente
-\item Classe
-\item Materia
-\item Voto
-\end{itemize}
+La proiezione permette di estrarre solo alcune colonne di una relazione.  
 
-Ogni entità rappresenta un insieme di oggetti con caratteristiche comuni.
+\textbf{Esempio:} visualizzare solo nomi e cognomi degli studenti:
+\[
+\pi_{\text{Nome, Cognome}}(\text{Studente})
+\]
 
-\subsection{Scelta degli attributi}
+\subsection{Join}
 
-Per ogni entità selezioniamo solo gli attributi realmente necessari.
+Il join combina informazioni di due relazioni sulla base di attributi comuni.  
 
-Ad esempio, per \textbf{Studente} scegliamo una matricola come identificatore univoco, insieme a nome, cognome e data di nascita.
+\textbf{Esempio:} unire studenti e voti per sapere quali voti ha preso ogni studente:
+\[
+\text{Studente} \ \bowtie_{\text{Matricola}} \ \text{Voto}
+\]
 
-\subsection{Traduzione in relazioni}
+Il risultato è una tabella completa con tutte le informazioni necessarie.
 
-Ogni entità viene tradotta in una relazione del modello relazionale.  
-Le relazioni risultanti costituiscono lo schema logico della base di dati.
+\bigskip
+Con queste tre operazioni di base (selezione, proiezione e join) è già possibile esprimere gran parte delle interrogazioni sui dati, senza preoccuparsi di come sono memorizzati fisicamente nel database.
 
-Questo passaggio segna il passaggio dalla comprensione del problema alla sua formalizzazione.
 
+
+
+
+\newpage
 %====================================================================
 \section{Progettazione di una base di dati}
 %====================================================================
