@@ -1,0 +1,409 @@
+\documentclass{beamer}
+
+\usetheme{Madrid}
+\usecolortheme{default}
+
+\usepackage[italian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{tikz} 
+\usetikzlibrary{positioning, shapes, arrows.meta}
+
+\title{Basi di Dati}
+\subtitle{Il Modello Relazionale}
+\author{Prof. Federico Mazzini}
+\institute{I.I.S. Francesco Alberghetti}
+\date{A.S. 2025 -- 2026}
+
+\begin{document}
+
+%------------------------------------------------
+\begin{frame}
+\titlepage
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Storia del Modello Relazionale}
+Il modello relazionale è stato introdotto da \textbf{Edgar F. Codd} presso \textbf{IBM} negli anni '70.
+
+\medskip
+Ha rivoluzionato il modo di organizzare e gestire i dati, proponendo una struttura semplice e potente basata su tabelle.
+
+\medskip
+Oggi i database che si basano sul modello relazionale sono chiamati \textbf{RDBMS} (Relational Database Management Systems). Questa tipologia di database è oggi la più diffusa e utilizzata in quasi tutti i contesti applicativi.
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Il modello relazionale}
+
+\begin{block}{Definizione}
+Il modello relazionale organizza i dati in tabelle chiamate \textbf{relazioni}, dove ogni tabella rappresenta un'entità o un concetto del mondo reale, e ogni riga (tupla) rappresenta un'istanza specifica di quell'entità.
+\end{block}
+
+\medskip
+\begin{tabular}{|c|c|c|c|}
+\hline
+Cliente & Nome & Cognome & Email \\
+\hline
+1 & Mario & Rossi & mario.rossi@email.com \\
+2 & Anna & Bianchi & anna.bianchi@email.com \\
+3 & Luca & Verdi & luca.verdi@email.com \\
+\hline
+\end{tabular}
+
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Concetti chiave del Modello Relazionale}
+
+\medskip
+\begin{tabular}{|c|c|c|c|}
+\hline
+Cliente & Nome & Cognome & Email \\
+\hline
+1 & Mario & Rossi & mario.rossi@email.com \\
+2 & Anna & Bianchi & anna.bianchi@email.com \\
+3 & Luca & Verdi & luca.verdi@email.com \\
+\hline
+\end{tabular}
+\medskip
+\begin{itemize}
+    \item La tabella rappresenta una \textbf{relazione} chiamata "Clienti".
+    \item Le colonne (Cliente, Nome, Cognome, Email) sono gli \textbf{attributi} della relazione.
+    \item Le righe sono le \textbf{istanze} della relazione, che rappresentano i singoli clienti con i loro dati specifici.
+    \item L'intestazione della tabella (Nome della tabella + Nome attributi) costituisce lo \textbf{schema} della relazione.
+\end{itemize}
+
+\bigskip
+\textbf{Schema relazione:} \texttt{Clienti(IDCliente, Nome, Cognome, Email)}
+
+\end{frame}
+
+
+%------------------------------------------------
+\begin{frame}{Vincoli sull'ordine dei dati}
+\begin{tabular}{|c|c|c|c|}
+\hline
+Cliente & Nome & Cognome & Email \\
+\hline
+1 & Mario & Rossi & mario.rossi@email.com \\
+2 & Anna & Bianchi & anna.bianchi@email.com \\
+3 & Luca & Verdi & luca.verdi@email.com \\
+\hline
+\end{tabular}
+\medskip
+
+\textbf{L'ordine dei dati non è rilevante}:
+
+\begin{itemize}
+    \item L'ordinamento delle righe non ha importanza: le tuple possono essere elencate in qualsiasi ordine.
+    \item L'ordinamento delle colonne non ha importanza: gli attributi possono essere visualizzati in qualsiasi ordine.
+\end{itemize}
+
+\medskip
+Una relazione è definita dal \textbf{contenuto delle tuple} e dagli \textbf{attributi}, non dalla loro posizione nella tabella.
+
+
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Vincoli sulla relazione}
+\begin{tabular}{|c|c|c|c|}
+\hline
+Cliente & Nome & Cognome & Email \\
+\hline
+1 & Mario & Rossi & mario.rossi@email.com \\
+2 & Anna & Bianchi & anna.bianchi@email.com \\
+3 & Luca & Verdi & luca.verdi@email.com \\
+\hline
+\end{tabular}
+\medskip
+
+\textbf{La relazione deve rispettare alcuni vincoli}:
+\begin{itemize}
+    \item \textbf{Ogni attributo deve essere unico:} non possono esistere due colonne con lo stesso nome all'interno della stessa relazione.
+    \item \textbf{Ogni tupla deve essere unica:} non possono esistere due righe identiche all'interno della relazione.
+    \item \textbf{Omogeneità dei dati per colonna:} tutti i valori di una colonna devono appartenere allo stesso tipo di dato.  
+    \textbf{Esempio:} nella colonna \texttt{Cliente} devono esserci solo numeri interi, mentre nella colonna \texttt{Nome} solo stringhe di testo.
+\end{itemize}
+\alert{Esercizi 1-4 dispense}
+\end{frame}
+
+\subsection{Vincoli d'integrità intra-relazionali}
+%==============================================================================
+
+\begin{frame}{Vincoli d'integrità intra-relazionali}
+\begin{block}{Definizione} Regole opzionali e decise da chi progetta la relazione che garantiscono la correttezza e la coerenza dei dati all'interno di una singola relazione.
+\end{block}
+\begin{itemize}
+    \item Garantiscono coerenza e validità dei dati all'interno di una relazione
+    \item Si applicano \textbf{ad ogni singola tupla}
+    \item Tipi principali:
+    \begin{itemize}
+        \item \textbf{Vincoli di dominio}: intervalli, valori ammessi, condizioni logiche
+        \item \textbf{Vincoli di non nullità}: alcuni attributi devono sempre avere un valore
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+%==============================================================================
+\begin{frame}{Vincoli di dominio}
+\begin{block}{Definizione} Intervalli, valori ammessi e condizioni logiche sulle istanze degli attributi
+\end{block}
+
+\textbf{Relazione:} \texttt{Voto(Matricola, CodiceMateria, Voto)}
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Matricola} & \textbf{CodiceMateria} & \textbf{Voto} \\
+\hline
+101 & MAT01 & 8 \\
+102 & INF02 & 11 \\
+103 & FIS03 & 9 \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{itemize}
+    \item Il voto deve appartenere all’intervallo \([0,10]\)
+    \item Il valore \texttt{11} viola il vincolo di dominio
+\end{itemize}
+\end{frame}
+
+%==============================================================================
+\begin{frame}{Vincoli di non nullità}
+
+\begin{block}{Definizione} Alcuni attributi devono sempre avere un valore e non possono essere vuoti
+\end{block}
+
+\textbf{Relazione:} \texttt{Studente(Matricola, Nome, Cognome)}
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Matricola} & \textbf{Nome} & \textbf{Cognome} \\
+\hline
+101 & Marco & Rossi \\
+102 &  & Bianchi \\
+103 & Luca & Verdi \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{itemize}
+    \item La seconda tupla viola il vincolo di non nullità
+    \item L’attributo \texttt{Nome} deve essere sempre valorizzato
+\end{itemize}
+\end{frame}
+
+%==============================================================================
+\begin{frame}{Vincoli di dominio -- esempi avanzati}
+\begin{itemize}
+    \item \textbf{Relazione Dipendente(Matricola, Nome, Cognome, Stipendio, Età)}
+    \begin{itemize}
+        \item \texttt{Stipendio} $\ge$ 0
+        \item \texttt{Età} $\in [18,70]$
+    \end{itemize}
+    \item \textbf{Relazione Prodotto(Codice, Nome, Prezzo, Quantità)}
+    \begin{itemize}
+        \item \texttt{Prezzo} $\ge$ 0
+        \item \texttt{Quantità} $\in \mathbb{N}$ (numeri interi non negativi)
+    \end{itemize}
+\end{itemize}
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+Matricola & Nome & Stipendio & Età \\
+\hline
+101 & Marco & 2000 & 30 \\
+102 & Anna & -1500 & 25 \\
+103 & Luca & 1800 & 72 \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{itemize}
+    \item Tupla 102 viola il vincolo di dominio (stipendio negativo)
+    \item Tupla 103 viola il vincolo di dominio (età > 70)
+\end{itemize}
+
+\alert{Esercizi 5-8 dispense}
+\end{frame}
+
+
+%==============================================================================
+\begin{frame}{Vincoli di chiave (Primary Key)}
+
+\begin{block}{Definizione} Per \textbf{chiave di una relazione} si intende un insieme di attributi che consente di identificare in maniera univoca le ennuple di una relazione.
+\end{block}
+    
+\begin{itemize}
+    \item Identificare in modo univoco le tuple di una relazione
+    \item Concetti fondamentali:
+    \begin{itemize}
+        \item \textbf{Superchiave:} insieme di attributi che identifica univocamente le tuple
+        \item \textbf{Superchiave minimale:} insieme minimo di attributi che identifica univocamente le tuple di una relazione non contiene attributi ridondanti
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Esempio 1 -- Relazione Prodotti}
+Relazione \texttt{Prodotto(CodiceProdotto, NomeProdotto, Categoria, Prezzo)}
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{CodiceProdotto} & \textbf{NomeProdotto} & \textbf{Categoria} & \textbf{Prezzo} \\
+\hline
+P001 & Smartphone X & Telefonia & 599.00 \\
+P002 & Laptop Pro & Informatica & 1200.00 \\
+P003 & Tablet Y & Informatica & 399.00 \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{itemize}
+    \item \{\texttt{CodiceProdotto}\} è una \textbf{superchiave minima}.
+    \item \{\texttt{CodiceProdotto, NomeProdotto}\} è una \textbf{superchiave}, ma non minima.
+    \item \{\texttt{CodiceProdotto, NomeProdotto, Prezzo}\} è ancora una superchiave con attributi ridondanti.
+\end{itemize}
+\end{frame}
+
+
+%==============================================================================
+\begin{frame}{Esempio 2 -- Biblioteca}
+\textbf{Relazione:} \texttt{Libro(ISBN, Titolo, Autore, AnnoPubblicazione)}
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{ISBN} & \textbf{Titolo} & \textbf{Autore} & \textbf{Anno} \\
+\hline
+978-88-04-51234-5 & Il nome della rosa & Umberto Eco & 1980 \\
+978-88-04-51235-2 & Il fu Mattia Pascal & Luigi Pirandello & 1904 \\
+978-88-04-51236-9 & Se questo è un uomo & Primo Levi & 1947 \\
+978-88-04-51237-6 & Il barone rampante & Italo Calvino & 1957 \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{itemize}
+    \item \{\texttt{ISBN}\} è una superchiave minimale $\Rightarrow$ chiave
+    \item \{\texttt{ISBN, Titolo}\} è una superchiave ma non minima
+    \item \{\texttt{Titolo, Autore, Anno}\} può essere superchiave solo se ogni libro ha titolo unico nello stesso anno
+\end{itemize}
+\end{frame}
+
+
+%==============================================================================
+\begin{frame}{Esempio 3 -- Acquisti di un cliente}
+\textbf{Relazione:} \texttt{Ordine(NumeroOrdine, Data, Cliente, Importo)}
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Data} & \textbf{Cliente} & \textbf{Importo} \\
+\hline
+2024-06-01 & Rossi & 120.00 \\
+2024-06-02 & Bianchi & 85.50 \\
+2024-06-02 & Neri & 42.00 \\
+2024-06-03 & Rossi & 75.00 \\
+\hline
+\end{tabular}
+\end{center}
+
+Quale superchiave minima scegliere?
+
+\end{frame}
+
+%==============================================================================
+\begin{frame}{Esempio 3 -- Acquisti di un cliente}
+\textbf{Relazione:} \texttt{Ordine(NumeroOrdine, Data, Cliente, Importo)}
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Data} & \textbf{Cliente} & \textbf{Importo} \\
+\hline
+2024-06-01 & Rossi & 120.00 \\
+2024-06-02 & Bianchi & 85.50 \\
+2024-06-02 & Neri & 42.00 \\
+2024-06-03 & Rossi & 75.00 \\
+\hline
+\end{tabular}
+\end{center}
+
+Quale superchiave minima scegliere?
+\alert{E se un cliente compra lo stesso giorno più volte?}
+\end{frame}
+
+
+%==============================================================================
+\begin{frame}{Esempio 3 -- Acquisti di un cliente}
+\textbf{Relazione:} \texttt{Ordine(NumeroOrdine, Data, Cliente, Importo)}
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Data} & \textbf{Cliente} & \textbf{Importo} \\
+\hline
+2024-06-01 & Rossi & 120.00 \\
+2024-06-02 & Bianchi & 85.50 \\
+2024-06-02 & Neri & 42.00 \\
+2024-06-03 & Rossi & 75.00 \\
+\hline
+\end{tabular}
+\end{center}
+
+Quale superchiave minima scegliere?
+\alert{E se un cliente compra lo stesso giorno più volte gli stessi prodotti?}
+\end{frame}
+
+%==============================================================================
+\begin{frame}{Esempio 3 -- Acquisti di un cliente}
+\textbf{Relazione:} \texttt{Ordine(NumeroOrdine, Data, Cliente, Importo)}
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{NumeroOrdine} & \textbf{Data} & \textbf{Cliente} & \textbf{Importo} \\
+\hline
+5001 & 2024-06-01 & Rossi & 120.00 \\
+5002 & 2024-06-02 & Bianchi & 85.50 \\
+5003 & 2024-06-02 & Neri & 42.00 \\
+5004 & 2024-06-03 & Rossi & 75.00 \\
+\hline
+\end{tabular}
+\end{center}
+
+\alert{Aggiungiamo un attributo univoco!}
+
+\begin{itemize}
+    \item \{\texttt{NumeroOrdine}\} è superchiave minimale e chiave primaria
+\end{itemize}
+\end{frame} 
+
+%==============================================================================
+\begin{frame}{Chiave primaria}
+Una relazione può avere \textbf{più superchiavi minimali}, è necessario sceglierne \textbf{una sola} come riferimento principale. 
+\medskip
+
+\begin{block}{Definizione}
+La chiave primaria di una relazione è una \textbf{superchiave minimale scelta} come identificatore ufficiale della relazione;
+\end{block}
+\medskip
+\begin{itemize}
+    \item identifica in modo univoco ogni tupla;
+    \item permette al DBMS di gestire correttamente i dati;
+    \item viene utilizzata da altre relazioni per creare collegamenti.
+\end{itemize}
+
+\medskip
+\alert{La differenza non è teorica, ma progettuale: la chiave primaria è la superchiave minimale che decidiamo di usare davvero.}
+\alert{Esercizi 9 - 13 dispense}
+\end{frame}
+
+\end{document}

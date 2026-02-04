@@ -1,0 +1,282 @@
+\documentclass{beamer}
+
+\usetheme{Madrid}
+\usecolortheme{default}
+
+\usepackage[italian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{booktabs}
+\usetikzlibrary{positioning, shapes, arrows.meta} 
+
+\title{Basi di Dati}
+\subtitle{Introduzione ai dati e i DBMS}
+\author{Prof. Federico Mazzini}
+\institute{I.I.S. Francesco Alberghetti}
+\date{A.S. 2025 -- 2026}
+
+\begin{document}
+
+%------------------------------------------------
+\begin{frame}
+\titlepage
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Introduzione}
+Ogni applicazione è composta principalmente da due parti principali:
+\begin{itemize}
+    \item parte algoritmica
+    \item parte di memorizzazione e gestione dati
+\end{itemize}
+
+\medskip
+\alert{In questo unità ci concentreremo sulla parte di gestione dei dati}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{I dati nelle applicazioni di tutti i giorni}
+Ogni applicazione che usiamo gestisce dati: dai social network al registro elettronico, tutto ruota intorno ai dati.
+\begin{itemize}
+    \item \textbf{Registro elettronico}: voti, assenze, compiti e comunicazioni sono dati che vengono registrati, aggiornati e consultati ogni giorno da studenti, insegnanti e famiglie.
+    \item \textbf{Social network}: ogni post, commento, like, amicizia è un dato che viene salvato, collegato agli utenti e reso disponibile in tempo reale.
+    \item \textbf{Sistemi aziendali}: ordini, clienti, fatture, prodotti... in azienda tutto viene gestito tramite dati memorizzati in modo strutturato.
+    \item \textbf{Vita quotidiana}: anche la rubrica del telefono, la cronologia delle ricerche, le playlist musicali sono dati che un'applicazione gestisce per noi.
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Dato e Informazione: definizioni}
+\begin{block}{Dato}
+Rappresentazione oggettiva e grezza di un fatto, senza contesto
+\end{block}
+
+\begin{block}{Informazione}
+Dato interpretato e contestualizzato per assumere significato
+\end{block}
+
+\medskip
+\alert{La trasformazione da dato a informazione richiede contesto e interpretazione}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Esempi di dato e informazione}
+\begin{itemize}
+    \item \texttt{8} → dato numerico semplice
+    \item \texttt{8 = voto di Informatica di uno studente} → informazione contestualizzata
+    \item \texttt{"Mario Rossi ha 8 in Informatica"} → informazione completa e significativa
+\end{itemize}
+
+\medskip
+\textbf{Il significato di un dato nasce dal contesto e dalle relazioni tra dati}
+\medskip
+\alert{Gestire i dati in modo organizzato è fondamentale per trasformarli in informazioni utili}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Sistema Informativo}
+\begin{block}{Definizione}
+Insieme di informazioni, procedure e persone che supportano le attività di un'organizzazione
+\end{block}
+
+\medskip
+\alert{L’esistenza di un Sistema Informativo è indipendente dalla sua automatizzazione.}
+\end{frame}
+
+
+%------------------------------------------------
+\begin{frame}{Sistema Informativo}
+\begin{block}{Definizione}
+Insieme di informazioni, procedure e persone che supportano le attività di un'organizzazione
+\end{block}
+
+\medskip
+\alert{L’esistenza di un Sistema Informativo è indipendente dalla sua automatizzazione.}
+
+{\tiny Nell’Antica Roma venivano già raccolti dati sulle persone attraverso i censimenti.
+I cittadini venivano registrati in elenchi in base all’età, alla ricchezza e ai diritti civili.
+Questi dati servivano per decidere chi poteva votare, chi doveva pagare le tasse e chi doveva andare nell’esercito.}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Sistema Informatico}
+Il ruolo dell'informatica ha radicalmente cambiato i sistemi informativi. Un sistema informatico è quindi una sottoparte del sistema informativo che permette di:
+\begin{itemize}
+\item automatizzare i processi
+\item gestire i dati (e le informazioni) in maniera più efficiente ed efficace.  
+\end{itemize}
+
+\medskip
+{\tiny Oggi un sistema informativo aziendale gestisce ad esempio tramite interfaccia web gli acquisti di un'azienda, registrando automaticamente ordini e producendo fatture. I dati di questi processi vengono memorizzati all'interno di dispositivi informatici e resi disponibili ai dipendenti autorizzati in qualsiasi momento.}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Approcci di gestione dei dati}
+    Gran parte dei sistemi informatici ha necessità di gestire i dati in maniera persistente. Per farlo sono possibili due approcci principali:
+\begin{itemize}
+    \item Approccio basato su File System (software non specializzati)
+    \item Approccio basato su DBMS (software specializzato)
+\end{itemize}
+
+\medskip
+\alert{Le basi di dati sono il cuore della gestione delle informazioni}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Approccio basato su File System}
+\centering
+\includegraphics[width=0.5\textwidth]{images/software-spec.png}
+\begin{itemize}
+    \item L'applicazione contiene sia la logica applicativa e algoritmica, che quella di gestione dei dati
+    \item Ogni software è scritto da persone diverse con regole e approcci diversi
+    \item Nessuna condivisione centralizzata
+    \item Dati duplicati e incoerenti
+\end{itemize}
+
+\medskip
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Approccio DBMS}
+\begin{block}{DBMS}
+Un DBMS è un sistema software che è in grado di gestire collezioni di dati grandi, condivise e persistenti, in maniera efficiente e sicura.
+\end{block}
+
+
+\centering
+\includegraphics[width=0.5\textwidth]{images/dbms-app.jpg}
+
+\medskip
+\alert{Oggi, qualsiasi applicazione che gestisce dati utilizza un DBMS}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Caratteristiche base DBMS}
+
+\begin{itemize}
+    \item \textbf{Memorizza dati}: tutto organizzato su disco, non sparso in file casuali
+    \item \textbf{Legge e scrive dati}: aggiungi, modifichi, cancelli senza pensare al “come”
+    \item \textbf{Condivisione}: più utenti e applicazioni possono usare gli stessi dati
+    \item \textbf{Sicurezza}: solo chi ha permesso può leggere o scrivere
+    \item \textbf{Affidabilità}: in caso di guasti, niente dati persi
+    \item \textbf{Integrità dei dati}: regole rispettate (es. voto massimo 10)
+    \item \textbf{Interrogazione veloce}: trova info senza cercare manualmente
+    \item \textbf{Gestione concorrenza}: più utenti contemporaneamente senza conflitti
+\end{itemize}
+
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{DBMS come gestore centrale}
+\centering
+\includegraphics[width=0.5\textwidth]{images/integrated-database-DBMS.png}
+
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Perché un DBMS è fondamentale}
+\textbf{Gestione di grandi quantità di dati}
+
+\medskip
+\begin{itemize}
+    \item Amazon Prime: oltre 240 milioni di abbonati.
+    \item Facebook: più di 3 miliardi di utenti attivi mensili.
+    \item Instagram: oltre 1,3 miliardi di immagini caricate ogni giorno.
+\end{itemize}
+
+
+\end{frame}
+
+
+%------------------------------------------------
+\begin{frame}{Perché un DBMS è fondamentale}
+\textbf{Gestione della concorrenza}: il DBMS coordina l'accesso simultaneo ai dati.
+
+\medskip
+\textbf{Scenario:} due utenti prelevano contemporaneamente dal conto X (saldo iniziale 120 €).  
+
+\medskip
+\begin{tabular}{c c c}
+\toprule
+Tempo & Operazione & Valore di X \\
+\midrule
+$t_1$ & OP1: Leggi saldo & 120 \\
+$t_2$ & OP2: Leggi saldo & 120 \\
+$t_3$ & OP1: Calcola saldo-100 & 120 \\
+$t_4$ & OP2: Calcola saldo-80 & 120 \\
+$t_5$ & OP1: Scrivi saldo finale & 20 \\
+$t_6$ & OP2: Scrivi saldo finale & 40 \\
+\bottomrule
+\end{tabular}
+
+\medskip
+\alert{Saldo finale = 40 €}
+
+\medskip
+\textbf{Soluzione:} il DBMS serializza le operazioni, così il risultato finale corrisponde a eseguire le operazioni una alla volta.
+\end{frame}
+
+
+%------------------------------------------------
+\begin{frame}{Perché un DBMS è fondamentale}
+\textbf{Affidabilità}: il DBMS garantisce protezione da malfunzionamenti e guasti.
+
+\medskip
+\textbf{Scenario:} trasferimento 200 € da conto A (saldo 500 €) a conto B (saldo 300 €).  
+
+\medskip
+Operazioni:
+\begin{itemize}
+    \item Addebitare 200 € dal conto A
+    \item Accreditare 200 € sul conto B
+\end{itemize}
+
+\medskip
+\textbf{Problema:} se il sistema si interrompe dopo l’addebito, ma prima dell’accredito → dati incoerenti.  
+
+\medskip
+\textbf{Soluzione DBMS:} uso delle \textbf{transazioni}:
+\begin{itemize}
+    \item Entrambe le operazioni completate correttamente, oppure
+    \item Nessuna delle due operazioni viene effettuata.
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{DBMS (Database Management System) come tecnologia}
+
+\centering
+\includegraphics[width=1\textwidth]{images/database-landscape.jpeg}
+
+\end{frame}
+
+
+
+%------------------------------------------------
+\begin{frame}{DBMS come astrazione}
+\textbf{Un DBMS permette agli utenti e alle applicazioni di lavorare con i dati senza dover conoscere i dettagli di memorizzazione:}
+
+\medskip
+\begin{itemize}
+    \item \textbf{Come} i dati sono memorizzati e gestiti è nascosto
+    \item \textbf{Cosa} voglio ottenere (dati, informazioni)
+    \item Il DBMS gestisce automaticamente tutti i dettagli tecnici.
+    \item L’utente interagisce con un livello alto di astrazione
+    \begin{itemize}
+    \item "Dammi tutti i clienti che hanno speso più di 100 €”
+    \end{itemize}
+\end{itemize}
+
+\medskip
+\alert{Astrazione = nascondere dettagli implementativi complessi per semplificare l'interazione con il sistema}
+\end{frame}
+
+
+%------------------------------------------------
+\begin{frame}{DBMS come astrazione}
+\centering
+\includegraphics[width=0.5\textwidth]{images/three-levels-database-architecture.jpg}
+\end{frame}
+\end{document}

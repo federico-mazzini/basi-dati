@@ -26,10 +26,15 @@ jobs:
       
       - name: Compile LaTeX
         run: |
-          latexmk -pdf -interaction=nonstopmode basi-dati.tex
+          latexmk -pdf -interaction=nonstopmode dispense-basi-dati.tex
+          latexmk -pdf -interaction=nonstopmode 1-intro-basi-dati.tex
+          latexmk -pdf -interaction=nonstopmode 2-modello-relazionale.tex
 
-      - name: Upload PDF artifact
+      - name: Upload PDF artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: basi-dati
-          path: basi-dati.pdf
+          name: pdfs
+          path: |
+            dispense-basi-dati.pdf
+            1-intro-basi-dati.pdf
+            2-modello-relazionale.pdf
