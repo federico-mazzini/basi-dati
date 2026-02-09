@@ -2079,14 +2079,6 @@ Considera la tabella \texttt{IscrizioneCorso}:
     \item L’attributo \texttt{DataIscrizione} può essere chiave? Perché?
 \end{enumerate}
 
-\item \textbf{Tradurre nel modello relazionale il seguente documento di
-specifiche.}
-
-Si vuole progettare una base di dati per la gestione dei circoli tennis presenti a Bologna. Ogni circolo dispone di nome (univoco), indirizzo, recapito telefonico, ed email. Si vogliono gestire le informazioni relative agli utenti: ogni utente dispone di codice fiscale, nome, cognome, data e luogo di nascita, una lista di recapiti telefonici. Si vuole tenere traccia di quale utente frequenta quale circolo: un utente può frequentare uno o più circoli (potenzialmente anche tutti).
-
-\item \textbf{Tradurre nel modello relazionale il seguente documento di specifiche.}
-
-Ogni utente dispone di email, password, nome, cognome, data di nascita. Ogni utente dispone di una lista di “utenti” amici/follower. Ogni utente dispone di una propria bacheca di messaggi ricevuti. Ogni messaggio dispone di: codice, data di invio, testo, e mittente (il mittente è un utente della piattaforma). Ogni messaggio è destinato ad un solo utente.
 
 \item 
 
@@ -2100,6 +2092,35 @@ Dato lo schema relazionale seguente:
 \end{itemize}
 
 \textbf{Richiesta:} Individuare i vincoli di integrità referenziale presenti tra le relazioni.
+
+
+\item A partire dall'esercizio precedente, descrivere a parola cosa modella lo schema relazionale rappresentato, generando un documento di specifiche.
+
+
+\item \textbf{Tradurre nel modello relazionale il seguente documento di
+specifiche.}
+
+Si vuole progettare una base di dati per la gestione di un cinema.
+Si vogliono registrare i film, con titolo, genere e durata.
+Si vogliono gestire le sale, con nome e numero di posti.
+Si vuole tenere traccia delle proiezioni: quale film viene proiettato in quale sala e a che orario.
+Infine, si vogliono registrare i biglietti venduti, con i dati del cliente e la proiezione a cui il biglietto si riferisce.
+
+
+\item \textbf{Tradurre nel modello relazionale il seguente documento di specifiche.}
+
+Ogni utente dispone di email, password, nome, cognome, data di nascita. Ogni utente segue/è follower di altro utenti e ha dei follower a sua volta. Ogni utente dispone di una propria bacheca di messaggi ricevuti. Ogni messaggio dispone di: codice, data di invio, testo, e mittente (il mittente è un utente della piattaforma). Ogni messaggio è destinato ad un solo utente.
+
+
+\item \textbf{Tradurre nel modello relazionale il seguente documento di
+specifiche.}
+
+Si vuole progettare una base di dati per la gestione dei circoli tennis presenti in città.
+Ogni circolo è caratterizzato da un nome univoco, indirizzo, recapito telefonico ed email.
+Si vogliono gestire le informazioni relative agli utenti: ogni utente ha codice fiscale, nome, cognome, data e luogo di nascita e una lista di recapiti telefonici.
+Ogni utente è iscritto a un singolo circolo tramite tessera associativa annuale, ma può anche frequentare altri circoli a cui non è iscritto.
+Si vuole tenere traccia di queste frequentazioni, sapendo che un utente può frequentare più circoli (potenzialmente tutti).
+
 
 \end{enumerate}
 
