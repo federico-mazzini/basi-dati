@@ -7,7 +7,9 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{graphicx}
-\usepackage{tikz} 
+\usepackage{tikz}
+\usepackage{xcolor}
+\usepackage{colortbl}
 \usetikzlibrary{positioning, shapes, arrows.meta}
 
 \title{Basi di Dati}
@@ -300,7 +302,7 @@ P003 & Tablet Y & Informatica & 399.00 \\
 
 %==============================================================================
 \begin{frame}{Esempio 3 -- Acquisti di un cliente}
-\textbf{Relazione:} \texttt{Ordine(NumeroOrdine, Data, Cliente, Importo)}
+\textbf{Relazione:} \texttt{Ordine(Data, Cliente, Importo)}
 
 \begin{center}
 \begin{tabular}{|c|c|c|c|}
@@ -321,7 +323,7 @@ Quale superchiave minima scegliere?
 
 %==============================================================================
 \begin{frame}{Esempio 3 -- Acquisti di un cliente}
-\textbf{Relazione:} \texttt{Ordine(NumeroOrdine, Data, Cliente, Importo)}
+\textbf{Relazione:} \texttt{Ordine(Data, Cliente, Importo)}
 
 \begin{center}
 \begin{tabular}{|c|c|c|c|}
@@ -343,7 +345,7 @@ Quale superchiave minima scegliere?
 
 %==============================================================================
 \begin{frame}{Esempio 3 -- Acquisti di un cliente}
-\textbf{Relazione:} \texttt{Ordine(NumeroOrdine, Data, Cliente, Importo)}
+\textbf{Relazione:} \texttt{Ordine(Data, Cliente, Importo)}
 
 \begin{center}
 \begin{tabular}{|c|c|c|c|}
@@ -404,6 +406,307 @@ La chiave primaria di una relazione è una \textbf{superchiave minimale scelta} 
 \medskip
 \alert{La differenza non è teorica, ma progettuale: la chiave primaria è la superchiave minimale che decidiamo di usare davvero.}
 \alert{Esercizi 9 - 13 dispense}
+\end{frame}
+
+
+
+
+
+
+
+\subsection{Vincoli d'integrità inter-relazionali}
+
+%==============================================================================
+\begin{frame}{Vincoli d'integrità inter-relazionali}
+\begin{block}{Definizione}
+Regole che garantiscono la coerenza dei dati tra \textbf{relazioni diverse}, evitando riferimenti a dati inesistenti.
+\end{block}
+
+\begin{itemize}
+    \item Coinvolgono \textbf{due o più relazioni}
+    \item Mettono in relazione le tuple di tabelle diverse
+    \item Il caso più importante: \textbf{vincoli di chiave esterna (foreign key)}
+\end{itemize}
+\end{frame}
+
+%==============================================================================
+\begin{frame}{Esempio di chiave esterna -- Streaming musicale}
+\small
+\texttt{Artista(IDArtista, NomeArtista, Genere)}
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+IDArtista & NomeArtista & Genere \\
+\hline
+1 & Air & Elettronica \\
+2 & Radiohead & Rock \\
+3 & Daft Punk & Elettronica \\
+\hline
+\end{tabular}
+\end{center}
+
+\medskip
+\texttt{Canzone(IDCanzone, Titolo, IDArtista, Durata)}
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+IDCanzone & Titolo & IDArtista & Durata \\
+\hline
+101 & All I Need & 1 & 3:57 \\
+102 & No Surprises & 2 & 3:48 \\
+\hline
+\end{tabular}
+\end{center}
+
+\end{frame}
+
+
+%==============================================================================
+\begin{frame}{Esempio di chiave esterna -- Streaming musicale}
+\small
+\texttt{Artista(IDArtista, NomeArtista, Genere)}
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+IDArtista & NomeArtista & Genere \\
+\hline
+1 & Air & Elettronica \\
+2 & Radiohead & Rock \\
+3 & Daft Punk & Elettronica \\
+\hline
+\end{tabular}
+\end{center}
+
+\medskip
+\texttt{Canzone(IDCanzone, Titolo, IDArtista, Durata)}
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+IDCanzone & Titolo & IDArtista & Durata \\
+\hline
+101 & All I Need & 1 & 3:57 \\
+102 & No Surprises & 2 & 3:48 \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{itemize}
+    \item \texttt{Canzone.IDArtista} è una \textbf{chiave esterna} e fa riferimento a \texttt{Artista.IDArtista}
+    \item Ogni valore di \texttt{IDArtista} in \texttt{Canzone} deve: esistere nella tabella \texttt{Artista}
+\end{itemize}
+
+\end{frame}
+
+
+%==============================================================================
+\begin{frame}{Chiave esterna (Foreign Key)}
+
+\begin{block}{Definizione}
+Una \textbf{chiave esterna} è un attributo (o insieme di attributi) di una relazione che fa riferimento alla \textbf{chiave primaria} di un'altra relazione.
+\end{block}
+
+\begin{itemize}
+    \item Serve a collegare due relazioni
+    \item Impone un vincolo di esistenza
+    \item Garantisce la coerenza tra le tabelle
+\end{itemize}
+
+\medskip
+Se un attributo è chiave esterna:
+\begin{itemize}
+    \item ogni valore punta a \textbf{una e una sola riga} della relazione referenziata
+    \item non possono esistere riferimenti a tuple inesistenti
+\end{itemize}
+
+\end{frame}
+
+
+%==============================================================================
+\begin{frame}{Esempio di chiave esterna -- Streaming musicale}
+\small
+\textbf{Relazione Artista:} \texttt{Artista(IDArtista, NomeArtista, Genere)}
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+IDArtista & NomeArtista & Genere \\
+\hline
+1 & Air & Elettronica \\
+2 & Radiohead & Rock \\
+3 & Daft Punk & Elettronica \\
+\hline
+\end{tabular}
+\end{center}
+
+\medskip
+\texttt{Canzone(IDCanzone, Titolo, IDArtista, Durata)}
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+IDCanzone & Titolo & IDArtista & Durata \\
+\hline
+101 & All I Need & 1 & 3:57 \\
+102 & No Surprises & 2 & 3:48 \\
+103 & Unknown Track & 5 & 4:10 \\
+\hline
+\end{tabular}
+\end{center}
+
+\alert{La terza tupla viola il vincolo di chiave esterna}
+\end{frame}
+
+
+
+%==============================================================================
+\begin{frame}{Perché servono i vincoli inter-relazionali?}
+
+Senza vincoli inter-relazionali possiamo avere dati:
+\begin{itemize}
+    \item incoerenti
+    \item scollegati dalla realtà
+    \item logicamente sbagliati
+\end{itemize}
+
+\medskip
+\textbf{Esempio:}
+\begin{itemize}
+    \item Un ordine associato a un cliente che non esiste
+    \item Un voto assegnato a uno studente inesistente
+\end{itemize}
+
+\medskip
+\alert{Il database non rappresenta più correttamente il mondo reale}
+\end{frame}
+
+\begin{frame}{Esempio - Voli}
+
+
+A partire dal testo di specifica, individuare le entità e scrivere lo schema relazionale, evidenziando le chiavi primarie e le chiavi esterne.
+
+\bigskip
+
+\textit{Una compagnia aerea vuole realizzare un database per gestire i \textbf{voli} e le informazioni ad essi collegate.  
+Il sistema deve gestire i dati degli \textbf{aeroporti}, degli \textbf{aerei} e dei \textbf{piloti} impiegati nei voli.  
+Ogni \textbf{volo} è effettuato con un solo \textbf{aereo}, è assegnato a un \textbf{pilota} e collega un \textbf{aeroporto} di partenza a uno di arrivo.  
+Sugli stessi \textbf{voli} possono essere registrate \textbf{prenotazioni} da parte dei passeggeri.  
+Ogni \textbf{prenotazione} si riferisce a un solo \textbf{volo}.}
+\end{frame}
+
+
+
+%==============================================================================
+\begin{frame}{Relazione Aeroporto}
+
+\texttt{Aeroporto(\underline{IDAeroporto}, Nome, Città, Nazione)}
+
+\begin{center}
+\small
+\begin{tabular}{|c|c|c|c|}
+\hline
+\rowcolor{blue!15}
+IDAeroporto & Nome & Città & Nazione \\
+\hline
+1 & Fiumicino & Roma & Italia \\
+2 & Malpensa & Milano & Italia \\
+3 & Heathrow & Londra & Regno Unito \\
+\hline
+\end{tabular}
+\end{center}
+
+
+\texttt{Pilota(\underline{IDPilota}, Nome, Cognome, Licenza)}
+
+\begin{center}
+\small
+\begin{tabular}{|c|c|c|c|}
+\hline
+\rowcolor{green!20}
+IDPilota & Nome & Cognome & Licenza \\
+\hline
+10 & Marco & Rossi & ATPL \\
+11 & Anna & Bianchi & CPL \\
+12 & Luca & Verdi & ATPL \\
+\hline
+\end{tabular}
+\end{center}
+
+
+\texttt{Aereo(\underline{IDAereo}, Modello, Posti)}
+
+\begin{center}
+\small
+\begin{tabular}{|c|c|c|}
+\hline
+\rowcolor{violet!20}
+IDAereo & Modello & Posti \\
+\hline
+100 & Airbus A320 & 180 \\
+101 & Boeing 737 & 160 \\
+\hline
+\end{tabular}
+\end{center}
+
+\end{frame}
+
+
+%==============================================================================
+\begin{frame}{Relazione Volo}
+
+\texttt{Volo(IDVolo, IDPartenza, IDArrivo, IDPilota, IDAereo, Data)}
+
+\begin{center}
+\small
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+IDVolo &
+\cellcolor{blue!15}Partenza &
+\cellcolor{blue!15}Arrivo &
+\cellcolor{green!20}IDPilota &
+\cellcolor{violet!20}IDAereo &
+Data \\
+\hline
+500 & \cellcolor{blue!15}1 & \cellcolor{blue!15}2 & \cellcolor{green!20}10 & \cellcolor{violet!20}100 & 2025-06-10 \\
+501 & \cellcolor{blue!15}2 & \cellcolor{blue!15}3 & \cellcolor{green!20}12 & \cellcolor{violet!20}101 & 2025-06-11 \\
+\hline
+\end{tabular}
+\end{center}
+
+\medskip
+\begin{itemize}
+    \item \textcolor{blue}{Aeroporti di partenza e arrivo}
+    \item \textcolor{green!60!black}{Pilota assegnato}
+    \item \textcolor{violet}{Aereo utilizzato}
+\end{itemize}
+\end{frame}
+
+
+
+
+%==============================================================================
+\begin{frame}{Relazione Prenotazione}
+
+\textbf{Schema:} \texttt{Prenotazione(IDPrenotazione, NomePasseggero, IDVolo, Posto)}
+
+\begin{center}
+\small
+\begin{tabular}{|c|c|c|c|}
+\hline
+IDPrenotazione & NomePasseggero & \cellcolor{red!20}IDVolo & Posto \\
+\hline
+9001 & Paolo Neri & \cellcolor{red!20}500 & 12A \\
+9002 & Giulia Costa & \cellcolor{red!20}500 & 12B \\
+9003 & Marco Blu & \cellcolor{red!20}999 & 14C \\
+\hline
+\end{tabular}
+\end{center}
+
+\medskip
+\alert{Il volo 999 non esiste: violazione di chiave esterna}
 \end{frame}
 
 \end{document}
