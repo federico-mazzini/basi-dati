@@ -875,6 +875,365 @@ Di seguito vediamo ciascuna categoria con spiegazioni semplici ed esempi pratici
 
 
 
+
+
+
+
+%==============================================================================
+\newpage
+\section{SQL DDL (Data Definition Language)}
+%==============================================================================
+
+\textbf{DDL} (Data Definition Language) è la parte di SQL che serve per \textbf{definire e modificare la struttura del database}, come creare, eliminare o modificare tabelle e altri oggetti.  
+I principali comandi DDL sono:
+
+\begin{itemize}
+    \item \code{CREATE} -- creare tabelle o altri oggetti;
+    \item \code{DROP} -- eliminare tabelle o altri oggetti;
+    \item \code{ALTER} -- modificare la struttura di una tabella esistente.
+\end{itemize}
+
+%==============================================================================
+\subsection{Creare tabelle e altri oggetti con CREATE}
+%==============================================================================
+
+Il comando \code{CREATE} serve per creare nuovi oggetti nel database, come tabelle, viste o indici. 
+
+\textbf{Sintassi generale per una tabella:}
+\begin{verbatim}
+CREATE TABLE nome_tabella (
+    col1 tipo_dato [constraint],
+    col2 tipo_dato [constraint],
+    ...
+);
+\end{verbatim}
+
+\textbf{Esempio:}
+
+\begin{verbatim}
+CREATE TABLE Studente (
+    Matricola INT PRIMARY KEY,
+    Nome VARCHAR(50),
+    Cognome VARCHAR(50),
+    DataNascita DATE
+);
+\end{verbatim}
+
+\textit{Descrizione:}  
+\begin{itemize}
+    \item \code{Matricola} è chiave primaria;
+    \item \code{Nome} e \code{Cognome} sono stringhe fino a 50 caratteri;
+    \item \code{DataNascita} è un campo di tipo data.
+\end{itemize}
+
+%==============================================================================
+\subsection{Eliminare tabelle o altri oggetti con DROP}
+%==============================================================================
+
+Il comando \code{DROP} serve per eliminare completamente un oggetto del database, come una tabella. Tutti i dati e la struttura vengono cancellati. 
+
+\textbf{Sintassi:}
+\begin{verbatim}
+DROP TABLE nome_tabella;
+\end{verbatim}
+
+\textbf{Esempio:}
+
+\begin{verbatim}
+DROP TABLE Studente;
+\end{verbatim}
+
+\textit{Attenzione:} questo comando è \textbf{irreversibile}.
+
+%==============================================================================
+\subsection{Modificare la struttura di una tabella tramite ALTER}
+%==============================================================================
+
+Il comando \code{ALTER} permette di modificare la struttura di una tabella già esistente, aggiungendo, modificando o eliminando colonne. 
+
+\textbf{Sintassi generale:}
+\begin{verbatim}
+ALTER TABLE nome_tabella
+ADD colonna tipo_dato;
+
+ALTER TABLE nome_tabella
+MODIFY colonna nuovo_tipo;
+
+ALTER TABLE nome_tabella
+DROP COLUMN colonna;
+\end{verbatim}
+
+\textbf{Esempi:}
+
+\begin{verbatim}
+-- Aggiungere una colonna
+ALTER TABLE Studente
+ADD Email VARCHAR(100);
+
+-- Modificare il tipo di una colonna
+ALTER TABLE Studente
+MODIFY Cognome VARCHAR(100);
+
+-- Eliminare una colonna
+ALTER TABLE Studente
+DROP COLUMN Email;
+\end{verbatim}
+
+%==============================================================================
+\subsection{Vincoli di integrità tramite CONSTRAINTS}
+%==============================================================================
+
+I \textbf{constraints} sono regole applicate alle colonne delle tabelle per garantire l'\textbf{integrità dei dati}.  
+Possono essere definite durante la creazione della tabella (\code{CREATE TABLE}) o modificate successivamente con \code{ALTER TABLE}. 
+
+I principali tipi di vincoli sono:
+
+\begin{itemize}
+    \item \code{PRIMARY KEY} -- identifica univocamente ogni record nella tabella;
+    \item \code{FOREIGN KEY} -- assicura la referenzialità tra tabelle;
+    \item \code{UNIQUE} -- garantisce che tutti i valori di una colonna siano unici;
+    \item \code{NOT NULL} -- impedisce valori nulli in una colonna;
+    \item \code{CHECK} -- definisce una condizione che i valori della colonna devono rispettare.
+\end{itemize}
+
+%==============================================================================
+\subsubsection{PRIMARY KEY}
+%==============================================================================
+
+Il vincolo \code{PRIMARY KEY} serve a identificare in modo univoco ogni record nella tabella. 
+
+\textbf{Esempio:}
+
+\begin{verbatim}
+CREATE TABLE Studente (
+    Matricola INT PRIMARY KEY,
+    Nome VARCHAR(50),
+    Cognome VARCHAR(50)
+);
+\end{verbatim}
+
+\textit{Nota:} una tabella può avere solo una \code{PRIMARY KEY}, che può essere composta da una o più colonne (chiave primaria composta).
+
+%==============================================================================
+\subsubsection{FOREIGN KEY}
+%==============================================================================
+
+Il vincolo \code{FOREIGN KEY} serve a garantire la \textbf{referenzialità} tra due tabelle. 
+
+\textbf{Esempio:}
+
+\begin{verbatim}
+CREATE TABLE Corso (
+    CodiceMateria INT PRIMARY KEY,
+    NomeMateria VARCHAR(100)
+);
+
+CREATE TABLE StudenteCorso (
+    Matricola INT,
+    CodiceMateria INT,
+    FOREIGN KEY (Matricola) REFERENCES Studente(Matricola),
+    FOREIGN KEY (CodiceMateria) REFERENCES Corso(CodiceMateria)
+);
+\end{verbatim}
+
+\textit{Descrizione:}  
+\begin{itemize}
+    \item Ogni \code{Matricola} in \code{StudenteCorso} deve esistere nella tabella \code{Studente};
+    \item Ogni \code{CodiceMateria} in \code{StudenteCorso} deve esistere nella tabella \code{Corso}.
+\end{itemize}
+
+%==============================================================================
+\subsubsection{Altri vincoli comuni}
+%==============================================================================
+
+\begin{itemize}
+    \item \code{UNIQUE}: garantisce valori unici in una colonna.
+    \begin{verbatim}
+    CREATE TABLE Studente (
+        Email VARCHAR(100) UNIQUE
+    );
+    \end{verbatim}
+
+    \item \code{NOT NULL}: obbliga ad inserire un valore nella colonna.
+    \begin{verbatim}
+    CREATE TABLE Studente (
+        Nome VARCHAR(50) NOT NULL
+    );
+    \end{verbatim}
+
+    \item \code{CHECK}: definisce una condizione sui valori della colonna.
+    \begin{verbatim}
+    CREATE TABLE Studente (
+        Età INT CHECK (Età >= 18)
+    );
+    \end{verbatim}
+\end{itemize}
+%==============================================================================
+
+
+
+
+\newpage
+%==============================================================================
+\section{DML -- Data Manipulation Language}
+%==============================================================================
+
+\textbf{DML} (Data Manipulation Language) è la parte di SQL che serve per \textbf{manipolare i dati} presenti nelle tabelle: inserire, aggiornare o cancellare record.  
+I principali comandi DML sono:
+
+\begin{itemize}
+    \item \code{INSERT INTO} -- inserire nuovi record;
+    \item \code{UPDATE} -- modificare record esistenti;
+    \item \code{DELETE} -- eliminare record.
+\end{itemize}
+
+%==============================================================================
+\subsection{Inserire nuovi dati con INSERT INTO}
+%==============================================================================
+
+Il comando \code{INSERT INTO} aggiunge nuove righe in una tabella. È possibile specificare le colonne in cui inserire i valori, oppure inserirli in tutte le colonne se vengono forniti in ordine. 
+
+\textbf{Sintassi:}
+\begin{verbatim}
+INSERT INTO nome_tabella (col1, col2, ..., colN)
+VALUES (val1, val2, ..., valN);
+\end{verbatim}
+
+\textbf{Esempio:}
+
+\textit{Tabella \texttt{Libro} prima dell'inserimento:}
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+Codice & Titolo & Autore \\
+\hline
+L01 & Il nome della rosa & Umberto Eco \\
+L02 & Il fu Mattia Pascal & Luigi Pirandello \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{verbatim}
+INSERT INTO Libro (Codice, Titolo, Autore)
+VALUES ('L03', 'Se questo è un uomo', 'Primo Levi');
+\end{verbatim}
+
+\textit{Tabella dopo l'inserimento:}
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+Codice & Titolo & Autore \\
+\hline
+L01 & Il nome della rosa & Umberto Eco \\
+L02 & Il fu Mattia Pascal & Luigi Pirandello \\
+L03 & Se questo è un uomo & Primo Levi \\
+\hline
+\end{tabular}
+\end{center}
+
+%==============================================================================
+\subsection{Modificare dati esistenti tramite UPDATE}
+%==============================================================================
+
+Il comando \code{UPDATE} serve per aggiornare i valori di una o più colonne per le righe che soddisfano una condizione. È fondamentale usare \code{WHERE} per non modificare tutte le righe della tabella. 
+
+\textbf{Sintassi:}
+\begin{verbatim}
+UPDATE nome_tabella
+SET col1 = nuovo_valore1, col2 = nuovo_valore2, ...
+WHERE condizione;
+\end{verbatim}
+
+\textbf{Esempio:}
+
+\textit{Tabella \texttt{Libro} prima della modifica:}
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+Codice & Titolo & Autore \\
+\hline
+L01 & Il nome della rosa & Umberto Eco \\
+L02 & Il fu Mattia Pascal & Luigi Pirandello \\
+L03 & Se questo è un uomo & Primo Levi \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{verbatim}
+UPDATE Libro
+SET Autore = 'Eco, Umberto'
+WHERE Codice = 'L01';
+\end{verbatim}
+
+\textit{Tabella dopo la modifica:}
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+Codice & Titolo & Autore \\
+\hline
+L01 & Il nome della rosa & Eco, Umberto \\
+L02 & Il fu Mattia Pascal & Luigi Pirandello \\
+L03 & Se questo è un uomo & Primo Levi \\
+\hline
+\end{tabular}
+\end{center}
+
+%==============================================================================
+\subsection{Cancellare dati con DELETE}
+%==============================================================================
+
+Il comando \code{DELETE} rimuove le righe di una tabella che soddisfano una condizione. Senza \code{WHERE}, tutte le righe vengono eliminate. 
+
+\textbf{Sintassi:}
+\begin{verbatim}
+DELETE FROM nome_tabella
+WHERE condizione;
+\end{verbatim}
+
+\textbf{Esempio:}
+
+\textit{Tabella \texttt{Libro} prima della cancellazione:}
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+Codice & Titolo & Autore \\
+\hline
+L01 & Il nome della rosa & Eco, Umberto \\
+L02 & Il fu Mattia Pascal & Luigi Pirandello \\
+L03 & Se questo è un uomo & Primo Levi \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{verbatim}
+DELETE FROM Libro
+WHERE Codice = 'L02';
+\end{verbatim}
+
+\textit{Tabella dopo la cancellazione:}
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+Codice & Titolo & Autore \\
+\hline
+L01 & Il nome della rosa & Eco, Umberto \\
+L03 & Se questo è un uomo & Primo Levi \\
+\hline
+\end{tabular}
+\end{center}
+
+\bigskip
+\textbf{Riepilogo DML:}
+\begin{itemize}
+    \item \code{INSERT INTO} aggiunge nuove righe;
+    \item \code{UPDATE} modifica dati esistenti;
+    \item \code{DELETE} rimuove righe dalla tabella.
+\end{itemize}
+%==============================================================================
+
+
+
+
 %==============================================================================
 \newpage
 \section{SQL DQL (Data Query Language)}
@@ -1368,383 +1727,6 @@ Sara & Neri & NULL & NULL \\
     \item \code{FULL OUTER JOIN}: restituisce tutte le righe di entrambe le tabelle, anche senza corrispondenza.
     \item Sempre specificare la \code{condizione di JOIN} con \code{ON} per evitare il prodotto cartesiano.
 \end{itemize}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-%==============================================================================
-\newpage
-%==============================================================================
-\section{DML -- Data Manipulation Language}
-%==============================================================================
-
-\textbf{DML} (Data Manipulation Language) è la parte di SQL che serve per \textbf{manipolare i dati} presenti nelle tabelle: inserire, aggiornare o cancellare record.  
-I principali comandi DML sono:
-
-\begin{itemize}
-    \item \code{INSERT INTO} -- inserire nuovi record;
-    \item \code{UPDATE} -- modificare record esistenti;
-    \item \code{DELETE} -- eliminare record.
-\end{itemize}
-
-%==============================================================================
-\subsection{Inserire nuovi dati con INSERT INTO}
-%==============================================================================
-
-Il comando \code{INSERT INTO} aggiunge nuove righe in una tabella. È possibile specificare le colonne in cui inserire i valori, oppure inserirli in tutte le colonne se vengono forniti in ordine. 
-
-\textbf{Sintassi:}
-\begin{verbatim}
-INSERT INTO nome_tabella (col1, col2, ..., colN)
-VALUES (val1, val2, ..., valN);
-\end{verbatim}
-
-\textbf{Esempio:}
-
-\textit{Tabella \texttt{Libro} prima dell'inserimento:}
-\begin{center}
-\begin{tabular}{|c|c|c|}
-\hline
-Codice & Titolo & Autore \\
-\hline
-L01 & Il nome della rosa & Umberto Eco \\
-L02 & Il fu Mattia Pascal & Luigi Pirandello \\
-\hline
-\end{tabular}
-\end{center}
-
-\begin{verbatim}
-INSERT INTO Libro (Codice, Titolo, Autore)
-VALUES ('L03', 'Se questo è un uomo', 'Primo Levi');
-\end{verbatim}
-
-\textit{Tabella dopo l'inserimento:}
-\begin{center}
-\begin{tabular}{|c|c|c|}
-\hline
-Codice & Titolo & Autore \\
-\hline
-L01 & Il nome della rosa & Umberto Eco \\
-L02 & Il fu Mattia Pascal & Luigi Pirandello \\
-L03 & Se questo è un uomo & Primo Levi \\
-\hline
-\end{tabular}
-\end{center}
-
-%==============================================================================
-\subsection{Modificare dati esistenti tramite UPDATE}
-%==============================================================================
-
-Il comando \code{UPDATE} serve per aggiornare i valori di una o più colonne per le righe che soddisfano una condizione. È fondamentale usare \code{WHERE} per non modificare tutte le righe della tabella. 
-
-\textbf{Sintassi:}
-\begin{verbatim}
-UPDATE nome_tabella
-SET col1 = nuovo_valore1, col2 = nuovo_valore2, ...
-WHERE condizione;
-\end{verbatim}
-
-\textbf{Esempio:}
-
-\textit{Tabella \texttt{Libro} prima della modifica:}
-\begin{center}
-\begin{tabular}{|c|c|c|}
-\hline
-Codice & Titolo & Autore \\
-\hline
-L01 & Il nome della rosa & Umberto Eco \\
-L02 & Il fu Mattia Pascal & Luigi Pirandello \\
-L03 & Se questo è un uomo & Primo Levi \\
-\hline
-\end{tabular}
-\end{center}
-
-\begin{verbatim}
-UPDATE Libro
-SET Autore = 'Eco, Umberto'
-WHERE Codice = 'L01';
-\end{verbatim}
-
-\textit{Tabella dopo la modifica:}
-\begin{center}
-\begin{tabular}{|c|c|c|}
-\hline
-Codice & Titolo & Autore \\
-\hline
-L01 & Il nome della rosa & Eco, Umberto \\
-L02 & Il fu Mattia Pascal & Luigi Pirandello \\
-L03 & Se questo è un uomo & Primo Levi \\
-\hline
-\end{tabular}
-\end{center}
-
-%==============================================================================
-\subsection{Cancellare dati con DELETE}
-%==============================================================================
-
-Il comando \code{DELETE} rimuove le righe di una tabella che soddisfano una condizione. Senza \code{WHERE}, tutte le righe vengono eliminate. 
-
-\textbf{Sintassi:}
-\begin{verbatim}
-DELETE FROM nome_tabella
-WHERE condizione;
-\end{verbatim}
-
-\textbf{Esempio:}
-
-\textit{Tabella \texttt{Libro} prima della cancellazione:}
-\begin{center}
-\begin{tabular}{|c|c|c|}
-\hline
-Codice & Titolo & Autore \\
-\hline
-L01 & Il nome della rosa & Eco, Umberto \\
-L02 & Il fu Mattia Pascal & Luigi Pirandello \\
-L03 & Se questo è un uomo & Primo Levi \\
-\hline
-\end{tabular}
-\end{center}
-
-\begin{verbatim}
-DELETE FROM Libro
-WHERE Codice = 'L02';
-\end{verbatim}
-
-\textit{Tabella dopo la cancellazione:}
-\begin{center}
-\begin{tabular}{|c|c|c|}
-\hline
-Codice & Titolo & Autore \\
-\hline
-L01 & Il nome della rosa & Eco, Umberto \\
-L03 & Se questo è un uomo & Primo Levi \\
-\hline
-\end{tabular}
-\end{center}
-
-\bigskip
-\textbf{Riepilogo DML:}
-\begin{itemize}
-    \item \code{INSERT INTO} aggiunge nuove righe;
-    \item \code{UPDATE} modifica dati esistenti;
-    \item \code{DELETE} rimuove righe dalla tabella.
-\end{itemize}
-
-
-
-%==============================================================================
-\newpage
-\section{SQL DDL (Data Definition Language)}
-%==============================================================================
-
-\textbf{DDL} (Data Definition Language) è la parte di SQL che serve per \textbf{definire e modificare la struttura del database}, come creare, eliminare o modificare tabelle e altri oggetti.  
-I principali comandi DDL sono:
-
-\begin{itemize}
-    \item \code{CREATE} -- creare tabelle o altri oggetti;
-    \item \code{DROP} -- eliminare tabelle o altri oggetti;
-    \item \code{ALTER} -- modificare la struttura di una tabella esistente.
-\end{itemize}
-
-%==============================================================================
-\subsection{Creare tabelle e altri oggetti con CREATE}
-%==============================================================================
-
-Il comando \code{CREATE} serve per creare nuovi oggetti nel database, come tabelle, viste o indici. 
-
-\textbf{Sintassi generale per una tabella:}
-\begin{verbatim}
-CREATE TABLE nome_tabella (
-    col1 tipo_dato [constraint],
-    col2 tipo_dato [constraint],
-    ...
-);
-\end{verbatim}
-
-\textbf{Esempio:}
-
-\begin{verbatim}
-CREATE TABLE Studente (
-    Matricola INT PRIMARY KEY,
-    Nome VARCHAR(50),
-    Cognome VARCHAR(50),
-    DataNascita DATE
-);
-\end{verbatim}
-
-\textit{Descrizione:}  
-\begin{itemize}
-    \item \code{Matricola} è chiave primaria;
-    \item \code{Nome} e \code{Cognome} sono stringhe fino a 50 caratteri;
-    \item \code{DataNascita} è un campo di tipo data.
-\end{itemize}
-
-%==============================================================================
-\subsection{Eliminare tabelle o altri oggetti con DROP}
-%==============================================================================
-
-Il comando \code{DROP} serve per eliminare completamente un oggetto del database, come una tabella. Tutti i dati e la struttura vengono cancellati. 
-
-\textbf{Sintassi:}
-\begin{verbatim}
-DROP TABLE nome_tabella;
-\end{verbatim}
-
-\textbf{Esempio:}
-
-\begin{verbatim}
-DROP TABLE Studente;
-\end{verbatim}
-
-\textit{Attenzione:} questo comando è \textbf{irreversibile}.
-
-%==============================================================================
-\subsection{Modificare la struttura di una tabella tramite ALTER}
-%==============================================================================
-
-Il comando \code{ALTER} permette di modificare la struttura di una tabella già esistente, aggiungendo, modificando o eliminando colonne. 
-
-\textbf{Sintassi generale:}
-\begin{verbatim}
-ALTER TABLE nome_tabella
-ADD colonna tipo_dato;
-
-ALTER TABLE nome_tabella
-MODIFY colonna nuovo_tipo;
-
-ALTER TABLE nome_tabella
-DROP COLUMN colonna;
-\end{verbatim}
-
-\textbf{Esempi:}
-
-\begin{verbatim}
--- Aggiungere una colonna
-ALTER TABLE Studente
-ADD Email VARCHAR(100);
-
--- Modificare il tipo di una colonna
-ALTER TABLE Studente
-MODIFY Cognome VARCHAR(100);
-
--- Eliminare una colonna
-ALTER TABLE Studente
-DROP COLUMN Email;
-\end{verbatim}
-
-%==============================================================================
-\subsection{Vincoli di integrità tramite CONSTRAINTS}
-%==============================================================================
-
-I \textbf{constraints} sono regole applicate alle colonne delle tabelle per garantire l'\textbf{integrità dei dati}.  
-Possono essere definite durante la creazione della tabella (\code{CREATE TABLE}) o modificate successivamente con \code{ALTER TABLE}. 
-
-I principali tipi di vincoli sono:
-
-\begin{itemize}
-    \item \code{PRIMARY KEY} -- identifica univocamente ogni record nella tabella;
-    \item \code{FOREIGN KEY} -- assicura la referenzialità tra tabelle;
-    \item \code{UNIQUE} -- garantisce che tutti i valori di una colonna siano unici;
-    \item \code{NOT NULL} -- impedisce valori nulli in una colonna;
-    \item \code{CHECK} -- definisce una condizione che i valori della colonna devono rispettare.
-\end{itemize}
-
-%==============================================================================
-\subsubsection{PRIMARY KEY}
-%==============================================================================
-
-Il vincolo \code{PRIMARY KEY} serve a identificare in modo univoco ogni record nella tabella. 
-
-\textbf{Esempio:}
-
-\begin{verbatim}
-CREATE TABLE Studente (
-    Matricola INT PRIMARY KEY,
-    Nome VARCHAR(50),
-    Cognome VARCHAR(50)
-);
-\end{verbatim}
-
-\textit{Nota:} una tabella può avere solo una \code{PRIMARY KEY}, che può essere composta da una o più colonne (chiave primaria composta).
-
-%==============================================================================
-\subsubsection{FOREIGN KEY}
-%==============================================================================
-
-Il vincolo \code{FOREIGN KEY} serve a garantire la \textbf{referenzialità} tra due tabelle. 
-
-\textbf{Esempio:}
-
-\begin{verbatim}
-CREATE TABLE Corso (
-    CodiceMateria INT PRIMARY KEY,
-    NomeMateria VARCHAR(100)
-);
-
-CREATE TABLE StudenteCorso (
-    Matricola INT,
-    CodiceMateria INT,
-    FOREIGN KEY (Matricola) REFERENCES Studente(Matricola),
-    FOREIGN KEY (CodiceMateria) REFERENCES Corso(CodiceMateria)
-);
-\end{verbatim}
-
-\textit{Descrizione:}  
-\begin{itemize}
-    \item Ogni \code{Matricola} in \code{StudenteCorso} deve esistere nella tabella \code{Studente};
-    \item Ogni \code{CodiceMateria} in \code{StudenteCorso} deve esistere nella tabella \code{Corso}.
-\end{itemize}
-
-%==============================================================================
-\subsubsection{Altri vincoli comuni}
-%==============================================================================
-
-\begin{itemize}
-    \item \code{UNIQUE}: garantisce valori unici in una colonna.
-    \begin{verbatim}
-    CREATE TABLE Studente (
-        Email VARCHAR(100) UNIQUE
-    );
-    \end{verbatim}
-
-    \item \code{NOT NULL}: obbliga ad inserire un valore nella colonna.
-    \begin{verbatim}
-    CREATE TABLE Studente (
-        Nome VARCHAR(50) NOT NULL
-    );
-    \end{verbatim}
-
-    \item \code{CHECK}: definisce una condizione sui valori della colonna.
-    \begin{verbatim}
-    CREATE TABLE Studente (
-        Età INT CHECK (Età >= 18)
-    );
-    \end{verbatim}
-\end{itemize}
-
-
-
-
-
-
-
-
 
 
 

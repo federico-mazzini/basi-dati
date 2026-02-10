@@ -1,0 +1,372 @@
+\documentclass{beamer}
+
+\usetheme{Madrid}
+\usecolortheme{default}
+
+\usepackage[italian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{xcolor} 
+\usepackage{colortbl}
+\usepackage{verbatim}
+
+\title{Basi di Dati}
+\subtitle{SQL DDL -- Definizione delle strutture}
+\author{Prof. Federico Mazzini, Prof.ssa Francesca Larotonda}
+\institute{I.I.S. Francesco Alberghetti}
+\date{A.S. 2025 -- 2026}
+
+\begin{document}
+
+%==============================================================================
+\begin{frame}
+\titlepage
+\end{frame}
+
+%==============================================================================
+\section{SQL DDL (Data Definition Language)}
+%==============================================================================
+
+\begin{frame}{Dal modello al database}
+Fino ad ora abbiamo:
+\begin{itemize}
+    \item analizzato il mondo reale;
+    \item costruito uno schema concettuale;
+    \item definito uno schema relazionale;
+    \item individuato chiavi e vincoli.
+\end{itemize}
+
+\medskip
+\alert{Ora dobbiamo comunicare tutto questo al DBMS.}
+\end{frame}
+
+%==============================================================================
+\begin{frame}{Come comunichiamo con il DBMS}
+Il DBMS:
+\begin{itemize}
+    \item non interpreta diagrammi;
+    \item non capisce schemi su carta;
+    \item non intuisce i vincoli logici.
+\end{itemize}
+
+\medskip
+\alert{Il DBMS capisce solo istruzioni formali.}
+
+\medskip
+Serve un linguaggio standard.
+\end{frame}
+
+%==============================================================================
+\begin{frame}{SQL}
+\begin{block}{Definizione}
+SQL (Structured Query Language) è il linguaggio standard per comunicare con i database relazionali.
+\end{block}
+
+\begin{itemize}
+    \item è un linguaggio \textbf{dichiarativo};
+    \item descrive \textbf{cosa} vogliamo, non \textbf{come};
+    \item è utilizzato da tutti i principali DBMS.
+\end{itemize}
+\end{frame}
+
+%==============================================================================
+\begin{frame}{Le categorie di SQL}
+SQL è suddiviso in più sotto-linguaggi:
+\begin{itemize}
+    \item \textbf{DDL} -- Data Definition Language;
+    \item DML -- Data Manipulation Language;
+    \item DQL -- Data Query Language;
+    \item DCL -- Data Control Language.
+\end{itemize}
+
+\medskip
+In questo modulo ci concentriamo sul:
+\begin{center}
+\alert{\textbf{DDL}}
+\end{center}
+\end{frame}
+
+%==============================================================================
+\begin{frame}{DDL}
+\begin{block}{Definizione}
+Il DDL è la parte di SQL che serve per \textbf{definire e modificare la struttura del database}.
+\end{block}
+
+Con il DDL possiamo:
+\begin{itemize}
+    \item creare tabelle e database;
+    \item modificare la struttura;
+    \item eliminare oggetti;
+    \item definire vincoli di integrità.
+\end{itemize}
+
+\medskip
+\alert{Il DDL traduce il modello relazionale in istruzioni per il DBMS.}
+\end{frame}
+
+%==============================================================================
+\begin{frame}{DDL e DBMS}
+SQL è uno standard, ma ogni DBMS ha delle varianti.
+
+\medskip
+In questo corso utilizziamo:
+\begin{center}
+\textbf{MariaDB}
+\end{center}
+
+\begin{itemize}
+    \item DBMS compatibile MySQL;
+    \item usato tramite phpMyAdmin;
+    \item con sintassi e tipi di dato specifici.
+\end{itemize}
+
+\alert{Gli esempi mostrati sono validi per MariaDB.}
+\end{frame}
+
+%==============================================================================
+\subsection{CREATE}
+%==============================================================================
+
+\begin{frame}{CREATE}
+Il comando \textbf{CREATE} serve per creare nuovi oggetti nel database:
+\begin{itemize}
+    \item tabelle;
+    \item database;
+    \item viste;
+    \item indici.
+\end{itemize}
+\end{frame}
+
+%==============================================================================
+\begin{frame}{CREATE TABLE}
+\begin{block}{Sintassi generale}
+\small
+\texttt{
+CREATE TABLE nome\_tabella ( \\
+\hspace{0.5cm} colonna tipo\_dato [vincoli], \\
+\hspace{0.5cm} ... \\
+);
+}
+\end{block} 
+
+\medskip
+\alert{Il DBMS non intuisce nulla: tutto va dichiarato.}
+\end{frame}
+
+%==============================================================================
+\begin{frame}[fragile]{Esempio CREATE TABLE}
+\small
+\begin{verbatim}
+CREATE TABLE Studente (
+    Matricola INT PRIMARY KEY,
+    Nome VARCHAR(50),
+    Cognome VARCHAR(50),
+    DataNascita DATE
+);
+\end{verbatim}
+
+\medskip
+\begin{itemize}
+    \item \texttt{Matricola} è chiave primaria;
+    \item \texttt{Nome} e \texttt{Cognome} sono stringhe;
+    \item \texttt{DataNascita} è un campo data.
+\end{itemize}
+\end{frame}
+
+%==============================================================================
+\subsection{Tipi di dato in MariaDB}
+%==============================================================================
+
+\begin{frame}{Tipi di dato}
+Ogni colonna deve avere un tipo di dato che definisce:
+\begin{itemize}
+    \item i valori ammessi;
+    \item lo spazio occupato;
+    \item le operazioni possibili.
+\end{itemize}
+\end{frame}
+
+%==============================================================================
+\begin{frame}{Tipi numerici}
+\begin{itemize}
+    \item \texttt{INT} -- numeri interi;
+    \item \texttt{SMALLINT}, \texttt{BIGINT};
+    \item \texttt{DECIMAL(p,s)} -- numeri decimali precisi.
+\end{itemize}
+\end{frame}
+
+%==============================================================================
+\begin{frame}{Tipi testuali}
+\begin{itemize}
+    \item \texttt{CHAR(n)} -- lunghezza fissa;
+    \item \texttt{VARCHAR(n)} -- lunghezza variabile;
+    \item \texttt{TEXT} -- testi lunghi.
+\end{itemize}
+\end{frame}
+
+%==============================================================================
+\begin{frame}{Tipi temporali}
+\begin{itemize}
+    \item \texttt{DATE};
+    \item \texttt{TIME};
+    \item \texttt{DATETIME}.
+\end{itemize}
+\end{frame}
+
+%==============================================================================
+\begin{frame}{Scelta dei tipi}
+\begin{itemize}
+    \item CodiceFiscale $\rightarrow$ \texttt{CHAR(16)};
+    \item Nome, Cognome $\rightarrow$ \texttt{VARCHAR};
+    \item Prezzo $\rightarrow$ \texttt{DECIMAL}.
+\end{itemize}
+
+\medskip
+\alert{Il tipo di dato riflette il significato dell’informazione.}
+\end{frame}
+
+%==============================================================================
+\subsection{Vincoli}
+%==============================================================================
+
+\begin{frame}{Vincoli (Constraints)}
+I vincoli garantiscono l’integrità dei dati.
+
+\begin{itemize}
+    \item \texttt{PRIMARY KEY};
+    \item \texttt{FOREIGN KEY};
+    \item \texttt{UNIQUE};
+    \item \texttt{NOT NULL};
+    \item \texttt{CHECK}.
+\end{itemize}
+\end{frame}
+
+%==============================================================================
+\begin{frame}[fragile]{PRIMARY KEY}
+\small
+\begin{verbatim}
+CREATE TABLE Studente (
+    Matricola INT PRIMARY KEY,
+    Nome VARCHAR(50),
+    Cognome VARCHAR(50)
+);
+\end{verbatim}
+
+\medskip
+\begin{itemize}
+    \item identifica univocamente ogni riga;
+    \item non può essere NULL.
+\end{itemize}
+\end{frame}
+
+%==============================================================================
+\begin{frame}[fragile]{AUTO\_INCREMENT in MariaDB}
+\small
+\begin{verbatim}
+CREATE TABLE Studente (
+    Matricola INT AUTO_INCREMENT,
+    Nome VARCHAR(50) NOT NULL,
+    Cognome VARCHAR(50) NOT NULL,
+    PRIMARY KEY (Matricola)
+);
+\end{verbatim}
+
+\medskip
+\alert{Il DBMS genera automaticamente la chiave primaria.}
+\end{frame}
+
+%==============================================================================
+\begin{frame}[fragile]{FOREIGN KEY}
+\small
+\begin{verbatim}
+FOREIGN KEY (Matricola)
+REFERENCES Studente(Matricola)
+\end{verbatim}
+
+\medskip
+\begin{itemize}
+    \item garantisce la referenzialità;
+    \item impedisce riferimenti a dati inesistenti.
+\end{itemize}
+\end{frame}
+
+%==============================================================================
+\begin{frame}[fragile]{NOT NULL e UNIQUE}
+\small
+\begin{verbatim}
+Nome VARCHAR(50) NOT NULL,
+Email VARCHAR(100) UNIQUE
+\end{verbatim}
+
+\medskip 
+\begin{itemize}
+    \item \texttt{NOT NULL}: valore obbligatorio;
+    \item \texttt{UNIQUE}: valori non ripetuti.
+\end{itemize}
+\end{frame}
+
+%==============================================================================
+\begin{frame}[fragile]{CHECK in MariaDB}
+\small
+\begin{verbatim}
+CREATE TABLE Studente (
+    Eta INT CHECK (Eta >= 18)
+);
+\end{verbatim}
+
+\medskip
+\alert{Nelle versioni moderne di MariaDB il vincolo viene applicato.}
+\end{frame}
+
+%==============================================================================
+\subsection{DROP e ALTER}
+%==============================================================================
+
+\begin{frame}[fragile]{DROP}
+\small
+\begin{verbatim}
+DROP TABLE Studente;
+\end{verbatim}
+
+\medskip
+\alert{Comando irreversibile: struttura e dati vengono eliminati.}
+\end{frame}
+
+%==============================================================================
+\begin{frame}[fragile]{ALTER TABLE}
+\small
+\begin{verbatim}
+ALTER TABLE Studente ADD Email VARCHAR(100);
+ALTER TABLE Studente MODIFY Cognome VARCHAR(100);
+ALTER TABLE Studente DROP COLUMN Email;
+\end{verbatim}
+\end{frame}
+
+%==============================================================================
+\begin{frame}[fragile]{ALTER TABLE e dati esistenti}
+\begin{itemize}
+    \item la tabella può contenere dati;
+    \item i vincoli vengono controllati;
+    \item alcune modifiche possono fallire.
+\end{itemize}
+
+\alert{DDL lavora sulla struttura, ma può impattare sui dati.}
+\end{frame}
+
+%==============================================================================
+\section{Conclusione}
+%==============================================================================
+
+\begin{frame}{DDL e modello relazionale}
+\begin{itemize}
+    \item Entità $\rightarrow$ Tabelle;
+    \item Attributi $\rightarrow$ Colonne;
+    \item Chiavi $\rightarrow$ Vincoli;
+    \item Relazioni $\rightarrow$ Foreign key.
+\end{itemize}
+
+\medskip
+\alert{DDL è il ponte tra teoria e database reale.}
+\end{frame}
+
+\end{document}
