@@ -721,73 +721,74 @@ Una di queste viene scelta come chiave primaria.
 
 \subsubsection{Chiavi esterne (Foreign Key)}
 
-Una chiave esterna è un tipo di vincolo referenziale che garantisce che i valori inseriti all'interno di una relazione corrispondano ai valori inseriti all'interno di un'atra relazione, mantenendo così l'integrità referenziale del database.
+Una chiave esterna è un vincolo che garantisce che i valori inseriti in una relazione corrispondano a valori presenti in un’altra relazione, mantenendo così l’integrità referenziale del database.
 
 \paragraph{Passo 1 -- Relazioni separate}\mbox{}\\
- Nel modello relazionale, una base di dati è in genere composta da \textbf{più relazioni} collegate tra loro.  
+Nel modello relazionale, una base di dati è composta da \textbf{più relazioni} collegate tra loro.  
 
 \vspace{0.5cm}
-\textbf{Studente}
+\textbf{Utente}
 \begin{center}
 \begin{tabular}{|c|c|c|}
 \hline
-\textbf{Matricola} & \textbf{Nome} & \textbf{Cognome} \\
+\textbf{IDUtente} & \textbf{Nome} & \textbf{Cognome} \\
 \hline
-101 & Marco & Rossi \\
-102 & Anna & Bianchi \\
-103 & Luca & Verdi \\
+1 & Marco & Rossi \\
+2 & Anna & Bianchi \\
+3 & Luca & Verdi \\
 \hline
 \end{tabular}
 \end{center}
 
-\textbf{Materia}
+\textbf{Prodotto}
 \begin{center}
-\begin{tabular}{|c|c|}
+\begin{tabular}{|c|c|c|}
 \hline
-\textbf{CodiceMateria} & \textbf{NomeMateria} \\
+\textbf{IDProdotto} & \textbf{NomeProdotto} & \textbf{Prezzo} \\
 \hline
-MAT01 & Matematica \\
-INF02 & Informatica \\
-FIS03 & Fisica \\
+101 & Smartphone & 599.00 \\
+102 & Laptop & 1200.00 \\
+103 & Tablet & 399.00 \\
 \hline
 \end{tabular}
 \end{center}
-In entrambe le relazioni, \texttt{Matricola} e \texttt{CodiceMateria} sono chiavi primarie.
+
+In entrambe le relazioni, \texttt{IDUtente} e \texttt{IDProdotto} sono chiavi primarie.
 
 \paragraph{Passo 2 -- Relazione che collega le altre}\mbox{}\\
-Introduciamo ora una terza relazione che collega studenti e materie:
+Introduciamo ora una terza relazione che registra gli acquisti degli utenti:
 
 \vspace{0.5cm}
-\textbf{Voto}
+\textbf{Acquisto}
 \begin{center}
 \begin{tabular}{|c|c|c|}
 \hline
-\textbf{Matricola} & \textbf{CodiceMateria} & \textbf{Voto} \\
+\textbf{IDUtente} & \textbf{IDProdotto} & \textbf{Quantità} \\
 \hline
-101 & MAT01 & 8 \\
-102 & INF02 & 7 \\
-103 & FIS03 & 9 \\
-101 & INF02 & 9 \\
+1 & 101 & 1 \\
+2 & 102 & 2 \\
+3 & 103 & 1 \\
+1 & 102 & 1 \\
 \hline
 \end{tabular}
 \end{center}
 
-
 \paragraph{Passo 3 -- Identificazione delle chiavi esterne}\mbox{}\\
-Nella relazione \texttt{Voto}:
+Nella relazione \texttt{Acquisto}:
 \begin{itemize}
-    \item \texttt{Matricola} è una \textbf{chiave esterna} che fa riferimento alla chiave primaria \texttt{Matricola} della relazione \texttt{Studente};
-    \item \texttt{CodiceMateria} è una \textbf{chiave esterna} che fa riferimento alla chiave primaria \texttt{CodiceMateria} della relazione \texttt{Materia}.
+    \item \texttt{IDUtente} è una \textbf{chiave esterna} che fa riferimento alla chiave primaria \texttt{IDUtente} della relazione \texttt{Utente};
+    \item \texttt{IDProdotto} è una \textbf{chiave esterna} che fa riferimento alla chiave primaria \texttt{IDProdotto} della relazione \texttt{Prodotto}.
 \end{itemize}
 
 \bigskip
 \paragraph{Perché servono le chiavi esterne}\mbox{}\\
 Le chiavi esterne garantiscono l’\textbf{integrità referenziale}, cioè:
 \begin{itemize}
-    \item non è possibile inserire un voto per uno studente che non esiste;
-    \item non è possibile inserire un voto per una materia che non esiste.
+    \item non è possibile registrare un acquisto per un utente che non esiste;
+    \item non è possibile registrare un acquisto per un prodotto che non esiste.
 \end{itemize}
-Ogni valore di chiave esterna deve quindi corrispondere a un valore esistente nella relazione di riferimento.
+Ogni valore di chiave esterna deve quindi corrispondere a un valore presente nella relazione di riferimento.
+
 
 
 
