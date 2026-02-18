@@ -151,42 +151,36 @@ Il comando \textbf{CREATE} serve per creare nuovi oggetti nel database:
 
 
 %==============================================================================
-\begin{frame}[fragile]{CREATE DATABASE - Sintassi Generale}
+\begin{frame}[fragile]{CREATE DATABASE}
 \begin{block}{Sintassi Base}
 \begin{verbatim}
 CREATE DATABASE nome_database;
 USE nome_database;
 \end{verbatim}
 \end{block}
-
-\begin{itemize}
-    \item `nome_database` è il nome che scegliamo per il database.
-    \item Dopo `USE`, tutte le operazioni successive riguardano questo database.
-    \item Questo è il primo passo per creare tabelle e inserire dati.
-\end{itemize}
 \end{frame}
 
 
 %==============================================================================
 \begin{frame}[fragile]{CREATE TABLE}
-Esempio concreto di tabella “Studenti”:
+Esempio concreto di tabella “studenti”:
 
 \begin{block}{Esempio}
 \begin{verbatim}
-CREATE TABLE Studente (
-    Matricola INT PRIMARY KEY,
-    Nome VARCHAR(50) NOT NULL,
-    Cognome VARCHAR(50) NOT NULL,
-    DataNascita DATE,
-    Classe VARCHAR(10)
+CREATE TABLE studente (
+    matricola INT PRIMARY KEY,
+    nome VARCHAR(50) NOT NULL,
+    cognome VARCHAR(50) NOT NULL,
+    data_nascita DATE,
+    classe VARCHAR(10)
 );
 \end{verbatim}
 \end{block}
 
 \begin{itemize}
-    \item Tabella: `Studente`
-    \item Attributi: nome, cognome, matricola, data di nascita, classe
-    \item Vincoli: `PRIMARY KEY`, `NOT NULL`
+    \item Tabella: \texttt{studente}
+    \item Attributi: nome, cognome, matricola, data\_nascita, classe
+    \item Vincoli: \texttt{PRIMARY KEY, NOT NULL}
 \end{itemize}
 \end{frame} 
 
@@ -194,18 +188,18 @@ CREATE TABLE Studente (
 \begin{frame}[fragile]{CREATE TABLE}
 \begin{block}{Sintassi generale}
 \begin{verbatim}
-CREATE TABLE NomeTabella (
-    Attributo1 TipoDato [Vincoli],
-    Attributo2 TipoDato [Vincoli],
+CREATE TABLE nome_tabella (
+    attributo1 tipo_dato [vincoli],
+    attributo2 tipo_dato [vincoli],
     ...
-    [VincoliTabella] 
+    [vincoli_tabella] 
 );
 \end{verbatim}
 \end{block}
 
 \begin{itemize}
-    \item \textbf{TipoDato}: INT, VARCHAR, DATE, DECIMAL, ecc.
-    \item \textbf{Vincoli}: PRIMARY KEY, FOREIGN KEY, UNIQUE, NOT NULL, CHECK, DEFAULT
+    \item \textbf{tipo\_dato}: INT, VARCHAR, DATE, DECIMAL, ecc.
+    \item \textbf{vincoli}: PRIMARY KEY, FOREIGN KEY, UNIQUE, NOT NULL, CHECK, DEFAULT
     \item Vincoli tabella: coinvolgono più colonne (es. chiave esterna)
 \end{itemize}
 \end{frame}
@@ -259,17 +253,17 @@ I vincoli garantiscono l’integrità dei dati e la coerenza tra le tabelle.
 \small
 \textbf{Dentro CREATE TABLE:}
 \begin{verbatim}
-CREATE TABLE Studente (
-    Matricola INT PRIMARY KEY,
-    Nome VARCHAR(50),
-    Cognome VARCHAR(50)
+CREATE TABLE studente (
+    matricola INT PRIMARY KEY,
+    nome VARCHAR(50),
+    cognome VARCHAR(50)
 );
 \end{verbatim}
 
 \textbf{Dopo la creazione con ALTER TABLE:}
 \begin{verbatim}
-ALTER TABLE Studente
-ADD PRIMARY KEY (Matricola);
+ALTER TABLE studente
+ADD PRIMARY KEY (matricola);
 \end{verbatim}
 
 \medskip
@@ -284,17 +278,17 @@ ADD PRIMARY KEY (Matricola);
 \small
 \textbf{Dentro CREATE TABLE:}
 \begin{verbatim}
-CREATE TABLE Iscrizione (
-    Matricola INT,
-    CorsoID INT,
-    FOREIGN KEY (Matricola) REFERENCES Studente(Matricola)
+CREATE TABLE iscrizione (
+    matricola INT,
+    corso_id INT,
+    FOREIGN KEY (matricola) REFERENCES studente(matricola)
 );
 \end{verbatim}
 
 \textbf{Dopo la creazione con ALTER TABLE:}
 \begin{verbatim}
-ALTER TABLE Iscrizione
-ADD FOREIGN KEY (Matricola) REFERENCES Studente(Matricola);
+ALTER TABLE iscrizione
+ADD FOREIGN KEY (matricola) REFERENCES studente(matricola);
 \end{verbatim}
 
 \medskip
@@ -309,19 +303,19 @@ ADD FOREIGN KEY (Matricola) REFERENCES Studente(Matricola);
 \small
 \textbf{Dentro CREATE TABLE:}
 \begin{verbatim}
-CREATE TABLE Studente (
-    Nome VARCHAR(50) NOT NULL,
-    Email VARCHAR(100) UNIQUE
+CREATE TABLE studente (
+    nome VARCHAR(50) NOT NULL,
+    email VARCHAR(100) UNIQUE
 );
 \end{verbatim}
 
 \textbf{Dopo la creazione con ALTER TABLE:}
 \begin{verbatim}
-ALTER TABLE Studente
-MODIFY Nome VARCHAR(50) NOT NULL;
+ALTER TABLE studente
+MODIFY nome VARCHAR(50) NOT NULL;
 
-ALTER TABLE Studente
-ADD UNIQUE (Email);
+ALTER TABLE studente
+ADD UNIQUE (email);
 \end{verbatim}
 
 \medskip 
@@ -336,15 +330,15 @@ ADD UNIQUE (Email);
 \small
 \textbf{Dentro CREATE TABLE:}
 \begin{verbatim}
-CREATE TABLE Studente (
-    Eta INT CHECK (Eta >= 18)
+CREATE TABLE studente (
+    eta INT CHECK (eta >= 18)
 );
 \end{verbatim}
 
 \textbf{Dopo la creazione con ALTER TABLE:}
 \begin{verbatim}
-ALTER TABLE Studente
-ADD CHECK (Eta >= 18);
+ALTER TABLE studente
+ADD CHECK (eta >= 18);
 \end{verbatim}
 
 \end{frame}
@@ -354,18 +348,18 @@ ADD CHECK (Eta >= 18);
 \small
 \textbf{Dentro CREATE TABLE:}
 \begin{verbatim}
-CREATE TABLE Studente (
-    Matricola INT AUTO_INCREMENT,
-    Nome VARCHAR(50) NOT NULL,
-    Cognome VARCHAR(50) NOT NULL,
-    PRIMARY KEY (Matricola)
+CREATE TABLE studente (
+    matricola INT AUTO_INCREMENT,
+    nome VARCHAR(50) NOT NULL,
+    cognome VARCHAR(50) NOT NULL,
+    PRIMARY KEY (matricola)
 );
 \end{verbatim}
 
 \textbf{Dopo la creazione con ALTER TABLE:}
 \begin{verbatim}
-ALTER TABLE Studente
-MODIFY Matricola INT AUTO_INCREMENT;
+ALTER TABLE studente
+MODIFY matricola INT AUTO_INCREMENT;
 \end{verbatim}
 
 \medskip
@@ -379,7 +373,7 @@ MODIFY Matricola INT AUTO_INCREMENT;
 \begin{frame}[fragile]{DROP}
 \small
 \begin{verbatim}
-DROP TABLE Studente;
+DROP TABLE studente;
 \end{verbatim}
 
 \medskip
@@ -388,11 +382,11 @@ DROP TABLE Studente;
 
 %==============================================================================
 \begin{frame}[fragile]{ALTER TABLE}
-\small
+\small 
 \begin{verbatim}
-ALTER TABLE Studente ADD Email VARCHAR(100);
-ALTER TABLE Studente MODIFY Cognome VARCHAR(100);
-ALTER TABLE Studente DROP COLUMN Email;
+ALTER TABLE studente ADD email VARCHAR(100);
+ALTER TABLE studente MODIFY cognome VARCHAR(100);
+ALTER TABLE studente DROP COLUMN email;
 \end{verbatim}
 \end{frame}
 
@@ -408,19 +402,159 @@ ALTER TABLE Studente DROP COLUMN Email;
 \end{frame}
 
 %==============================================================================
-\section{Conclusione}
+\section{Naming Convention}
 %==============================================================================
 
-\begin{frame}{DDL e modello relazionale}
+\begin{frame}{Naming Convention}
+Per "naming convention" si intende l'utilizzo di regole per assegnare nomi coerenti e significativi. Rende il database leggibile, manutenibile e comprensibile anche da altri sviluppatori o dal “noi del futuro”.
+
+\medskip
+Una buona naming convention convenzione aiuta a:
 \begin{itemize}
-    \item Entità $\rightarrow$ Tabelle;
-    \item Attributi $\rightarrow$ Colonne;
-    \item Chiavi $\rightarrow$ Vincoli;
-    \item Relazioni $\rightarrow$ Foreign key.
+    \item capire subito cosa rappresenta ogni tabella o colonna;
+    \item evitare ambiguità nei join e nelle query;
+    \item ridurre errori dovuti a nomi riservati dei DBMS (create, select, group).
+\end{itemize}
+
+\end{frame} 
+
+
+%==============================================================================
+\begin{frame}{Regola principale: snake\_case}
+In SQL moderno si usa quasi sempre lo stile \textbf{snake\_case} per tabelle e colonne:
+\begin{itemize}
+    \item tutti i nomi in \textbf{minuscolo};
+    \item usare l'underscore \_ per separare le parole;
+    \item evitare spazi e caratteri speciali.
 \end{itemize}
 
 \medskip
-\alert{DDL è il ponte tra teoria e database reale.}
+\textbf{Esempi:}
+\begin{itemize}
+    \item studenti, professori, voti
+    \item data\_nascita, cod\_materia
+    \item creato\_il, aggiornato\_il
+\end{itemize}
+
+\medskip
+Evitare: FirstName, creatoIl, STUDENTS, Order-Info.
+
+\end{frame}
+
+%==============================================================================
+
+\section{Esempio}
+%==============================================================================
+\begin{frame}{Esempio: Database Scuola}
+\textbf{Obiettivo}: creare un database per gestire le informazioni di una scuola superiore.
+
+\medskip
+\textbf{Modello logico relazionale}
+\begin{itemize}
+    \item \textbf{Studente}(\underline{Matricola}, Nome, Cognome, DataNascita)
+    \item \textbf{Professore}(\underline{CodFiscale}, Nome, Cognome)
+    \item \textbf{Materia}(\underline{CodMateria}, NomeMateria)
+    \item \textbf{Lezione}(\underline{idLezione}, CodMateria, CodFiscale, Giorno, Orario)
+    \item \textbf{Voto}(\underline{idVoto}, Matricola, CodMateria, Voto, DataVoto)
+\end{itemize}
+
+\medskip 
+\textbf{Vincoli di integrità referenziale:}
+\begin{itemize}
+    \item Lezione.CodMateria → Materia.CodMateria
+    \item Lezione.CodFiscale → Professore.CodFiscale
+    \item Voto.Matricola → Studente.Matricola
+    \item Voto.CodMateria → Materia.CodMateria
+\end{itemize}
+
+\end{frame}
+
+%==============================================================================
+\begin{frame}[fragile]{Creazione tabelle principali}
+\small
+\textbf{Tabella studente:}
+\begin{verbatim}
+CREATE TABLE studente (
+    matricola INT AUTO_INCREMENT,
+    nome VARCHAR(50) NOT NULL,
+    cognome VARCHAR(50) NOT NULL,
+    data_nascita DATE,
+    PRIMARY KEY (matricola)
+);
+\end{verbatim}
+
+\textbf{Tabella professore:}
+\begin{verbatim}
+CREATE TABLE professore (
+    cod_fiscale CHAR(16) PRIMARY KEY,
+    nome VARCHAR(50) NOT NULL,
+    cognome VARCHAR(50) NOT NULL
+);
+\end{verbatim}
+\end{frame}
+%==============================================================================
+\begin{frame}[fragile]{Creazione tabelle principali}
+\small
+\textbf{Tabella materia:}
+\begin{verbatim}
+CREATE TABLE materia (
+    cod_materia CHAR(5) PRIMARY KEY,
+    nome_materia VARCHAR(50) NOT NULL
+);
+\end{verbatim}
+\end{frame}
+
+%==============================================================================
+\begin{frame}[fragile]{Creazione tabelle relazionali}
+\small
+\textbf{Tabella lezione:}
+\begin{verbatim}
+CREATE TABLE lezione (
+    id_lezione INT AUTO_INCREMENT,
+    cod_materia CHAR(5),
+    cod_fiscale CHAR(16),
+    giorno DATE,
+    orario TIME,
+    PRIMARY KEY (id_lezione),
+    FOREIGN KEY (cod_materia) REFERENCES materia(cod_materia),
+    FOREIGN KEY (cod_fiscale) REFERENCES professore(cod_fiscale)
+);
+\end{verbatim}
+\end{frame}
+%==============================================================================
+\begin{frame}[fragile]{Creazione tabelle relazionali}
+\small
+
+\textbf{Tabella voto:}
+\begin{verbatim}
+CREATE TABLE voto (
+    id_voto INT AUTO_INCREMENT,
+    matricola INT,
+    cod_materia CHAR(5),
+    voto DECIMAL(4,2),
+    data_voto DATE,
+    PRIMARY KEY (id_voto),
+    FOREIGN KEY (matricola) REFERENCES studente(matricola),
+    FOREIGN KEY (cod_materia) REFERENCES materia(cod_materia)
+);
+\end{verbatim}
+\end{frame}
+
+%==============================================================================
+\begin{frame}[fragile]{Aggiungere vincoli dopo la creazione}
+\small
+\textbf{ALTER TABLE esempio: aggiungere foreign key}
+
+\begin{verbatim}
+ALTER TABLE lezione
+ADD FOREIGN KEY (cod_materia) REFERENCES materia(cod_materia);
+
+ALTER TABLE voto
+ADD FOREIGN KEY (matricola) REFERENCES studente(matricola);
+\end{verbatim}
+
+\medskip
+\alert{Si può aggiungere vincoli anche in un secondo momento, se non li si definisce subito nella CREATE TABLE.}
 \end{frame}
 
 \end{document}
