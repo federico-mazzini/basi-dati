@@ -27,33 +27,33 @@
 \section{SQL DDL (Data Definition Language)}
 %==============================================================================
 
-\begin{frame}{Dal modello al database}
-Fino ad ora abbiamo:
+\begin{frame}{Dal modello relazionale al database}
+Fino ad ora abbiamo costruito \textbf{uno schema relazionale}:
 \begin{itemize}
-    \item analizzato il mondo reale;
-    \item costruito uno schema concettuale;
-    \item definito uno schema relazionale;
-    \item individuato chiavi e vincoli.
+    \item definito le \textbf{relazioni} (tabelle) che rappresentano entità o concetti del mondo reale;
+    \item stabilito gli \textbf{attributi} di ciascuna relazione;
+    \item definito i \textbf{vincoli di integrità intra-relazionali} (es. dominio, non nullità) e \textbf{inter-relazionali} (foreign key).
+    \item individuato \textbf{chiavi primarie} e \textbf{chiavi esterne}
 \end{itemize}
 
 \medskip
-\alert{Ora dobbiamo comunicare tutto questo al DBMS.}
+\alert{Ora dobbiamo trasferire tutto questo in un database reale, usando un linguaggio che il DBMS possa comprendere.}
 \end{frame}
 
 %==============================================================================
-\begin{frame}{Come comunichiamo con il DBMS}
-Il DBMS:
+\begin{frame}{Comunicare con il DBMS}
+Il DBMS ha bisogno di \textbf{istruzioni formali e precise}.
+
+\medskip
+Per questo usiamo un linguaggio standard per la definizione dei dati: \textbf{SQL}.
+
+\medskip
+SQL permette di passare dalle relazioni definite su carta a:
 \begin{itemize}
-    \item non interpreta diagrammi;
-    \item non capisce schemi su carta;
-    \item non intuisce i vincoli logici.
+    \item creare le tabelle;
+    \item definire gli attributi e i tipi di dato;
+    \item specificare chiavi primarie e vincoli di integrità.
 \end{itemize}
-
-\medskip
-\alert{Il DBMS capisce solo istruzioni formali.}
-
-\medskip
-Serve un linguaggio standard.
 \end{frame}
 
 %==============================================================================
@@ -63,64 +63,76 @@ SQL (Structured Query Language) è il linguaggio standard per comunicare con i d
 \end{block}
 
 \begin{itemize}
-    \item è un linguaggio \textbf{dichiarativo};
-    \item descrive \textbf{cosa} vogliamo, non \textbf{come};
-    \item è utilizzato da tutti i principali DBMS.
+    \item È un linguaggio \textbf{dichiarativo}: descrive \textbf{cosa} vogliamo ottenere, non \textbf{come} calcolarlo.
+    \item Diverso dalla programmazione procedurale o a oggetti che abbiamo visto finora, dove scriviamo passo passo le istruzioni.
+    \item È utilizzato da tutti i principali DBMS.
 \end{itemize}
 \end{frame}
 
 %==============================================================================
-\begin{frame}{Le categorie di SQL}
-SQL è suddiviso in più sotto-linguaggi:
-\begin{itemize}
-    \item \textbf{DDL} -- Data Definition Language;
-    \item DML -- Data Manipulation Language;
-    \item DQL -- Data Query Language;
-    \item DCL -- Data Control Language.
-\end{itemize}
-
-\medskip
-In questo modulo ci concentriamo sul:
-\begin{center}
-\alert{\textbf{DDL}}
-\end{center}
-\end{frame}
-
-%==============================================================================
-\begin{frame}{DDL}
-\begin{block}{Definizione}
-Il DDL è la parte di SQL che serve per \textbf{definire e modificare la struttura del database}.
-\end{block}
-
-Con il DDL possiamo:
-\begin{itemize}
-    \item creare tabelle e database;
-    \item modificare la struttura;
-    \item eliminare oggetti;
-    \item definire vincoli di integrità.
-\end{itemize}
-
-\medskip
-\alert{Il DDL traduce il modello relazionale in istruzioni per il DBMS.}
-\end{frame}
-
-%==============================================================================
-\begin{frame}{DDL e DBMS}
+\begin{frame}{SQL e DBMS}
 SQL è uno standard, ma ogni DBMS ha delle varianti.
 
 \medskip
-In questo corso utilizziamo:
-\begin{center}
-\textbf{MariaDB}
-\end{center}
+In questo corso utilizziamo \textbf{MariaDB}:
 
 \begin{itemize}
-    \item DBMS compatibile MySQL;
-    \item usato tramite phpMyAdmin;
+    \item usato tramite phpMyAdmin (interfaccia web);
     \item con sintassi e tipi di dato specifici.
 \end{itemize}
 
-\alert{Gli esempi mostrati sono validi per MariaDB.}
+I concetti chiave di SQL rimangono gli stessi, cambiano solamente alcune sintassi specifiche.
+\end{frame}
+
+%==============================================================================
+\begin{frame}{SQL e funzionalità}
+SQL è suddiviso in parti:
+\begin{itemize}
+    \item \textbf{DDL} -- Data Definition Language;
+    \item DML -- Data Manipulation Language;
+    \item DQL -- Data Query Language.
+\end{itemize}
+
+\medskip
+In questo modulo ci concentriamo su SQL DDL.
+
+\begin{block}{Definizione}
+Il DDL è la parte di SQL che serve per \textbf{definire e modificare la struttura del database}. Permette di tradurre il modello relazionale in istruzioni per il DBMS.
+\end{block}
+
+\end{frame}
+
+%==============================================================================
+\begin{frame}{Panoramica SQL DDL}
+Il DDL permette di definire e organizzare la struttura dei dati nel database.
+\medskip
+
+\begin{itemize}
+    \item \textbf{Database}: creare e cancellare database
+        \begin{itemize}
+            \item \texttt{CREATE DATABASE}
+            \item \texttt{DROP DATABASE}
+        \end{itemize}
+
+    \item \textbf{Tabelle}: creare, modificare e cancellare tabelle
+        \begin{itemize}
+            \item \texttt{CREATE TABLE}
+            \item \texttt{ALTER TABLE} (aggiungere/modificare colonne o vincoli)
+            \item \texttt{DROP TABLE}
+        \end{itemize}
+
+    \item \textbf{Vincoli e integrità}: definire regole per i dati
+        \begin{itemize}
+            \item Chiavi primarie e uniche (\texttt{PRIMARY KEY}, \texttt{UNIQUE})
+            \item Chiavi esterne (\texttt{FOREIGN KEY})
+            \item Vincoli su valori (\texttt{CHECK}, \texttt{NOT NULL}, \texttt{DEFAULT})
+        \end{itemize}
+
+    \item \textbf{Indici e ottimizzazione}: migliorare performance
+        \begin{itemize}
+            \item \texttt{CREATE INDEX}, \texttt{DROP INDEX}
+        \end{itemize}
+\end{itemize}
 \end{frame}
 
 %==============================================================================
@@ -137,119 +149,127 @@ Il comando \textbf{CREATE} serve per creare nuovi oggetti nel database:
 \end{itemize}
 \end{frame}
 
-%==============================================================================
-\begin{frame}{CREATE TABLE}
-\begin{block}{Sintassi generale}
-\small
-\texttt{
-CREATE TABLE nome\_tabella ( \\
-\hspace{0.5cm} colonna tipo\_dato [vincoli], \\
-\hspace{0.5cm} ... \\
-);
-}
-\end{block} 
 
-\medskip
-\alert{Il DBMS non intuisce nulla: tutto va dichiarato.}
+%==============================================================================
+\begin{frame}[fragile]{CREATE DATABASE - Sintassi Generale}
+\begin{block}{Sintassi Base}
+\begin{verbatim}
+CREATE DATABASE nome_database;
+USE nome_database;
+\end{verbatim}
+\end{block}
+
+\begin{itemize}
+    \item `nome_database` è il nome che scegliamo per il database.
+    \item Dopo `USE`, tutte le operazioni successive riguardano questo database.
+    \item Questo è il primo passo per creare tabelle e inserire dati.
+\end{itemize}
 \end{frame}
 
+
 %==============================================================================
-\begin{frame}[fragile]{Esempio CREATE TABLE}
-\small
+\begin{frame}[fragile]{CREATE TABLE}
+Esempio concreto di tabella “Studenti”:
+
+\begin{block}{Esempio}
 \begin{verbatim}
 CREATE TABLE Studente (
     Matricola INT PRIMARY KEY,
-    Nome VARCHAR(50),
-    Cognome VARCHAR(50),
-    DataNascita DATE
+    Nome VARCHAR(50) NOT NULL,
+    Cognome VARCHAR(50) NOT NULL,
+    DataNascita DATE,
+    Classe VARCHAR(10)
 );
 \end{verbatim}
+\end{block}
+
+\begin{itemize}
+    \item Tabella: `Studente`
+    \item Attributi: nome, cognome, matricola, data di nascita, classe
+    \item Vincoli: `PRIMARY KEY`, `NOT NULL`
+\end{itemize}
+\end{frame} 
+
+%==============================================================================
+\begin{frame}[fragile]{CREATE TABLE}
+\begin{block}{Sintassi generale}
+\begin{verbatim}
+CREATE TABLE NomeTabella (
+    Attributo1 TipoDato [Vincoli],
+    Attributo2 TipoDato [Vincoli],
+    ...
+    [VincoliTabella] 
+);
+\end{verbatim}
+\end{block}
+
+\begin{itemize}
+    \item \textbf{TipoDato}: INT, VARCHAR, DATE, DECIMAL, ecc.
+    \item \textbf{Vincoli}: PRIMARY KEY, FOREIGN KEY, UNIQUE, NOT NULL, CHECK, DEFAULT
+    \item Vincoli tabella: coinvolgono più colonne (es. chiave esterna)
+\end{itemize}
+\end{frame}
+
+%==============================================================================
+\subsection{Tipi di dato}
+%==============================================================================
+\begin{frame}{Tipi di dato in SQL}
+Ogni colonna deve avere un tipo di dato che definisce valori ammessi, spazio occupato e operazioni possibili.
 
 \medskip
+\textbf{Tipi principali:}
 \begin{itemize}
-    \item \texttt{Matricola} è chiave primaria;
-    \item \texttt{Nome} e \texttt{Cognome} sono stringhe;
-    \item \texttt{DataNascita} è un campo data.
-\end{itemize}
-\end{frame}
-
-%==============================================================================
-\subsection{Tipi di dato in MariaDB}
-%==============================================================================
-
-\begin{frame}{Tipi di dato}
-Ogni colonna deve avere un tipo di dato che definisce:
-\begin{itemize}
-    \item i valori ammessi;
-    \item lo spazio occupato;
-    \item le operazioni possibili.
-\end{itemize}
-\end{frame}
-
-%==============================================================================
-\begin{frame}{Tipi numerici}
-\begin{itemize}
-    \item \texttt{INT} -- numeri interi;
-    \item \texttt{SMALLINT}, \texttt{BIGINT};
-    \item \texttt{DECIMAL(p,s)} -- numeri decimali precisi.
-\end{itemize}
-\end{frame}
-
-%==============================================================================
-\begin{frame}{Tipi testuali}
-\begin{itemize}
-    \item \texttt{CHAR(n)} -- lunghezza fissa;
-    \item \texttt{VARCHAR(n)} -- lunghezza variabile;
-    \item \texttt{TEXT} -- testi lunghi.
-\end{itemize}
-\end{frame}
-
-%==============================================================================
-\begin{frame}{Tipi temporali}
-\begin{itemize}
-    \item \texttt{DATE};
-    \item \texttt{TIME};
-    \item \texttt{DATETIME}.
-\end{itemize}
-\end{frame}
-
-%==============================================================================
-\begin{frame}{Scelta dei tipi}
-\begin{itemize}
-    \item CodiceFiscale $\rightarrow$ \texttt{CHAR(16)};
-    \item Nome, Cognome $\rightarrow$ \texttt{VARCHAR};
-    \item Prezzo $\rightarrow$ \texttt{DECIMAL}.
+    \item \textbf{Numerici:} \texttt{INT}, \texttt{SMALLINT}, \texttt{BIGINT}, \texttt{DECIMAL(p,s)}
+    \item \textbf{Testuali:} \texttt{CHAR(n)}, \texttt{VARCHAR(n)}, \texttt{TEXT}
+    \item \textbf{Temporali:} \texttt{DATE}, \texttt{TIME}, \texttt{DATETIME}
 \end{itemize}
 
 \medskip
-\alert{Il tipo di dato riflette il significato dell’informazione.}
+\textbf{Esempi pratici:}
+\begin{itemize}
+    \item CodiceFiscale $\rightarrow$ \texttt{CHAR(16)}
+    \item Nome, Cognome $\rightarrow$ \texttt{VARCHAR}
+    \item Prezzo $\rightarrow$ \texttt{DECIMAL}
+\end{itemize}
+
+\medskip
+\alert{Il tipo di dato deve riflettere il significato dell’informazione.}
 \end{frame}
-
 %==============================================================================
-\subsection{Vincoli}
+\subsection{Vincoli (Constraints)}
 %==============================================================================
 
-\begin{frame}{Vincoli (Constraints)}
-I vincoli garantiscono l’integrità dei dati.
+\begin{frame}[fragile]{Vincoli (CONSTRAINTS)}
+I vincoli garantiscono l’integrità dei dati e la coerenza tra le tabelle.
 
 \begin{itemize}
-    \item \texttt{PRIMARY KEY};
-    \item \texttt{FOREIGN KEY};
-    \item \texttt{UNIQUE};
-    \item \texttt{NOT NULL};
-    \item \texttt{CHECK}.
+    \item \texttt{PRIMARY KEY} -- identifica univocamente le righe
+    \item \texttt{FOREIGN KEY} -- garantisce la referenzialità tra tabelle
+    \item \texttt{UNIQUE} -- valori non ripetuti
+    \item \texttt{NOT NULL} -- valore obbligatorio
+    \item \texttt{CHECK} -- condizione su valori
 \end{itemize}
+
+\medskip
+\alert{Si possono dichiarare subito nella \texttt{CREATE TABLE} oppure aggiungere in seguito con \texttt{ALTER TABLE}.}
 \end{frame}
 
 %==============================================================================
 \begin{frame}[fragile]{PRIMARY KEY}
 \small
+\textbf{Dentro CREATE TABLE:}
 \begin{verbatim}
 CREATE TABLE Studente (
     Matricola INT PRIMARY KEY,
     Nome VARCHAR(50),
     Cognome VARCHAR(50)
 );
+\end{verbatim}
+
+\textbf{Dopo la creazione con ALTER TABLE:}
+\begin{verbatim}
+ALTER TABLE Studente
+ADD PRIMARY KEY (Matricola);
 \end{verbatim}
 
 \medskip
@@ -260,27 +280,21 @@ CREATE TABLE Studente (
 \end{frame}
 
 %==============================================================================
-\begin{frame}[fragile]{AUTO\_INCREMENT in MariaDB}
+\begin{frame}[fragile]{FOREIGN KEY}
 \small
+\textbf{Dentro CREATE TABLE:}
 \begin{verbatim}
-CREATE TABLE Studente (
-    Matricola INT AUTO_INCREMENT,
-    Nome VARCHAR(50) NOT NULL,
-    Cognome VARCHAR(50) NOT NULL,
-    PRIMARY KEY (Matricola)
+CREATE TABLE Iscrizione (
+    Matricola INT,
+    CorsoID INT,
+    FOREIGN KEY (Matricola) REFERENCES Studente(Matricola)
 );
 \end{verbatim}
 
-\medskip
-\alert{Il DBMS genera automaticamente la chiave primaria.}
-\end{frame}
-
-%==============================================================================
-\begin{frame}[fragile]{FOREIGN KEY}
-\small
+\textbf{Dopo la creazione con ALTER TABLE:}
 \begin{verbatim}
-FOREIGN KEY (Matricola)
-REFERENCES Studente(Matricola)
+ALTER TABLE Iscrizione
+ADD FOREIGN KEY (Matricola) REFERENCES Studente(Matricola);
 \end{verbatim}
 
 \medskip
@@ -293,9 +307,21 @@ REFERENCES Studente(Matricola)
 %==============================================================================
 \begin{frame}[fragile]{NOT NULL e UNIQUE}
 \small
+\textbf{Dentro CREATE TABLE:}
 \begin{verbatim}
-Nome VARCHAR(50) NOT NULL,
-Email VARCHAR(100) UNIQUE
+CREATE TABLE Studente (
+    Nome VARCHAR(50) NOT NULL,
+    Email VARCHAR(100) UNIQUE
+);
+\end{verbatim}
+
+\textbf{Dopo la creazione con ALTER TABLE:}
+\begin{verbatim}
+ALTER TABLE Studente
+MODIFY Nome VARCHAR(50) NOT NULL;
+
+ALTER TABLE Studente
+ADD UNIQUE (Email);
 \end{verbatim}
 
 \medskip 
@@ -306,16 +332,44 @@ Email VARCHAR(100) UNIQUE
 \end{frame}
 
 %==============================================================================
-\begin{frame}[fragile]{CHECK in MariaDB}
+\begin{frame}[fragile]{CHECK}
 \small
+\textbf{Dentro CREATE TABLE:}
 \begin{verbatim}
 CREATE TABLE Studente (
     Eta INT CHECK (Eta >= 18)
 );
 \end{verbatim}
 
+\textbf{Dopo la creazione con ALTER TABLE:}
+\begin{verbatim}
+ALTER TABLE Studente
+ADD CHECK (Eta >= 18);
+\end{verbatim}
+
+\end{frame}
+
+%==============================================================================
+\begin{frame}[fragile]{AUTO\_INCREMENT}
+\small
+\textbf{Dentro CREATE TABLE:}
+\begin{verbatim}
+CREATE TABLE Studente (
+    Matricola INT AUTO_INCREMENT,
+    Nome VARCHAR(50) NOT NULL,
+    Cognome VARCHAR(50) NOT NULL,
+    PRIMARY KEY (Matricola)
+);
+\end{verbatim}
+
+\textbf{Dopo la creazione con ALTER TABLE:}
+\begin{verbatim}
+ALTER TABLE Studente
+MODIFY Matricola INT AUTO_INCREMENT;
+\end{verbatim}
+
 \medskip
-\alert{Nelle versioni moderne di MariaDB il vincolo viene applicato.}
+\alert{Il DBMS genera automaticamente la chiave primaria senza doverla specificare manualmente.}
 \end{frame}
 
 %==============================================================================
