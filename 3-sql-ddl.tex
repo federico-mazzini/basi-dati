@@ -299,6 +299,32 @@ ADD FOREIGN KEY (matricola) REFERENCES studente(matricola);
 \end{frame}
 
 %==============================================================================
+\begin{frame}[fragile]{FOREIGN KEY}
+\small
+E' possibile specificare un \textbf{nome per la constraint} della foreign key.
+
+\medskip
+\textbf{Dentro CREATE TABLE:}
+\begin{verbatim}
+CREATE TABLE iscrizione (
+    matricola INT,
+    corso_id INT,
+    CONSTRAINT fk_iscrizione_matricola
+        FOREIGN KEY (matricola) REFERENCES studente(matricola)
+);
+\end{verbatim}
+
+\textbf{Dopo la creazione con ALTER TABLE:}
+\begin{verbatim}
+ALTER TABLE iscrizione
+ADD CONSTRAINT fk_iscrizione_corso
+FOREIGN KEY (corso_id) REFERENCES corso(id);
+\end{verbatim}
+
+Dare un nome chiaro alle FK rende più semplice la manutenzione e l'eventuale DROP della constraint.
+\end{frame}
+
+%==============================================================================
 \begin{frame}[fragile]{NOT NULL e UNIQUE}
 \small
 \textbf{Dentro CREATE TABLE:}
@@ -420,7 +446,7 @@ Una buona naming convention convenzione aiuta a:
 
 
 %==============================================================================
-\begin{frame}{Regola principale: snake\_case}
+\begin{frame}{Naming Convention}
 In SQL moderno si usa quasi sempre lo stile \textbf{snake\_case} per tabelle e colonne:
 \begin{itemize}
     \item tutti i nomi in \textbf{minuscolo};
@@ -438,6 +464,29 @@ In SQL moderno si usa quasi sempre lo stile \textbf{snake\_case} per tabelle e c
 
 \medskip
 Evitare: FirstName, creatoIl, STUDENTS, Order-Info.
+
+\end{frame}
+
+%==============================================================================
+\begin{frame}{Tipi di dato e lunghezza in MariaDB}
+\small
+\textbf{Dove specificare lunghezza tipi dato}
+
+\medskip
+\begin{tabular}{|l|c|l|}
+\hline
+\textbf{Tipo} & \textbf{Lunghezza?} & \textbf{Note} \\
+\hline
+INT, BIGINT & No & Dimensione standard \\
+DECIMAL(p,s) & Sì & Precisione, scala obbligatorie \\
+FLOAT / DOUBLE & No & Dimensione standard \\
+CHAR(n) & Sì & Lunghezza obbligatoria \\
+VARCHAR(n) & Sì & Lunghezza obbligatoria \\
+TEXT / BLOB & No & Dimensione già definita \\
+DATE / TIME / DATETIME & No & Nessuna lunghezza richiesta \\
+BOOLEAN / BOOL & No & Alias TINYINT(1) \\
+\hline
+\end{tabular}
 
 \end{frame}
 
