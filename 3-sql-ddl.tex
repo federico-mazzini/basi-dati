@@ -407,25 +407,144 @@ DROP TABLE studente;
 \end{frame}
 
 %==============================================================================
-\begin{frame}[fragile]{ALTER TABLE}
-\small 
-\begin{verbatim}
-ALTER TABLE studente ADD email VARCHAR(100);
-ALTER TABLE studente MODIFY cognome VARCHAR(100);
-ALTER TABLE studente DROP COLUMN email;
-\end{verbatim}
+\begin{frame}{ALTER TABLE}
+\small
+\begin{block}{Definizione}
+Il comando \textbf{ALTER TABLE} permette di modificare la struttura di una tabella già esistente.
+Consente di intervenire su colonne e vincoli senza dover eliminare e ricreare la tabella.
+\end{block}
+
+\medskip
+\textbf{Alcuni esempi}
+
+\medskip
+\textcolor{blue}{Aggiunge una nuova colonna "email" alla tabella studente:}
+
+\texttt{ALTER TABLE studente ADD email VARCHAR(100);}
+
+
+\bigskip
+
+\textcolor{blue}{Rimuove completamente la colonna "email" dalla tabella:}
+
+\texttt{ALTER TABLE studente DROP COLUMN email;}
+
 \end{frame}
 
 %==============================================================================
-\begin{frame}[fragile]{ALTER TABLE e dati esistenti}
+\begin{frame}[fragile]{ALTER TABLE -- Esempi}
+\small
+
+\textcolor{blue}{Modifica il tipo (o la lunghezza) della colonna "cognome".}
+
+\texttt{ALTER TABLE studente MODIFY cognome VARCHAR(100);}
+
+\medskip
+
+
+\textcolor{blue}{Cambia il nome della colonna cognome.}
+
+\texttt{ALTER TABLE studente RENAME COLUMN cognome TO cognome\_studente;}
+
+
+\medskip
+
+
+\textcolor{blue}{Definisce la colonna "matricola" come chiave primaria.}
+
+\texttt{ALTER TABLE studente ADD PRIMARY KEY (matricola);}
+
+\medskip
+
+
+\textcolor{blue}{Crea un vincolo di integrità referenziale tra iscrizione e studente.}
+
+\texttt{ALTER TABLE iscrizione ADD CONSTRAINT fk\_iscrizione\_matricola FOREIGN KEY (matricola) REFERENCES studente(matricola);}
+
+
+\medskip
+
+
+\textcolor{blue}{Impedisce che il valore della colonna "email" si ripeta.}
+\texttt{ALTER TABLE studente ADD UNIQUE (email);}
+ 
+
+\end{frame}
+
+
+%==============================================================================
+\begin{frame}{Best Practices -- Chiave Naturale e Surrogata}
+\small
+\textbf{Chiave naturale (Business Key)}
+
 \begin{itemize}
-    \item la tabella può contenere dati;
-    \item i vincoli vengono controllati;
-    \item alcune modifiche possono fallire.
+    \item È un attributo del dominio.
+    \item Ha significato nel contesto applicativo.
+    \item Può essere leggibile e usato dagli utenti.
+    \item Si definisce generalmente con vincolo \texttt{UNIQUE}.
 \end{itemize}
 
-\alert{DDL lavora sulla struttura, ma può impattare sui dati.}
+\medskip
+\textbf{Esempi:}
+\begin{itemize}
+    \item codice\_fiscale
+    \item email
+    \item cod\_materia
+\end{itemize}
+
+\medskip
+\alert{La chiave naturale serve a noi che leggiamo il database.}
 \end{frame}
+%==============================================================================
+\begin{frame}[fragile]{Best Practices -- Chiave Naturale e Surrogata}
+\small
+\textbf{Chiave surrogata}
+
+\begin{itemize}
+    \item È un identificatore tecnico.
+    \item Non ha significato nel dominio.
+    \item Non cambia nel tempo.
+    \item Viene spesso definita come \texttt{INT AUTO\_INCREMENT}.
+\end{itemize}
+
+\medskip
+\textbf{Esempio:}
+\begin{itemize}
+    \item id\_studente
+    \item id\_prodotto
+\end{itemize}
+
+\medskip
+\alert{La chiave surrogata serve al sistema, non alle persone.}
+\end{frame}
+
+
+%==============================================================================
+\begin{frame}{Best Practices - Differenza tra id e codice}
+\small
+
+\begin{tabular}{|l|l|}
+\hline
+\textbf{id} & \textbf{codice} \\
+\hline
+Identificatore tecnico & Identificatore di dominio \\
+Senza significato & Significativo \\
+Usato nelle relazioni & Usato per comunicazione \\
+Stabile nel tempo & Può cambiare formato \\
+\hline
+\end{tabular}
+
+\medskip
+\textbf{Esempio:}
+\begin{itemize}
+    \item id\_ordine = 45
+    \item codice\_ordine = ORD-2026-0045
+\end{itemize}
+
+\medskip
+\alert{Separare id tecnico e codice di dominio rende il database più robusto ed evolvibile.}
+\end{frame}
+
 
 %==============================================================================
 \section{Naming Convention}
@@ -446,7 +565,7 @@ Una buona naming convention convenzione aiuta a:
 
 
 %==============================================================================
-\begin{frame}{Naming Convention}
+\begin{frame}{Naming Convention -- Snake Case}
 In SQL moderno si usa quasi sempre lo stile \textbf{snake\_case} per tabelle e colonne:
 \begin{itemize}
     \item tutti i nomi in \textbf{minuscolo};
@@ -465,6 +584,54 @@ In SQL moderno si usa quasi sempre lo stile \textbf{snake\_case} per tabelle e c
 \medskip
 Evitare: FirstName, creatoIl, STUDENTS, Order-Info.
 
+\end{frame}
+
+\begin{frame}{Naming Convention -- Primary Key}
+\small
+\textbf{Chiave primaria (PK)}
+
+\begin{itemize} 
+    \item Utilizzare sempre una \textbf{chiave surrogata} come primaria.
+    \item La chiave primaria si chiama sempre:
+\end{itemize}
+
+\medskip
+\centerline{\texttt{id\_nome\_entita}}
+
+\medskip
+\textbf{Esempi:}
+\begin{itemize}
+    \item id\_studente
+    \item id\_professore
+    \item id\_lezione
+\end{itemize}
+
+\medskip
+\alert{Non chiamare la chiave primaria semplicemente "id".}
+\end{frame}
+
+%==============================================================================
+\begin{frame}{Naming Convention -- Foreign Key}
+\small
+\textbf{Chiave esterna (FK)}
+
+\begin{itemize}
+    \item La foreign key si chiama sempre:
+\end{itemize}
+
+\medskip
+\centerline{\texttt{nome\_tabella\_id}}
+
+\medskip
+\textbf{Esempi:}
+\begin{itemize}
+    \item studente\_id
+    \item professore\_id
+    \item materia\_id
+\end{itemize}
+
+\medskip
+\alert{La FK deve richiamare il nome della tabella referenziata.}
 \end{frame}
 
 %==============================================================================
