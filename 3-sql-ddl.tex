@@ -667,20 +667,20 @@ BOOLEAN / BOOL & No & Alias TINYINT(1) \\
 \medskip
 \textbf{Modello logico relazionale}
 \begin{itemize}
-    \item \textbf{Studente}(\underline{Matricola}, Nome, Cognome, DataNascita)
-    \item \textbf{Professore}(\underline{CodFiscale}, Nome, Cognome)
-    \item \textbf{Materia}(\underline{CodMateria}, NomeMateria)
-    \item \textbf{Lezione}(\underline{idLezione}, CodMateria, CodFiscale, Giorno, Orario)
-    \item \textbf{Voto}(\underline{idVoto}, Matricola, CodMateria, Voto, DataVoto)
+    \item \textbf{Studente}(\underline{id\_studente}, matricola, nome, cognome, data\_nascita)
+    \item \textbf{Professore}(\underline{id\_professore}, cod\_fiscale, nome, cognome)
+    \item \textbf{Materia}(\underline{id\_materia}, cod\_materia, nome\_materia)
+    \item \textbf{Lezione}(\underline{id\_lezione}, materia\_id, professore\_id, giorno, orario)
+    \item \textbf{Voto}(\underline{id\_voto}, studente\_id, materia\_id, voto, data\_voto)
 \end{itemize}
 
 \medskip 
 \textbf{Vincoli di integrità referenziale:}
 \begin{itemize}
-    \item Lezione.CodMateria → Materia.CodMateria
-    \item Lezione.CodFiscale → Professore.CodFiscale
-    \item Voto.Matricola → Studente.Matricola
-    \item Voto.CodMateria → Materia.CodMateria
+    \item Lezione.materia\_id → Materia.id\_materia
+    \item Lezione.professore\_id → Professore.id\_professore
+    \item Voto.studente\_id → Studente.id\_studente
+    \item Voto.materia\_id → Materia.id\_materia
 \end{itemize}
 
 \end{frame}
@@ -691,20 +691,23 @@ BOOLEAN / BOOL & No & Alias TINYINT(1) \\
 \textbf{Tabella studente:}
 \begin{verbatim}
 CREATE TABLE studente (
-    matricola INT AUTO_INCREMENT,
+    id_studente INT AUTO_INCREMENT,
+    matricola INT NOT NULL UNIQUE,
     nome VARCHAR(50) NOT NULL,
     cognome VARCHAR(50) NOT NULL,
     data_nascita DATE,
-    PRIMARY KEY (matricola)
+    PRIMARY KEY (id_studente)
 );
 \end{verbatim}
 
 \textbf{Tabella professore:}
 \begin{verbatim}
 CREATE TABLE professore (
-    cod_fiscale CHAR(16) PRIMARY KEY,
+    id_professore INT AUTO_INCREMENT,
+    cod_fiscale CHAR(16) NOT NULL UNIQUE,
     nome VARCHAR(50) NOT NULL,
-    cognome VARCHAR(50) NOT NULL
+    cognome VARCHAR(50) NOT NULL,
+    PRIMARY KEY (id_professore)
 );
 \end{verbatim}
 \end{frame}
@@ -714,8 +717,10 @@ CREATE TABLE professore (
 \textbf{Tabella materia:}
 \begin{verbatim}
 CREATE TABLE materia (
-    cod_materia CHAR(5) PRIMARY KEY,
-    nome_materia VARCHAR(50) NOT NULL
+    id_materia INT AUTO_INCREMENT,
+    cod_materia CHAR(5) NOT NULL UNIQUE,
+    nome_materia VARCHAR(50) NOT NULL,
+    PRIMARY KEY (id_materia)
 );
 \end{verbatim}
 \end{frame}
@@ -727,13 +732,13 @@ CREATE TABLE materia (
 \begin{verbatim}
 CREATE TABLE lezione (
     id_lezione INT AUTO_INCREMENT,
-    cod_materia CHAR(5),
-    cod_fiscale CHAR(16),
+    materia_id INT NOT NULL,
+    professore_id INT NOT NULL,
     giorno DATE,
     orario TIME,
     PRIMARY KEY (id_lezione),
-    FOREIGN KEY (cod_materia) REFERENCES materia(cod_materia),
-    FOREIGN KEY (cod_fiscale) REFERENCES professore(cod_fiscale)
+    FOREIGN KEY (materia_id) REFERENCES materia(id_materia),
+    FOREIGN KEY (professore_id) REFERENCES professore(id_professore)
 );
 \end{verbatim}
 \end{frame}
@@ -745,16 +750,16 @@ CREATE TABLE lezione (
 \begin{verbatim}
 CREATE TABLE voto (
     id_voto INT AUTO_INCREMENT,
-    matricola INT,
-    cod_materia CHAR(5),
+    studente_id INT NOT NULL,
+    materia_id INT NOT NULL,
     voto DECIMAL(4,2),
     data_voto DATE,
     PRIMARY KEY (id_voto),
-    FOREIGN KEY (matricola) REFERENCES studente(matricola),
-    FOREIGN KEY (cod_materia) REFERENCES materia(cod_materia)
+    FOREIGN KEY (studente_id) REFERENCES studente(id_studente),
+    FOREIGN KEY (materia_id) REFERENCES materia(id_materia)
 );
 \end{verbatim}
-\end{frame}
+\end{frame} 
 
 %==============================================================================
 \begin{frame}[fragile]{Aggiungere vincoli dopo la creazione}
@@ -763,10 +768,10 @@ CREATE TABLE voto (
 
 \begin{verbatim}
 ALTER TABLE lezione
-ADD FOREIGN KEY (cod_materia) REFERENCES materia(cod_materia);
+ADD FOREIGN KEY (materia_id) REFERENCES materia(id_materia);
 
 ALTER TABLE voto
-ADD FOREIGN KEY (matricola) REFERENCES studente(matricola);
+ADD FOREIGN KEY (studente_id) REFERENCES studente(id_studente);
 \end{verbatim}
 
 \medskip
