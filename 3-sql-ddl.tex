@@ -325,6 +325,67 @@ Dare un nome chiaro alle FK rende più semplice la manutenzione e l'eventuale DR
 \end{frame}
 
 %==============================================================================
+\begin{frame}[fragile]{Foreign Key -- Impatto sui dati}
+\small
+Una foreign key definisce **la struttura della tabella**, collegando la colonna figlia a una colonna padre.  
+Tuttavia, può avere **conseguenze sui dati** se il record padre viene eliminato o aggiornato.
+
+\medskip
+\textbf{Esempio: Lezione → Materia}
+
+\medskip
+\textbf{Materia}
+\begin{tabular}{|c|l|}
+\hline
+id\_materia & nome\_materia \\
+\hline
+1 & Matematica \\
+2 & Italiano \\
+\hline
+\end{tabular}
+
+\medskip
+\textbf{Lezione}
+\begin{tabular}{|c|c|c|l|}
+\hline
+id\_lezione & materia\_id & professore\_id & giorno\_orario \\
+\hline
+101 & 1 & 10 & lunedì 8:00 \\
+102 & 2 & 12 & martedì 10:00 \\
+\hline
+\end{tabular}
+
+\medskip 
+Se il record 1 nella tabella \texttt{Materia} viene eliminato o modificato, cosa succede? 
+\end{frame} 
+
+%==============================================================================
+\begin{frame}[fragile]{Foreign Key -- ON DELETE / ON UPDATE}
+\small
+Le opzioni \texttt{ON DELETE} e \texttt{ON UPDATE} definiscono il comportamento dei record figli quando un record padre viene eliminato o aggiornato.
+
+\medskip
+\textbf{Azioni principali:}
+\begin{itemize}
+    \item \textbf{CASCADE} -- aggiorna o cancella automaticamente i figli
+    \item \textbf{SET NULL} -- imposta a NULL la FK dei figli
+    \item \textbf{RESTRICT} -- impedisce l’azione se esistono figli
+    \item \textbf{NO ACTION} -- simile a RESTRICT
+\end{itemize}
+
+\medskip
+\textbf{Esempio:}
+
+\begin{verbatim}
+ALTER TABLE lezione
+ADD CONSTRAINT fk_lezione_materia
+FOREIGN KEY (materia_id) REFERENCES materia(id_materia)
+ON DELETE CASCADE
+ON UPDATE CASCADE;
+\end{verbatim}
+\end{frame}
+
+%==============================================================================
 \begin{frame}[fragile]{NOT NULL e UNIQUE}
 \small
 \textbf{Dentro CREATE TABLE:}
