@@ -2107,4 +2107,132 @@ Si vuole tenere traccia di queste frequentazioni, sapendo che un utente può fre
 
 \end{enumerate}
 
+
+\newpage
+\section{Esercizi - SQL DDL}
+
+I seguenti esercizi hanno l'obiettivo di scrivere le istruzioni SQL DDL a partire dagli schemi relazionali forniti. Per ciascun esercizio è necessario:
+\begin{itemize}
+    \item seguire fedelmente lo schema relazionale;
+    \item definire le \textbf{PRIMARY KEY} e i vincoli di dominio (\textbf{NOT NULL}, \textbf{UNIQUE}, \textbf{CHECK});
+    \item individuare e dichiarare le \textbf{FOREIGN KEY};
+    \item utilizzare nomi coerenti con la \textbf{naming convention} accordata;
+    \item creare campi \textbf{parlanti}, chiari e descrittivi del loro contenuto.
+\end{itemize}
+La valutazione considererà sia la correttezza tecnica delle DDL sia la chiarezza e leggibilità dei nomi e dei campi.
+
+\begin{enumerate}
+
+%====================================================
+\item \textbf{Gestione Palestra}
+
+A partire dal seguente schema relazionale, scrivere le istruzioni SQL DDL.
+Le istruzioni devono comprendere istruzioni di \textbf{CREATE TABLE}, definizione delle \textbf{primary key} e \textbf{foreign key} (da individuare). Specificare inoltre i vincoli di domininio intra-relazionali \textbf{NOT NULL}, \textbf{UNIQUE} e \textbf{CHECK}.
+
+\textbf{Schema relazionale}
+\begin{itemize}
+    \item \texttt{CLIENTE(\underline{CodiceFiscale}, Nome, Cognome, DataNascita, Email, Telefono, Indirizzo, Citta, CAP, DataIscrizione)}
+    \item \texttt{ISTRUTTORE(\underline{Matricola}, Nome, Cognome, Specializzazione, Email, Telefono, Stipendio, DataAssunzione, Livello, Certificazione)}
+    \item \texttt{CORSO(\underline{Codice}, Nome, Descrizione, DurataMinuti, Livello, MaxPartecipanti, Sala, GiornoSettimana, OrarioInizio, MatricolaIstruttore)}
+    \item \texttt{ISCRIZIONE(\underline{CodiceFiscale}, \underline{CodiceCorso}, \underline{DataIscrizione}, StatoPagamento, PrezzoPagato, MetodoPagamento, DataScadenza, FrequenzaSettimanale, Sconto, Attivo)}
+\end{itemize}
+
+\textbf{Vincoli di dominio}
+\begin{itemize}
+\item Email univoca.
+\item DataNascita con età >= 16.
+\item Stipendio > 1000.
+\item DurataMinuti > 0.
+\item MaxPartecipanti > 0.
+\item PrezzoPagato >= 0.
+\item Sconto tra 0 e 100.
+\end{itemize}
+\newpage
+
+
+
+%====================================================
+\item \textbf{E-commerce}
+
+A partire dal seguente schema relazionale, scrivere le istruzioni SQL DDL.
+Le istruzioni devono comprendere istruzioni di \textbf{CREATE TABLE}, definizione delle \textbf{primary key} e \textbf{foreign key} (da individuare). Specificare inoltre i vincoli di dominio intra-relazionali \textbf{NOT NULL}, \textbf{UNIQUE} e \textbf{CHECK}.
+
+\textbf{Schema relazionale}
+\begin{itemize}
+    \item \texttt{CLIENTE(\underline{ID}, Nome, Cognome, Email, Telefono, Password, Indirizzo, Citta, CAP, DataRegistrazione)}
+    \item \texttt{PRODOTTO(\underline{Codice}, Nome, Descrizione, Prezzo, QuantitaMagazzino, Categoria, Peso, Marca, DataInserimento, Attivo)}
+    \item \texttt{ORDINE(\underline{ID}, DataOrdine, Stato, Totale, MetodoPagamento, IndirizzoSpedizione, CittaSpedizione, CAPSpedizione, IDCliente, DataSpedizione)}
+    \item \texttt{DETTAGLIO\_ORDINE(\underline{IDOrdine}, \underline{CodiceProdotto}, Quantita, PrezzoUnitario, ScontoPercentuale, IVA, TotaleRiga, StatoRiga, DataConsegnaPrevista, Reso)}
+\end{itemize}
+
+\textbf{Vincoli di dominio}
+\begin{itemize}
+\item Email univoca.
+\item Prezzo > 0.
+\item QuantitaMagazzino >= 0.
+\item Quantita > 0.
+\item ScontoPercentuale tra 0 e 100.
+\item IVA tra 0 e 100.
+\item Totale >= 0.
+\end{itemize}
+\newpage
+
+
+
+
+
+%====================================================
+\item \textbf{Sistema Ospedaliero}
+
+A partire dal seguente schema relazionale, scrivere le istruzioni SQL DDL.
+Le istruzioni devono comprendere istruzioni di \textbf{CREATE TABLE}, definizione delle \textbf{primary key} e \textbf{foreign key} (da individuare). Specificare inoltre i vincoli di dominio intra-relazionali \textbf{NOT NULL}, \textbf{UNIQUE} e \textbf{CHECK}.
+
+\textbf{Schema relazionale}
+\begin{itemize}
+    \item \texttt{PAZIENTE(\underline{CodiceFiscale}, Nome, Cognome, DataNascita, Email, Telefono, Indirizzo, Citta, CAP, GruppoSanguigno)}
+    \item \texttt{MEDICO(\underline{Matricola}, Nome, Cognome, Specializzazione, Email, Telefono, Reparto, Stipendio, DataAssunzione, Livello)}
+    \item \texttt{REPARTO(\underline{Codice}, Nome, Piano, NumeroPostiLetto, Telefono, Responsabile, Edificio, BudgetAnnuale, Tipo, Attivo)}
+    \item \texttt{RICOVERO(\underline{ID}, DataIngresso, DataDimissione, Motivo, Diagnosi, \\CodiceFiscalePaziente, MatricolaMedico, CodiceReparto, Stato, CostoTotale)}
+\end{itemize}
+
+\textbf{Vincoli di dominio}
+\begin{itemize}
+\item Email univoca.
+\item Stipendio > 1500.
+\item NumeroPostiLetto > 0.
+\item BudgetAnnuale >= 0.
+\item DataDimissione >= DataIngresso.
+\item CostoTotale >= 0.
+\end{itemize}
+\newpage
+
+%====================================================
+\item \textbf{Gestione Azienda}
+
+A partire dal seguente schema relazionale, scrivere le istruzioni SQL DDL.
+Le istruzioni devono comprendere istruzioni di \textbf{CREATE TABLE}, definizione delle \textbf{primary key} e \textbf{foreign key} (da individuare). Specificare inoltre i vincoli di dominio intra-relazionali \textbf{NOT NULL}, \textbf{UNIQUE} e \textbf{CHECK}.
+
+\textbf{Schema relazionale}
+\begin{itemize}
+    \item \texttt{DIPENDENTE(\underline{Matricola}, Nome, Cognome, DataNascita, Email, Telefono, Indirizzo, Citta, CAP, Stipendio)}
+    \item \texttt{DIPARTIMENTO(\underline{Codice}, Nome, Sede, BudgetAnnuale, Telefono, Email,\\ Responsabile, DataCreazione, NumeroDipendenti, Attivo)}
+    \item \texttt{PROGETTO(\underline{Codice}, Nome, Descrizione, Budget, DataInizio, DataFine, Stato, Priorita, CodiceDipartimento, Responsabile)}
+    \item \texttt{ASSEGNAZIONE(\underline{MatricolaDipendente}, \underline{CodiceProgetto}, OreSettimanali, DataInizio, DataFine, Ruolo, CostoOrario, PercentualeImpiego, Stato, Valutazione)}
+\end{itemize}
+
+\textbf{Vincoli di dominio}
+\begin{itemize}
+\item Email univoca.
+\item Stipendio > 1200.
+\item Budget >= 0.
+\item PercentualeImpiego tra 0 e 100.
+\item OreSettimanali > 0.
+\item DataFine >= DataInizio.
+\end{itemize}
+\newpage
+
+\end{enumerate}
+
+
+
 \end{document}
