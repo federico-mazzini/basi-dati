@@ -2095,8 +2095,7 @@ Infine, si vogliono registrare i biglietti venduti, con i dati del cliente e la 
 Ogni utente dispone di email, password, nome, cognome, data di nascita. Ogni utente segue/è follower di altro utenti e ha dei follower a sua volta. Ogni utente dispone di una propria bacheca di messaggi ricevuti. Ogni messaggio dispone di: codice, data di invio, testo, e mittente (il mittente è un utente della piattaforma). Ogni messaggio è destinato ad un solo utente.
 
 
-\item \textbf{Tradurre nel modello relazionale il seguente documento di
-specifiche.}
+\item \textbf{Tradurre nel modello relazionale il seguente documento di specifiche.}
 
 Si vuole progettare una base di dati per la gestione dei circoli tennis presenti in città.
 Ogni circolo è caratterizzato da un nome univoco, indirizzo, recapito telefonico ed email.
@@ -2104,6 +2103,47 @@ Si vogliono gestire le informazioni relative agli utenti: ogni utente ha codice 
 Ogni utente è iscritto a un singolo circolo tramite tessera associativa annuale, ma può anche frequentare altri circoli a cui non è iscritto.
 Si vuole tenere traccia di queste frequentazioni, sapendo che un utente può frequentare più circoli (potenzialmente tutti).
 
+\item \textbf{Tradurre nel modello relazionale il seguente documento di specifiche.}
+
+Si vuole progettare una base di dati per la gestione dei treni e dei biglietti ferroviari.
+
+Ogni treno è identificato da un codice univoco.
+Il codice del treno è composto da una sigla di due lettere che identifica la tipologia (AV per Alta Velocità, RE per Regionale), seguita da quattro cifre numeriche. 
+Esempi di codici validi sono AV1023, RE0456.
+Ogni treno è inoltre caratterizzato da numero massimo di posti e anno di costruzione.
+
+Ogni tratta è identificata da un codice univoco ed è caratterizzata da stazione di partenza, stazione di arrivo e distanza in chilometri.
+
+Le tratte sono indipendenti dai treni.
+Un treno può effettuare corse su tratte differenti.
+
+Una corsa rappresenta l’effettivo viaggio di un treno su una determinata tratta in una specifica data.
+Per ogni corsa si vogliono memorizzare:
+data, orario di partenza e orario di arrivo.
+
+Si tenga conto che:
+\begin{itemize}
+    \item ogni corsa è effettuata da un solo treno;
+    \item ogni corsa è relativa a una sola tratta;
+    \item un treno può effettuare molte corse;
+    \item una tratta può essere percorsa da molti treni in corse diverse.
+\end{itemize}
+
+\item \textbf{Estensione del modello: gestione delle fermate intermedie}
+
+Nel modello precedente una tratta è stata descritta unicamente tramite stazione di partenza e stazione di arrivo. Si vuole ora estendere la base di dati per rappresentare tratte composte da più fermate intermedie.
+
+Ogni tratta può essere composta da più fermate, ciascuna associata a una stazione.
+Le stazioni sono identificate da un codice univoco e caratterizzate da nome e città.
+
+Per ogni fermata si vuole memorizzare:
+\begin{itemize}
+    \item la stazione;
+    \item l'ordine progressivo lungo la tratta.
+\end{itemize}
+
+Si richiede di modificare il modello relazionale introducendo le nuove strutture necessarie,
+mantenendo la coerenza con le entità già definite (Treno, Tratta, Corsa).
 
 \end{enumerate}
 
@@ -2114,6 +2154,7 @@ Si vuole tenere traccia di queste frequentazioni, sapendo che un utente può fre
 I seguenti esercizi hanno l'obiettivo di scrivere le istruzioni SQL DDL a partire dagli schemi relazionali forniti. Per ciascun esercizio è necessario:
 \begin{itemize}
     \item seguire fedelmente lo schema relazionale;
+    \item dove non presenti, aggiungere ID\_ come chiavi surrogate
     \item definire le \textbf{PRIMARY KEY} e i vincoli di dominio (\textbf{NOT NULL}, \textbf{UNIQUE}, \textbf{CHECK});
     \item individuare e dichiarare le \textbf{FOREIGN KEY};
     \item utilizzare nomi coerenti con la \textbf{naming convention} accordata;
