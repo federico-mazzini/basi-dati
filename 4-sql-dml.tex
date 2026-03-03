@@ -1,0 +1,243 @@
+\documentclass{beamer}
+
+\usetheme{Madrid}
+\usecolortheme{default}
+
+\usepackage[italian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{verbatim}
+
+\title{Basi di Dati}
+\subtitle{SQL DML -- Manipolazione dei dati}
+\author{Prof. Federico Mazzini, Prof.ssa Francesca Larotonda}
+\institute{I.I.S. Francesco Alberghetti}
+\date{A.S. 2025 -- 2026}
+
+\begin{document}
+
+%==============================================================================
+\begin{frame}
+\titlepage
+\end{frame}
+
+%==============================================================================
+\section{SQL DML (Data Manipulation Language)}
+%==============================================================================
+
+\begin{frame}{Dal DDL al DML}
+Con il DDL abbiamo definito la \textbf{struttura} del database:
+\begin{itemize}
+    \item tabelle;
+    \item colonne;
+    \item tipi di dato;
+    \item vincoli di integrità.
+\end{itemize}
+
+\medskip
+\alert{Ora dobbiamo lavorare sui dati veri e propri.}
+
+\medskip
+Per inserire, modificare o cancellare dati utilizziamo il \textbf{DML}.
+\end{frame}
+
+%==============================================================================
+\begin{frame}{Cos'è il DML}
+\begin{block}{Definizione}
+Il DML (Data Manipulation Language) è la parte di SQL che permette di \textbf{inserire, modificare ed eliminare dati} all'interno delle tabelle.
+\end{block}
+
+\medskip
+Principali comandi DML:
+\begin{itemize}
+    \item \texttt{INSERT}
+    \item \texttt{UPDATE}
+    \item \texttt{DELETE}
+\end{itemize}
+
+\medskip
+Il DML agisce sui \textbf{record}, non sulla struttura.
+\end{frame}
+
+%==============================================================================
+\section{INSERT}
+%==============================================================================
+
+\begin{frame}{INSERT}
+Il comando \textbf{INSERT} serve per inserire nuovi record in una tabella.
+
+\medskip
+Ogni inserimento deve rispettare:
+\begin{itemize}
+    \item tipi di dato;
+    \item vincoli (\texttt{NOT NULL}, \texttt{UNIQUE}, \texttt{FOREIGN KEY});
+    \item integrità referenziale.
+\end{itemize}
+\end{frame}
+
+%==============================================================================
+\begin{frame}[fragile]{INSERT -- Sintassi base}
+\begin{block}{Sintassi}
+\begin{verbatim}
+INSERT INTO nome_tabella (colonna1, colonna2, ...)
+VALUES (valore1, valore2, ...);
+\end{verbatim}
+\end{block}
+
+\medskip
+Specificare sempre le colonne rende il codice più chiaro e robusto.
+\end{frame}
+
+%==============================================================================
+\begin{frame}[fragile]{INSERT -- Esempio}
+\small
+\textbf{Inserimento di uno studente:}
+
+\begin{verbatim}
+INSERT INTO studente (matricola, nome, cognome, data_nascita)
+VALUES (1001, 'Luca', 'Rossi', '2007-03-15');
+\end{verbatim}
+
+\medskip
+Se \texttt{id\_studente} è AUTO\_INCREMENT, non va specificato.
+\end{frame}
+
+%==============================================================================
+\begin{frame}[fragile]{INSERT multiplo}
+\small
+È possibile inserire più record con un'unica istruzione:
+
+\begin{verbatim}
+INSERT INTO materia (cod_materia, nome_materia)
+VALUES 
+('MAT01', 'Matematica'),
+('ITA01', 'Italiano'),
+('INF01', 'Informatica');
+\end{verbatim}
+\end{frame}
+
+%==============================================================================
+\section{UPDATE}
+
+
+%==============================================================================
+\begin{frame}[fragile]{UPDATE}
+
+Il comando \textbf{UPDATE} modifica uno o più record esistenti.
+\begin{block}{Sintassi}
+\begin{verbatim}
+UPDATE nome_tabella
+SET colonna1 = valore1,
+    colonna2 = valore2
+WHERE condizione;
+\end{verbatim}
+\end{block}
+\end{frame}
+
+%==============================================================================
+\begin{frame}[fragile]{UPDATE -- Esempio}
+\small
+\textbf{Modifica del cognome di uno studente:}
+
+\begin{verbatim}
+UPDATE studente
+SET cognome = 'Bianchi'
+WHERE matricola = 1001;
+\end{verbatim}
+
+\medskip
+La clausola WHERE identifica quali record aggiornare.
+\end{frame}
+
+%==============================================================================
+\begin{frame}[fragile]{UPDATE -- Esempio senza WHERE}
+\small
+\begin{verbatim}
+UPDATE voto
+SET voto = voto + 1;
+\end{verbatim}
+
+\medskip
+
+\alert{Attenzione: senza clausola di WHERE tutti i voti vengono aumentati di 1.}
+
+\end{frame}
+
+%==============================================================================
+\section{DELETE}
+%==============================================================================
+\begin{frame}[fragile]{DELETE}
+
+Il comando \textbf{DELETE} elimina uno o più record da una tabella.
+\begin{block}{Sintassi}
+\begin{verbatim}
+DELETE FROM nome_tabella
+WHERE condizione;
+\end{verbatim}
+\end{block}
+\end{frame}
+
+%==============================================================================
+\begin{frame}[fragile]{DELETE -- Esempio}
+\small
+\begin{verbatim}
+DELETE FROM studente
+WHERE matricola = 1001;
+\end{verbatim}
+
+\medskip
+Il record con matricola 1001 viene eliminato dalla tabella.
+\end{frame}
+
+%==============================================================================
+\begin{frame}[fragile]{DELETE senza WHERE}
+\small
+\begin{verbatim}
+DELETE FROM studente;
+\end{verbatim}
+
+\medskip
+\alert{Elimina TUTTI i record della tabella.}
+
+\end{frame}
+
+%==============================================================================
+\section{Vincoli e DML}
+%==============================================================================
+
+\begin{frame}{DML e Vincoli}
+Ogni operazione DML deve rispettare i vincoli definiti nel DDL.
+
+\medskip
+Esempi:
+\begin{itemize}
+    \item Violazione di \texttt{UNIQUE} → errore
+    \item Violazione di \texttt{FOREIGN KEY} → errore
+    \item Inserimento NULL su campo \texttt{NOT NULL} → errore
+\end{itemize}
+
+\medskip
+\alert{Il DBMS protegge la coerenza dei dati.}
+\end{frame}
+
+%==============================================================================
+\section{Best Practices}
+%==============================================================================
+
+\begin{frame}{Best Practices DML}
+\begin{itemize}
+    \item Usare sempre la clausola \texttt{WHERE} in UPDATE e DELETE.
+    \item Testare prima con una SELECT.
+    \item Usare transazioni quando si modificano più tabelle.
+    \item Fare backup prima di operazioni massive.
+\end{itemize}
+
+\medskip
+\alert{Il DML lavora sui dati reali: ogni errore può avere conseguenze importanti.}
+\end{frame}
+
+%==============================================================================
+
+\end{document}
