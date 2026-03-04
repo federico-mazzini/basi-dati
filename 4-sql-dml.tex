@@ -37,10 +37,12 @@ Con il DDL abbiamo definito la \textbf{struttura} del database:
 \end{itemize}
 
 \medskip
-\alert{Ora dobbiamo lavorare sui dati veri e propri.}
-
-\medskip
-Per inserire, modificare o cancellare dati utilizziamo il \textbf{DML}.
+Per lavorare sui \textbf{record} del database invece, utilizziamo il DML (\textit{Data Manipulation Language})
+\begin{itemize}
+    \item inserimento
+    \item modifica
+    \item cancellazione
+\end{itemize}
 \end{frame}
 
 %==============================================================================
@@ -65,20 +67,11 @@ Il DML agisce sui \textbf{record}, non sulla struttura.
 \section{INSERT}
 %==============================================================================
 
-\begin{frame}{INSERT}
-Il comando \textbf{INSERT} serve per inserire nuovi record in una tabella.
-
-\medskip
-Ogni inserimento deve rispettare:
-\begin{itemize}
-    \item tipi di dato;
-    \item vincoli (\texttt{NOT NULL}, \texttt{UNIQUE}, \texttt{FOREIGN KEY});
-    \item integrità referenziale.
-\end{itemize}
-\end{frame}
 
 %==============================================================================
-\begin{frame}[fragile]{INSERT -- Sintassi base}
+\begin{frame}[fragile]{INSERT}
+
+Il comando \textbf{INSERT} serve per inserire nuovi record in una tabella.
 \begin{block}{Sintassi}
 \begin{verbatim}
 INSERT INTO nome_tabella (colonna1, colonna2, ...)
@@ -86,14 +79,16 @@ VALUES (valore1, valore2, ...);
 \end{verbatim}
 \end{block}
 
-\medskip
-Specificare sempre le colonne rende il codice più chiaro e robusto.
 \end{frame}
 
 %==============================================================================
-\begin{frame}[fragile]{INSERT -- Esempio}
+\begin{frame}[fragile]{INSERT}
 \small
-\textbf{Inserimento di uno studente:}
+
+\textbf{Inserimento di uno studente}
+
+\medskip
+\texttt{studente(\underline{id\_studente}, matricola, nome, cognome, data\_nascita)}
 
 \begin{verbatim}
 INSERT INTO studente (matricola, nome, cognome, data_nascita)
@@ -101,21 +96,45 @@ VALUES (1001, 'Luca', 'Rossi', '2007-03-15');
 \end{verbatim}
 
 \medskip
-Se \texttt{id\_studente} è AUTO\_INCREMENT, non va specificato.
+\textbf{Inserimento di un professore}
+
+\medskip
+\texttt{professore(\underline{id\_professore}, cod\_fiscale, nome, cognome)}
+
+\begin{verbatim}
+INSERT INTO professore (cod_fiscale, nome, cognome)
+VALUES ('BNCMRA80A01H501U', 'Marco', 'Bianchi');
+\end{verbatim}
+
+\medskip
+Le colonne id\_* sono AUTO\_INCREMENT, quindi non vanno specificate
+nell'INSERT: il DB le genera automaticamente.
 \end{frame}
 
 %==============================================================================
-\begin{frame}[fragile]{INSERT multiplo}
+\begin{frame}[fragile]{INSERT singola VS. multipla}
 \small
-È possibile inserire più record con un'unica istruzione:
+
+\medskip
+\textbf{Due INSERT separate:}
 
 \begin{verbatim}
-INSERT INTO materia (cod_materia, nome_materia)
-VALUES 
-('MAT01', 'Matematica'),
-('ITA01', 'Italiano'),
-('INF01', 'Informatica');
+INSERT INTO studente (matricola, nome, cognome, data_nascita)
+VALUES (1002, 'Anna', 'Bianchi', '2007-07-21');
+
+INSERT INTO studente (matricola, nome, cognome, data_nascita)
+VALUES (1003, 'Paolo', 'Verdi', '2006-11-03');
 \end{verbatim}
+
+\medskip
+\textbf{Un'unica INSERT con più record:}
+
+\begin{verbatim}
+INSERT INTO studente (matricola, nome, cognome, data_nascita)
+VALUES (1004, 'Giulia', 'Neri', '2007-02-10'),
+       (1005, 'Marco', 'Galli', '2006-09-18');
+\end{verbatim}
+
 \end{frame}
 
 %==============================================================================
@@ -137,31 +156,44 @@ WHERE condizione;
 \end{frame}
 
 %==============================================================================
-\begin{frame}[fragile]{UPDATE -- Esempio}
+\begin{frame}[fragile]{UPDATE}
 \small
 \textbf{Modifica del cognome di uno studente:}
 
 \begin{verbatim}
 UPDATE studente
 SET cognome = 'Bianchi'
-WHERE matricola = 1001;
+WHERE id_studente = 1;
 \end{verbatim}
 
 \medskip
 La clausola WHERE identifica quali record aggiornare.
+
+\medskip
+\alert{Cosa succede se la clausola \texttt{WHERE} non viene specificata?}
 \end{frame}
 
 %==============================================================================
-\begin{frame}[fragile]{UPDATE -- Esempio senza WHERE}
+\begin{frame}[fragile]{UPDATE}
 \small
+
+\begin{block}{Clausola Where}
+La clausola \textbf{WHERE} non identifica necessariamente
+un solo record, ma \textbf{tutti quelli che soddisfano la condizione}.
+\end{block}
+
+\medskip
+\textbf{Esempio: modificare tutti gli studenti che si chiamano Luca}
+
 \begin{verbatim}
-UPDATE voto
-SET voto = voto + 1;
+UPDATE studente
+SET cognome = 'Verdi'
+WHERE nome = 'Luca';
 \end{verbatim}
 
 \medskip
-
-\alert{Attenzione: senza clausola di WHERE tutti i voti vengono aumentati di 1.}
+Se nel database esistono 3 studenti con nome = 'Luca',
+tutti e 3 verranno aggiornati.
 
 \end{frame}
 
@@ -180,15 +212,15 @@ WHERE condizione;
 \end{frame}
 
 %==============================================================================
-\begin{frame}[fragile]{DELETE -- Esempio}
+\begin{frame}[fragile]{DELETE}
 \small
 \begin{verbatim}
 DELETE FROM studente
-WHERE matricola = 1001;
+WHERE id_studente = 1;
 \end{verbatim}
 
 \medskip
-Il record con matricola 1001 viene eliminato dalla tabella.
+Il record con id\_studente 1 viene eliminato dalla tabella.
 \end{frame}
 
 %==============================================================================
@@ -199,43 +231,28 @@ DELETE FROM studente;
 \end{verbatim}
 
 \medskip
-\alert{Elimina TUTTI i record della tabella.}
+\alert{Elimina TUTTI gli studenti}
 
 \end{frame}
 
 %==============================================================================
-\section{Vincoli e DML}
-%==============================================================================
+\begin{frame}[fragile]{Vincoli da rispettare nelle DML}
+\small
 
-\begin{frame}{DML e Vincoli}
-Ogni operazione DML deve rispettare i vincoli definiti nel DDL.
+Ogni operazione DML (\texttt{INSERT}, \texttt{UPDATE}, \texttt{DELETE}) deve rispettare i vincoli strutturali delle tabelle. Il database mantiene sempre l'integrità dei dati.
 
 \medskip
-Esempi:
+\textbf{Vincoli principali:}
+
 \begin{itemize}
-    \item Violazione di \texttt{UNIQUE} → errore
-    \item Violazione di \texttt{FOREIGN KEY} → errore
-    \item Inserimento NULL su campo \texttt{NOT NULL} → errore
+    \item \texttt{NOT NULL} → non è possibile inserire valori nulli.
+    \item \texttt{PRIMARY KEY e UNIQUE} → non è possibile inserire valori duplicati.
+    \item \texttt{FOREIGN KEY} → non è possibile eliminare record referenziati, o assegnare record a elementi inesistenti.
 \end{itemize}
 
 \medskip
-\alert{Il DBMS protegge la coerenza dei dati.}
-\end{frame}
+\alert{Il DBMS interviene automaticamente per proteggere la coerenza dei dati.}
 
-%==============================================================================
-\section{Best Practices}
-%==============================================================================
-
-\begin{frame}{Best Practices DML}
-\begin{itemize}
-    \item Usare sempre la clausola \texttt{WHERE} in UPDATE e DELETE.
-    \item Testare prima con una SELECT.
-    \item Usare transazioni quando si modificano più tabelle.
-    \item Fare backup prima di operazioni massive.
-\end{itemize}
-
-\medskip
-\alert{Il DML lavora sui dati reali: ogni errore può avere conseguenze importanti.}
 \end{frame}
 
 %==============================================================================
