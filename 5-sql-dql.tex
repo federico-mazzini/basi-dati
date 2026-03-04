@@ -1,0 +1,442 @@
+\documentclass{beamer}
+
+\usetheme{Madrid}
+\usecolortheme{default}
+
+\usepackage[italian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{xcolor}
+\usepackage{verbatim}
+
+\title{Basi di Dati}
+\subtitle{SQL DQL -- Interrogare i dati}
+\author{Prof. Federico Mazzini}
+\institute{I.I.S. Francesco Alberghetti}
+\date{A.S. 2025 -- 2026}
+
+\begin{document}
+
+%==============================================================================
+\begin{frame}
+\titlepage
+\end{frame}
+
+%==============================================================================
+\section{Dal database ai dati}
+
+%==============================================================================
+\begin{frame}{Data Query Language (DQL)}
+Un database non serve solo a memorizzare dati.
+
+\medskip
+Serve a \textbf{interrogarli}, analizzarli, estrarne informazione:
+
+\begin{itemize}
+    \item Quali studenti hanno media sopra 8?
+    \item Quanti ordini ha fatto un cliente?
+    \item Qual è il totale delle vendite?
+\end{itemize}
+
+\end{frame}
+
+%==============================================================================
+\section{SQL e DQL}
+%==============================================================================
+
+\begin{frame}{Cos'è il DQL}
+\begin{block}{Definizione}
+Il DQL (Data Query Language) è la parte di SQL che permette di \textbf{interrogare i dati} presenti nelle tabelle.
+\end{block}
+
+\medskip
+Il comando fondamentale del DQL è:
+
+\begin{center}
+\Large \texttt{SELECT}
+\end{center}
+
+\medskip
+Con SELECT possiamo estrarre informazioni dal database.
+\end{frame}
+
+%==============================================================================
+\begin{frame}[fragile]{La struttura base di SELECT}
+La forma generale è:
+
+\begin{verbatim}
+SELECT attributi
+FROM tabella
+WHERE condizione;
+\end{verbatim}
+
+\begin{itemize}
+    \item \textbf{SELECT} → cosa vogliamo vedere
+    \item \textbf{FROM} → da quale tabella
+    \item \textbf{WHERE} → con quali condizioni
+\end{itemize}
+\end{frame}
+
+%==============================================================================
+\begin{frame}[fragile]{SELECT}
+
+\begin{verbatim}
+SELECT nome, cognome
+FROM studente;
+\end{verbatim}
+
+\medskip
+\textbf{Risultato:}
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+Nome & Cognome \\
+\hline
+Luca & Rossi \\
+Anna & Bianchi \\
+Paolo & Verdi \\
+\hline
+\end{tabular}
+\end{center}
+
+\end{frame}
+
+%==============================================================================
+\begin{frame}[fragile]{SELECT *}
+
+Utilizzando l'asterisco, vengono selezionate tutte le colonne, senza bisogno di specificarne singolarmente.
+
+\begin{verbatim}
+SELECT *
+FROM studente;
+\end{verbatim}
+
+\medskip
+\textbf{Risultato:}
+\begin{center}
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+id\_studente & Matricola & Nome & Cognome & Data\_nascita \\
+\hline
+1 & 1001 & Luca & Rossi & 2007-03-15 \\
+2 & 1002 & Anna & Bianchi & 2007-07-21 \\
+3 & 1003 & Paolo & Verdi & 2006-11-03 \\
+\hline
+\end{tabular}
+\end{center}
+
+\medskip
+In tabelle con molte colonne, utilizzare ''*'' rende difficile la lettura dei risultati.
+\end{frame}
+
+%==============================================================================
+\begin{frame}[fragile]{SELECT con Alias}
+\small
+E' possibile utilizzare un alias per il nome delle colonne.
+
+\begin{verbatim}
+SELECT nome AS Nome Studente, 
+       cognome AS Cognome Studente
+FROM studente;
+\end{verbatim}
+
+\medskip
+\textbf{Risultato:}
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+Nome Studente & Cognome Studente \\
+\hline
+Luca & Rossi \\
+Anna & Bianchi \\
+Paolo & Verdi \\
+\hline
+\end{tabular}
+\end{center}
+
+\medskip
+\begin{itemize}
+    \item Semplifica la lettura dei risultati nel caso di tabelle con nomi tecnici e poco parlanti
+    \item Non modifica il nome delle colonne, solo la loro visualizzazione nella specifica SELECT
+\end{itemize}
+\end{frame}
+
+
+%==============================================================================
+\begin{frame}[fragile]{WHERE}
+E' possibile filtrare i risultati della SELECT utilizzando la clausola WHERE. 
+
+\bigskip
+\textbf{Esempio} trovare lo studente con ID 3:
+
+\begin{verbatim}
+SELECT nome, cognome, data_nascita
+FROM studente
+WHERE id_studente = 3;
+\end{verbatim}
+
+\end{frame}
+
+%==============================================================================
+\begin{frame}[fragile]{WHERE}
+E' possibile filtrare i risultati della SELECT utilizzando la clausola WHERE. 
+
+\bigskip
+\textbf{Esempio} tutti gli studenti nati dopo il 2006:
+
+\begin{verbatim}
+SELECT nome, cognome, data_nascita
+FROM studente
+WHERE data_nascita > '2006-12-31';
+\end{verbatim}
+
+\end{frame}
+
+%==============================================================================
+\begin{frame}[fragile]{WHERE e condizioni logiche}
+La clausola WHERE restituisce tutte le righe che soddisfano la condizione logica. 
+Infatti, utilizzando la seguenti condizioni:
+\bigskip
+
+\textbf{Restituisce tutti gli studenti}
+\begin{verbatim}
+SELECT nome, cognome
+FROM studente
+WHERE 1 = 1;
+\end{verbatim}
+
+\bigskip
+\textbf{Restituisce nessuno studente}
+\begin{verbatim}
+SELECT nome, cognome
+FROM studente
+WHERE 1 = 0;
+\end{verbatim}
+
+\end{frame}
+
+%==============================================================================
+\begin{frame}[fragile]{WHERE e operatori di confronto}
+Gli operatori di confronto servono a definire condizioni puntuali o basate su valori:
+
+\begin{itemize}
+    \item =,  >, <, >=, <=, <> (diverso), LIKE
+\end{itemize}
+
+\medskip
+Esempio: selezionare studenti nati dopo il 31/12/2006
+
+\begin{verbatim}
+SELECT nome, cognome
+FROM studente
+WHERE data_nascita > '2006-12-31';
+\end{verbatim}
+\end{frame}
+
+
+%==============================================================================
+\begin{frame}[fragile]{WHERE e operatori di confronto}
+Il LIKE permette di filtrare stringhe secondo un pattern lessicale.
+
+\medskip 
+
+E' possibile esprimere condizioni come le seguenti:
+
+\bigskip
+\textbf{\textit{Studenti il cui cognome inizia con "R"}}
+\begin{verbatim}
+SELECT nome, cognome
+FROM studente
+WHERE cognome LIKE 'R%';
+\end{verbatim}
+
+\bigskip
+\textbf{\textit{Studenti il cui nome contiene "an"}}
+\begin{verbatim}
+SELECT nome, cognome
+FROM studente
+WHERE nome LIKE '%an%';
+\end{verbatim}
+
+\end{frame}
+
+%==============================================================================
+\begin{frame}[fragile]{WHERE e operatori logici}
+Gli operatori logici servono a combinare più condizioni:
+
+\begin{itemize}
+    \item AND → entrambe le condizioni devono essere vere
+    \item OR → almeno una condizione deve essere vera
+    \item NOT → nega la condizione
+\end{itemize}
+
+
+\begin{verbatim}
+SELECT nome, cognome
+FROM studente
+WHERE data_nascita > '2006-12-31' AND
+      classe = '5A';
+\end{verbatim}
+\end{frame}
+
+%==============================================================================
+\begin{frame}[fragile]{WHERE e operatori logici}
+Gli operatori logici servono a combinare più condizioni:
+
+\begin{itemize}
+    \item AND → entrambe le condizioni devono essere vere
+    \item OR → almeno una condizione deve essere vera
+    \item NOT → nega la condizione
+\end{itemize}
+
+
+\begin{verbatim}
+SELECT nome, cognome
+FROM studente
+WHERE classe = '5A' OR
+      classe = '5B';
+\end{verbatim}
+
+\end{frame}
+
+%==============================================================================
+\begin{frame}[fragile]{WHERE e operatori logici}
+Gli operatori logici servono a combinare più condizioni:
+
+\begin{itemize}
+    \item AND → entrambe le condizioni devono essere vere
+    \item OR → almeno una condizione deve essere vera
+    \item NOT → nega la condizione
+\end{itemize}
+
+\begin{verbatim}
+SELECT nome, cognome
+FROM studente
+WHERE NOT classe = '5A';
+\end{verbatim}
+\end{frame}
+
+
+%==============================================================================
+\begin{frame}[fragile]{WHERE e combinazioni più complesse}
+Attenzione alla concatenazione degli operatori logici. Le seguenti query, sono diverse:
+
+\begin{verbatim}
+SELECT nome, cognome
+FROM studente
+WHERE (classe = '5A' OR classe = '5B')
+      AND cognome LIKE 'R%';
+\end{verbatim}
+
+\begin{verbatim}
+SELECT nome, cognome
+FROM studente
+WHERE classe = '5A' OR classe = '5B'
+      AND cognome LIKE 'R%';
+\end{verbatim}
+
+\end{frame}
+
+%==============================================================================
+\begin{frame}[fragile]{Ordinare i risultati}
+Esempio: ordinare gli studenti per cognome in ordine alfabetico:
+
+\begin{verbatim}
+SELECT nome, cognome, matricola
+FROM studente
+ORDER BY cognome ASC;
+\end{verbatim}
+
+\medskip
+\begin{itemize}
+    \item ASC → ordine crescente
+    \item DESC → ordine decrescente
+\end{itemize}
+\end{frame}
+
+%%==============================================================================
+%\begin{frame}[fragile]{Funzioni di aggregazione}
+%Le funzioni di aggregazione sintetizzano i dati numerici.
+%
+%\medskip
+%Esempio: calcolare la media dei voti degli studenti:
+%
+%\begin{verbatim}
+%SELECT AVG(voto) AS media_generale
+%FROM voto;
+%\end{verbatim}
+%
+%Altre funzioni comuni:
+%\begin{itemize}
+%    \item COUNT(voto) → conteggio dei voti
+%    \item SUM(voto) → somma dei voti
+%    \item MIN(voto) → voto minimo
+%    \item MAX(voto) → voto massimo
+%\end{itemize}
+%\end{frame}
+%
+%%==============================================================================
+%\begin{frame}[fragile]{Raggruppare con GROUP BY}
+%Esempio: media dei voti per materia:
+%
+%\begin{verbatim}
+%SELECT m.nome_materia, AVG(v.voto) AS media_materia
+%FROM materia m
+%JOIN voto v ON m.id_materia = v.materia_id
+%GROUP BY m.id_materia;
+%\end{verbatim}
+%
+%\medskip
+%Il database raggruppa le righe e calcola l’aggregazione per ciascun gruppo.
+%\end{frame}
+%
+%%==============================================================================
+%\begin{frame}[fragile]{Filtrare gruppi con HAVING}
+%HAVING filtra i risultati dei gruppi dopo GROUP BY:
+%
+%\begin{verbatim}
+%SELECT m.nome_materia, AVG(v.voto) AS media_materia
+%FROM materia m
+%JOIN voto v ON m.id_materia = v.materia_id
+%GROUP BY m.id_materia
+%HAVING AVG(v.voto) > 7;
+%\end{verbatim}
+%
+%\medskip
+%\textbf{WHERE} → filtra singole righe prima del raggruppamento.  
+%\textbf{HAVING} → filtra gruppi di righe dopo il raggruppamento.
+%\end{frame}
+%
+%%==============================================================================
+%\begin{frame}[fragile]{Unire tabelle: JOIN}
+%Esempio: elenco delle lezioni con docente e materia:
+%
+%\begin{verbatim}
+%SELECT l.giorno, l.orario, p.nome, p.cognome, m.nome_materia
+%FROM lezione l
+%JOIN professore p ON l.professore_id = p.id_professore
+%JOIN materia m ON l.materia_id = m.id_materia;
+%\end{verbatim}
+%
+%\medskip
+%Il JOIN combina righe di tabelle diverse usando le chiavi esterne.
+%\end{frame}
+%
+%%==============================================================================
+%\begin{frame}[fragile]{Selezioni complesse: studenti con voti alti}
+%Esempio: studenti con media superiore a 8:
+%
+%\begin{verbatim}
+%SELECT s.nome, s.cognome, AVG(v.voto) AS media
+%FROM studente s
+%JOIN voto v ON s.id_studente = v.studente_id
+%GROUP BY s.id_studente
+%HAVING AVG(v.voto) > 8;
+%\end{verbatim}
+%
+%\medskip
+%Mostra come combinare JOIN, GROUP BY e HAVING per interrogazioni più complesse.
+%\end{frame} 
+
+
+\end{document}
