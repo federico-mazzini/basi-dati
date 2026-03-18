@@ -77,11 +77,11 @@ Con SELECT possiamo estrarre informazioni dal database.
 \begin{frame}[fragile]{La struttura base di SELECT}
 La forma generale è:
 
-\begin{verbatim}
+\begin{lstlisting}[language=SQL]
 SELECT attributi
 FROM tabella
 WHERE condizione;
-\end{verbatim}
+\end{lstlisting}
 
 \begin{itemize}
     \item \textbf{SELECT} → cosa vogliamo vedere
@@ -93,10 +93,10 @@ WHERE condizione;
 %==============================================================================
 \begin{frame}[fragile]{SELECT}
 
-\begin{verbatim}
+\begin{lstlisting}[language=SQL]
 SELECT nome, cognome
 FROM studenti;
-\end{verbatim}
+\end{lstlisting}
 
 \medskip
 \textbf{Risultato:}
@@ -119,10 +119,10 @@ Paolo & Verdi \\
 
 Utilizzando l'asterisco, vengono selezionate tutte le colonne, senza bisogno di specificarne singolarmente.
 
-\begin{verbatim}
+\begin{lstlisting}[language=SQL]
 SELECT *
 FROM studenti;
-\end{verbatim}
+\end{lstlisting}
 
 \medskip
 \textbf{Risultato:}
@@ -147,11 +147,11 @@ In tabelle con molte colonne, utilizzare ''*'' rende difficile la lettura dei ri
 \small
 E' possibile utilizzare un alias per il nome delle colonne.
 
-\begin{verbatim}
+\begin{lstlisting}[language=SQL]
 SELECT nome AS Nome Studente, 
        cognome AS Cognome Studente
 FROM studenti;
-\end{verbatim}
+\end{lstlisting}
 
 \medskip
 \textbf{Risultato:}
@@ -182,11 +182,11 @@ E' possibile filtrare i risultati della SELECT utilizzando la clausola WHERE.
 \bigskip
 \textbf{Esempio} trovare lo studente con ID 3:
 
-\begin{verbatim}
+\begin{lstlisting}[language=SQL]
 SELECT nome, cognome, data_nascita
 FROM studenti
 WHERE id_studente = 3;
-\end{verbatim}
+\end{lstlisting}
 
 \end{frame}
 
@@ -197,11 +197,11 @@ E' possibile filtrare i risultati della SELECT utilizzando la clausola WHERE.
 \bigskip
 \textbf{Esempio} tutti gli studenti nati dopo il 2006:
 
-\begin{verbatim}
+\begin{lstlisting}[language=SQL]
 SELECT nome, cognome, data_nascita
 FROM studenti
 WHERE data_nascita > '2006-12-31';
-\end{verbatim}
+\end{lstlisting}
 
 \end{frame}
 
@@ -212,19 +212,19 @@ Infatti, utilizzando la seguenti condizioni:
 \bigskip
 
 \textbf{Restituisce tutti gli studenti}
-\begin{verbatim}
+\begin{lstlisting}[language=SQL]
 SELECT nome, cognome
 FROM studenti
 WHERE 1 = 1;
-\end{verbatim}
+\end{lstlisting}
 
 \bigskip
 \textbf{Restituisce nessuno studente}
-\begin{verbatim}
+\begin{lstlisting}[language=SQL]
 SELECT nome, cognome
 FROM studenti
 WHERE 1 = 0;
-\end{verbatim}
+\end{lstlisting}
 
 \end{frame}
 
@@ -239,11 +239,11 @@ Gli operatori di confronto servono a definire condizioni puntuali o basate su va
 \medskip
 Esempio: selezionare studenti nati dopo il 31/12/2006
 
-\begin{verbatim}
+\begin{lstlisting}[language=SQL]
 SELECT nome, cognome
 FROM studenti
 WHERE data_nascita > '2006-12-31';
-\end{verbatim}
+\end{lstlisting}
 \end{frame}
 
 
@@ -257,19 +257,19 @@ E' possibile esprimere condizioni come le seguenti:
 
 \bigskip
 \textbf{\textit{Studenti il cui cognome inizia con "R"}}
-\begin{verbatim}
+\begin{lstlisting}[language=SQL]
 SELECT nome, cognome
 FROM studenti
 WHERE cognome LIKE 'R%';
-\end{verbatim}
+\end{lstlisting}
 
 \bigskip
 \textbf{\textit{Studenti il cui nome contiene "an"}}
-\begin{verbatim}
+\begin{lstlisting}[language=SQL]
 SELECT nome, cognome
 FROM studenti
 WHERE nome LIKE '%an%';
-\end{verbatim}
+\end{lstlisting}
 
 \end{frame}
 
@@ -284,12 +284,12 @@ Gli operatori logici servono a combinare più condizioni:
 \end{itemize}
 
 
-\begin{verbatim}
+\begin{lstlisting}[language=SQL]
 SELECT nome, cognome
 FROM studenti
 WHERE data_nascita > '2006-12-31' AND
       classe = '5A';
-\end{verbatim}
+\end{lstlisting}
 \end{frame}
 
 %==============================================================================
@@ -303,12 +303,12 @@ Gli operatori logici servono a combinare più condizioni:
 \end{itemize}
 
 
-\begin{verbatim}
+\begin{lstlisting}[language=SQL]
 SELECT nome, cognome
 FROM studenti
 WHERE classe = '5A' OR
       classe = '5B';
-\end{verbatim}
+\end{lstlisting}
 
 \end{frame}
 
@@ -322,11 +322,11 @@ Gli operatori logici servono a combinare più condizioni:
     \item NOT → nega la condizione
 \end{itemize}
 
-\begin{verbatim}
+\begin{lstlisting}[language=SQL]
 SELECT nome, cognome
 FROM studenti
 WHERE NOT classe = '5A';
-\end{verbatim}
+\end{lstlisting}
 \end{frame}
 
 
@@ -334,19 +334,19 @@ WHERE NOT classe = '5A';
 \begin{frame}[fragile]{WHERE e combinazioni più complesse}
 Attenzione alla concatenazione degli operatori logici. Le seguenti query, sono diverse:
 
-\begin{verbatim}
+\begin{lstlisting}[language=SQL]
 SELECT nome, cognome
 FROM studenti
 WHERE (classe = '5A' OR classe = '5B')
       AND cognome LIKE 'R%';
-\end{verbatim}
+\end{lstlisting}
 
-\begin{verbatim}
+\begin{lstlisting}[language=SQL]
 SELECT nome, cognome
 FROM studenti
 WHERE classe = '5A' OR classe = '5B'
       AND cognome LIKE 'R%';
-\end{verbatim}
+\end{lstlisting}
 
 \end{frame}
 
@@ -354,11 +354,11 @@ WHERE classe = '5A' OR classe = '5B'
 \begin{frame}[fragile]{Ordinare i risultati}
 Esempio: ordinare gli studenti per cognome in ordine alfabetico:
 
-\begin{verbatim}
+\begin{lstlisting}[language=SQL]
 SELECT nome, cognome, matricola
 FROM studenti
 ORDER BY cognome ASC;
-\end{verbatim}
+\end{lstlisting}
 
 \medskip
 \begin{itemize}
@@ -397,13 +397,13 @@ Si consideri la tabella \textbf{verifiche} contenente i seguenti record:
 \begin{frame}[fragile]{Aggregare i dati}
 Viene riportata di seguito la query di aggregazione necessaria:
 
-\begin{verbatim}
+\begin{lstlisting}[language=SQL]
 SELECT 
     COUNT(voto) AS num_verifiche,
     MAX(voto) AS voto_max,
     AVG(voto) AS media_voti
 FROM verifiche;
-\end{verbatim}
+\end{lstlisting}
 
 \textbf{Risultato ottenuto:}
 \begin{center}
@@ -437,7 +437,7 @@ Le funzioni di aggregazione operano su un \textbf{insieme di righe} (set di dati
 \begin{frame}[fragile]{Aggregare i dati - Utilizzo dell'alias}
 Ha sempre senso utilizzare un alias con le funzioni di aggregazione per rendere più esplicita la query
 
-\begin{verbatim}
+\begin{lstlisting}[language=SQL]
 -- Calcolo della media generale dei voti
 SELECT AVG(voto) AS media_generale
 FROM verifiche;
@@ -449,7 +449,7 @@ SELECT
     MIN(voto)   AS voto_minimo,
     MAX(voto)   AS voto_massimo
 FROM verifiche;
-\end{verbatim}
+\end{lstlisting}
 
 \end{frame}
 
@@ -470,10 +470,10 @@ Si consideri la necessità di visualizzare la media dei voti accanto al nome di 
 \end{center}
 
 \medskip
-\begin{verbatim}
+\begin{lstlisting}[language=SQL]
 SELECT materia, AVG(voto) 
 FROM verifiche;
-\end{verbatim}
+\end{lstlisting}
 
 \end{frame}
 
@@ -494,10 +494,10 @@ Si consideri la necessità di visualizzare la media dei voti accanto al nome di 
 \end{center}
 
 \medskip
-\begin{verbatim}
+\begin{lstlisting}[language=SQL]
 SELECT materia, AVG(voto) 
 FROM verifiche;
-\end{verbatim}
+\end{lstlisting}
 
 \begin{alertblock}{Errore!}
 La query genera un errore o un risultato errato: non è possibile mostrare più righe per la colonna \texttt{materia} e una sola riga per la media (\texttt{AVG}). Il sistema richiede un \textbf{criterio di raggruppamento}.
@@ -519,11 +519,11 @@ Si consideri la necessità di visualizzare la media dei voti accanto al nome di 
 \end{tabular}
 \end{center}
 
-\begin{verbatim}
+\begin{lstlisting}[language=SQL]
 SELECT materia, AVG(voto) AS media_materia
 FROM verifiche
 GROUP BY materia;
-\end{verbatim}
+\end{lstlisting}
 
 \end{frame}
 
@@ -542,11 +542,11 @@ Si consideri la necessità di visualizzare la media dei voti accanto al nome di 
 \end{tabular}
 \end{center}
 
-\begin{verbatim}
+\begin{lstlisting}[language=SQL]
 SELECT materia, AVG(voto) AS media_materia
 FROM verifiche
 GROUP BY materia;
-\end{verbatim}
+\end{lstlisting}
 
 \textbf{Risultato dell'operazione:}
 \begin{center}
@@ -600,12 +600,12 @@ Si ipotizzi di voler individuare le materie la cui media dei voti è superiore a
 
 \medskip
 \textbf{Tentativo errato con WHERE:}
-\begin{verbatim}
+\begin{lstlisting}[language=SQL]
 SELECT materia, AVG(voto) AS media
 FROM verifiche
 WHERE voto > 8
 GROUP BY materia;
-\end{verbatim}
+\end{lstlisting}
 
 \begin{alertblock}{Analisi dell'errore}
 La clausola \texttt{WHERE} agisce \textbf{prima} del calcolo della media. La query sopra citata scarterebbe tutti i voti inferiori o uguali a 8 \textit{prima} di raggruppare, calcolando quindi la media solo sui voti eccellenti. Il risultato non sarebbe la "media della materia", ma la "media dei soli voti alti".
@@ -619,12 +619,12 @@ Per filtrare i risultati prodotti dalle funzioni di aggregazione (\texttt{AVG, S
 \medskip
 Questa clausola permette di applicare una condizione di ricerca a gruppi di righe o ad aggregati, agendo logicamente \textbf{dopo} il raggruppamento dei dati.
 
-\begin{verbatim}
+\begin{lstlisting}[language=SQL]
 SELECT materia, AVG(voto) AS media
 FROM verifiche
 GROUP BY materia
 HAVING AVG(voto) > 8;
-\end{verbatim}
+\end{lstlisting}
 
 \begin{exampleblock}{Logica Operativa}
 Mentre il \texttt{WHERE} definisce quali record atomici partecipano al calcolo, l'\texttt{HAVING} definisce quali gruppi risultanti devono essere visualizzati nel report finale.
@@ -658,12 +658,12 @@ L'\texttt{HAVING} risulta fondamentale per analisi statistiche basate sulla nume
 
 \medskip
 \textbf{Esempio:}
-\begin{verbatim}
+\begin{lstlisting}[language=SQL]
 SELECT classe, COUNT(id_studente) AS numero_studenti
 FROM studenti
 GROUP BY classe
 HAVING COUNT(id_studente) > 20;
-\end{verbatim}
+\end{lstlisting}
 
 \begin{itemize}
     \item Il \texttt{GROUP BY} crea i blocchi per classe.
@@ -673,20 +673,20 @@ HAVING COUNT(id_studente) > 20;
 
 %%==============================================================================
 \begin{frame}[fragile]{Casi d'Uso: Filtrare sulla Somma (SUM)}
-In contesti finanziari o di inventario, l'uso combinato di \texttt{WHERE} e \texttt{HAVING} permette analisi granulari.
+In contesti finanziari o di analisi dati, l'uso di \texttt{HAVING} permette di filtrare i risultati aggregati (es. totali per gruppo).
 
 \medskip
-\textbf{Esempio:} Studenti con media voti superiore a 8:
+\textbf{Esempio:} Clienti che hanno speso in totale più di 1000€:
 
-\begin{verbatim}
-SELECT id_studente, AVG(voto) AS media_voti
-FROM verifiche
-GROUP BY id_studente
-HAVING AVG(voto) > 8;
-\end{verbatim}
+\begin{lstlisting}[language=SQL]
+SELECT id_cliente, SUM(prezzo_totale_pagato) AS totale_speso
+FROM ordini
+GROUP BY id_cliente
+HAVING SUM(prezzo_totale_pagato) > 1000;
+\end{lstlisting}
 
 \medskip
-Si osservi come il \texttt{HAVING} selezioni solo gli studenti con media elevata.
+\textit{Nota:} Il \texttt{WHERE} filtrerebbe i singoli ordini, mentre \texttt{HAVING} filtra il totale calcolato per ogni cliente.
 \end{frame}
 
 %%==============================================================================
@@ -695,26 +695,26 @@ Si osservi come il \texttt{HAVING} selezioni solo gli studenti con media elevata
 
 \medskip
 \textbf{Esempio:}
-\begin{verbatim}
+\begin{lstlisting}[language=SQL]
 SELECT classe, COUNT(id_studente) AS numero_studenti,
        MAX(voto) AS voto_max
 FROM verifiche
 GROUP BY classe
 HAVING COUNT(id_studente) BETWEEN 10 AND 30
    AND MAX(voto) < 10;
-\end{verbatim}
+\end{lstlisting}
 \end{frame}
 
 %%%==============================================================================
 %\begin{frame}[fragile]{Unire le Tabelle: JOIN}
 %Il \texttt{JOIN} permette di navigare le relazioni (Chiave Esterna $\rightarrow$ Chiave %Primaria).
 %
-%\begin{verbatim}
+%\begin{lstlisting}[language=SQL]
 %SELECT s.cognome, m.nome_materia, v.voto
 %FROM studente s
 %JOIN voto v ON s.id_studente = v.studente_id
 %JOIN materia m ON v.materia_id = m.id_materia;
-%\end{verbatim}
+%\end{lstlisting}
 %
 %\begin{itemize}
 %    \item \textbf{Alias (\texttt{s, v, m})}: Fondamentali per la leggibilità e per evitare %ambiguità se due tabelle hanno colonne con lo stesso nome.
@@ -725,12 +725,12 @@ HAVING COUNT(id_studente) BETWEEN 10 AND 30
 %\begin{frame}[fragile]{Unire tabelle: JOIN}
 %Esempio: elenco delle lezioni con docente e materia:
 %
-%\begin{verbatim}
+%\begin{lstlisting}[language=SQL]
 %SELECT l.giorno, l.orario, p.nome, p.cognome, m.nome_materia
 %FROM lezione l
 %JOIN professore p ON l.professore_id = p.id_professore
 %JOIN materia m ON l.materia_id = m.id_materia;
-%\end{verbatim}
+%\end{lstlisting}
 %
 %\medskip
 %Il JOIN combina righe di tabelle diverse usando le chiavi esterne.
@@ -740,13 +740,13 @@ HAVING COUNT(id_studente) BETWEEN 10 AND 30
 %\begin{frame}[fragile]{Selezioni complesse: studenti con voti alti}
 %Esempio: studenti con media superiore a 8:
 %
-%\begin{verbatim}
+%\begin{lstlisting}[language=SQL]
 %SELECT s.nome, s.cognome, AVG(v.voto) AS media
 %FROM studente s
 %JOIN voto v ON s.id_studente = v.studente_id
 %GROUP BY s.id_studente
 %HAVING AVG(v.voto) > 8;
-%\end{verbatim}
+%\end{lstlisting}
 %
 %\medskip
 %Mostra come combinare JOIN, GROUP BY e HAVING per interrogazioni più complesse.
