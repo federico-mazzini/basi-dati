@@ -8,6 +8,19 @@
 \usepackage[T1]{fontenc}
 \usepackage{xcolor}
 \usepackage{verbatim}
+\usepackage{tikz}
+\usepackage{listings}
+\usetikzlibrary{shapes.geometric, arrows, positioning}
+
+\lstset{
+    language=SQL,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{darkgray},
+    breaklines=true,
+    showstringspaces=false
+}
 
 \title{Basi di Dati}
 \subtitle{SQL DQL -- Interrogare i dati}
@@ -82,7 +95,7 @@ WHERE condizione;
 
 \begin{verbatim}
 SELECT nome, cognome
-FROM studente;
+FROM studenti;
 \end{verbatim}
 
 \medskip
@@ -108,7 +121,7 @@ Utilizzando l'asterisco, vengono selezionate tutte le colonne, senza bisogno di 
 
 \begin{verbatim}
 SELECT *
-FROM studente;
+FROM studenti;
 \end{verbatim}
 
 \medskip
@@ -137,7 +150,7 @@ E' possibile utilizzare un alias per il nome delle colonne.
 \begin{verbatim}
 SELECT nome AS Nome Studente, 
        cognome AS Cognome Studente
-FROM studente;
+FROM studenti;
 \end{verbatim}
 
 \medskip
@@ -171,7 +184,7 @@ E' possibile filtrare i risultati della SELECT utilizzando la clausola WHERE.
 
 \begin{verbatim}
 SELECT nome, cognome, data_nascita
-FROM studente
+FROM studenti
 WHERE id_studente = 3;
 \end{verbatim}
 
@@ -186,7 +199,7 @@ E' possibile filtrare i risultati della SELECT utilizzando la clausola WHERE.
 
 \begin{verbatim}
 SELECT nome, cognome, data_nascita
-FROM studente
+FROM studenti
 WHERE data_nascita > '2006-12-31';
 \end{verbatim}
 
@@ -201,7 +214,7 @@ Infatti, utilizzando la seguenti condizioni:
 \textbf{Restituisce tutti gli studenti}
 \begin{verbatim}
 SELECT nome, cognome
-FROM studente
+FROM studenti
 WHERE 1 = 1;
 \end{verbatim}
 
@@ -209,7 +222,7 @@ WHERE 1 = 1;
 \textbf{Restituisce nessuno studente}
 \begin{verbatim}
 SELECT nome, cognome
-FROM studente
+FROM studenti
 WHERE 1 = 0;
 \end{verbatim}
 
@@ -228,7 +241,7 @@ Esempio: selezionare studenti nati dopo il 31/12/2006
 
 \begin{verbatim}
 SELECT nome, cognome
-FROM studente
+FROM studenti
 WHERE data_nascita > '2006-12-31';
 \end{verbatim}
 \end{frame}
@@ -246,7 +259,7 @@ E' possibile esprimere condizioni come le seguenti:
 \textbf{\textit{Studenti il cui cognome inizia con "R"}}
 \begin{verbatim}
 SELECT nome, cognome
-FROM studente
+FROM studenti
 WHERE cognome LIKE 'R%';
 \end{verbatim}
 
@@ -254,7 +267,7 @@ WHERE cognome LIKE 'R%';
 \textbf{\textit{Studenti il cui nome contiene "an"}}
 \begin{verbatim}
 SELECT nome, cognome
-FROM studente
+FROM studenti
 WHERE nome LIKE '%an%';
 \end{verbatim}
 
@@ -273,7 +286,7 @@ Gli operatori logici servono a combinare più condizioni:
 
 \begin{verbatim}
 SELECT nome, cognome
-FROM studente
+FROM studenti
 WHERE data_nascita > '2006-12-31' AND
       classe = '5A';
 \end{verbatim}
@@ -292,7 +305,7 @@ Gli operatori logici servono a combinare più condizioni:
 
 \begin{verbatim}
 SELECT nome, cognome
-FROM studente
+FROM studenti
 WHERE classe = '5A' OR
       classe = '5B';
 \end{verbatim}
@@ -311,7 +324,7 @@ Gli operatori logici servono a combinare più condizioni:
 
 \begin{verbatim}
 SELECT nome, cognome
-FROM studente
+FROM studenti
 WHERE NOT classe = '5A';
 \end{verbatim}
 \end{frame}
@@ -323,14 +336,14 @@ Attenzione alla concatenazione degli operatori logici. Le seguenti query, sono d
 
 \begin{verbatim}
 SELECT nome, cognome
-FROM studente
+FROM studenti
 WHERE (classe = '5A' OR classe = '5B')
       AND cognome LIKE 'R%';
 \end{verbatim}
 
 \begin{verbatim}
 SELECT nome, cognome
-FROM studente
+FROM studenti
 WHERE classe = '5A' OR classe = '5B'
       AND cognome LIKE 'R%';
 \end{verbatim}
@@ -343,7 +356,7 @@ Esempio: ordinare gli studenti per cognome in ordine alfabetico:
 
 \begin{verbatim}
 SELECT nome, cognome, matricola
-FROM studente
+FROM studenti
 ORDER BY cognome ASC;
 \end{verbatim}
 
@@ -354,60 +367,361 @@ ORDER BY cognome ASC;
 \end{itemize}
 \end{frame}
 
+
+
+
+
+%%========================== FUNZIONI DI AGGREGAZIONE ==========================
 %%==============================================================================
-%\begin{frame}[fragile]{Funzioni di aggregazione}
-%Le funzioni di aggregazione sintetizzano i dati numerici.
-%
-%\medskip
-%Esempio: calcolare la media dei voti degli studenti:
+
+\begin{frame}[fragile]{Aggregare i dati}
+Si consideri la tabella \textbf{verifiche} contenente i seguenti record:
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{id\_studente} & \textbf{materia} & \textbf{voto} \\ \hline
+1 & Informatica & 8 \\ \hline
+2 & Informatica & 5 \\ \hline
+3 & Informatica & NULL \\ \hline
+4 & Informatica & 10 \\ \hline
+5 & Informatica & 7 \\ \hline
+\end{tabular}
+\end{center}
+
+\medskip
+\textbf{Obiettivo:} Determinare il numero di studenti che hanno sostenuto la verifica, il voto massimo registrato e la media dei voti della classe.
+\end{frame}
+
+%%==============================================================================
+\begin{frame}[fragile]{Aggregare i dati}
+Viene riportata di seguito la query di aggregazione necessaria:
+
+\begin{verbatim}
+SELECT 
+    COUNT(voto) AS num_verifiche,
+    MAX(voto) AS voto_max,
+    AVG(voto) AS media_voti
+FROM verifiche;
+\end{verbatim}
+
+\textbf{Risultato ottenuto:}
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{num\_verifiche} & \textbf{voto\_max} & \textbf{media\_voti} \\ \hline
+4 & 10 & 7.5 \\ \hline
+\end{tabular}
+\end{center}
+
+\begin{itemize}
+    \item Il sistema elabora i 5 record di partenza restituendo \textbf{un'unica riga} sintetica.
+    \item Il valore \texttt{NULL} viene ignorato sia nel conteggio (\texttt{COUNT}) che nel calcolo della media (\texttt{AVG}).
+\end{itemize}
+\end{frame}
+
+%%==============================================================================
+\begin{frame}[fragile]{Aggregare i dati - Definizione}
+Le funzioni di aggregazione operano su un \textbf{insieme di righe} (set di dati) e restituiscono un \textbf{unico valore} riassuntivo.
+
+\begin{itemize}
+    \item \texttt{COUNT(*)}: Conteggio di tutte le righe (inclusi i valori NULL).
+    \item \texttt{SUM(colonna)}: Somma dei valori numerici della colonna specificata.
+    \item \texttt{AVG(colonna)}: Calcolo della media aritmetica dei valori.
+    \item \texttt{MIN() / MAX()}: Individuazione dei valori estremi (applicabile a numeri, date e stringhe).
+\end{itemize}
+
+\end{frame}
+
+%%==============================================================================
+\begin{frame}[fragile]{Aggregare i dati - Utilizzo dell'alias}
+Ha sempre senso utilizzare un alias con le funzioni di aggregazione per rendere più esplicita la query
+
+\begin{verbatim}
+-- Calcolo della media generale dei voti
+SELECT AVG(voto) AS media_generale
+FROM verifiche;
+
+-- Statistiche descrittive
+SELECT 
+    COUNT(voto) AS totale_voti,
+    SUM(voto)   AS somma_voti,
+    MIN(voto)   AS voto_minimo,
+    MAX(voto)   AS voto_massimo
+FROM verifiche;
+\end{verbatim}
+
+\end{frame}
+
+
+%%==============================================================================
+\begin{frame}[fragile]{Aggregare i dati - Criterio specifico}
+Si consideri la necessità di visualizzare la media dei voti accanto al nome di ogni materia:
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{id} & \textbf{materia} & \textbf{voto} \\ \hline
+1 & Informatica & 8 \\ \hline
+2 & Matematica  & 10 \\ \hline
+3 & Informatica & 7 \\ \hline
+4 & Matematica  & 6 \\ \hline
+\end{tabular}
+\end{center}
+
+\medskip
+\begin{verbatim}
+SELECT materia, AVG(voto) 
+FROM verifiche;
+\end{verbatim}
+
+\end{frame}
+
+
+%%==============================================================================
+\begin{frame}[fragile]{Aggregare i dati - Criterio specifico}
+Si consideri la necessità di visualizzare la media dei voti accanto al nome di ogni materia:
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{id} & \textbf{materia} & \textbf{voto} \\ \hline
+1 & Informatica & 8 \\ \hline
+2 & Matematica  & 10 \\ \hline
+3 & Informatica & 7 \\ \hline
+4 & Matematica  & 6 \\ \hline
+\end{tabular}
+\end{center}
+
+\medskip
+\begin{verbatim}
+SELECT materia, AVG(voto) 
+FROM verifiche;
+\end{verbatim}
+
+\begin{alertblock}{Errore!}
+La query genera un errore o un risultato errato: non è possibile mostrare più righe per la colonna \texttt{materia} e una sola riga per la media (\texttt{AVG}). Il sistema richiede un \textbf{criterio di raggruppamento}.
+\end{alertblock}
+\end{frame}
+
+%%==============================================================================
+\begin{frame}[fragile]{Specificare il Criterio: GROUP BY}
+Si consideri la necessità di visualizzare la media dei voti accanto al nome di ogni materia:
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{id} & \textbf{materia} & \textbf{voto} \\ \hline
+1 & Informatica & 8 \\ \hline
+2 & Matematica  & 10 \\ \hline
+3 & Informatica & 7 \\ \hline
+4 & Matematica  & 6 \\ \hline
+\end{tabular}
+\end{center}
+
+\begin{verbatim}
+SELECT materia, AVG(voto) AS media_materia
+FROM verifiche
+GROUP BY materia;
+\end{verbatim}
+
+\end{frame}
+
+%%==============================================================================
+\begin{frame}[fragile]{Specificare il Criterio: GROUP BY}
+Si consideri la necessità di visualizzare la media dei voti accanto al nome di ogni materia:
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{id} & \textbf{materia} & \textbf{voto} \\ \hline
+1 & Informatica & 8 \\ \hline
+2 & Matematica  & 10 \\ \hline
+3 & Informatica & 7 \\ \hline
+4 & Matematica  & 6 \\ \hline
+\end{tabular}
+\end{center}
+
+\begin{verbatim}
+SELECT materia, AVG(voto) AS media_materia
+FROM verifiche
+GROUP BY materia;
+\end{verbatim}
+
+\textbf{Risultato dell'operazione:}
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{materia} & \textbf{media\_materia} \\ \hline
+Informatica & 7.5 \\ \hline
+Matematica  & 8.0 \\ \hline
+\end{tabular}
+\end{center}
+
+\end{frame}
+
+
+%%==============================================================================
+\begin{frame}[fragile]{Raggruppare i Dati: GROUP BY}
+Il costrutto \texttt{GROUP BY} opera secondo la logica di \textbf{Split, Apply, Combine}.
+
+\begin{enumerate}
+    \item \textbf{Split}: I record vengono divisi in gruppi in base alla colonna specificata.
+    \item \textbf{Apply}: La funzione di aggregazione viene calcolata per ogni gruppo.
+    \item \textbf{Combine}: I risultati parziali vengono uniti in una tabella di sintesi.
+\end{enumerate}
+
+\vspace{0.3cm}
+\begin{center}
+    \includegraphics[width=0.9\linewidth, height=3.5cm, keepaspectratio]{images/split-apply-combine.png}
+\end{center}
+\vspace{0.3cm}
+
+\end{frame}
+
+%%==============================================================================
+\begin{frame}[fragile]{Raggruppare i Dati: GROUP BY}
+
+\textbf{Regola pratica} 
+
+Ogni colonna presente nella \texttt{SELECT} che non sia una funzione di aggregazione \textbf{deve} essere inclusa nel \texttt{GROUP BY}.
+
+\vspace{0.3cm}
+\begin{center}
+    \includegraphics[width=0.9\linewidth, height=3.5cm, keepaspectratio]{images/split-apply-combine.png}
+\end{center}
+\vspace{0.3cm}
+
+\end{frame}
+
+%%==============================================================================
+\begin{frame}[fragile]{Il Problema: Filtrare i Risultati Aggregati}
+Si ipotizzi di voler individuare le materie la cui media dei voti è superiore a 8.
+
+\medskip
+\textbf{Tentativo errato con WHERE:}
+\begin{verbatim}
+SELECT materia, AVG(voto) AS media
+FROM verifiche
+WHERE voto > 8
+GROUP BY materia;
+\end{verbatim}
+
+\begin{alertblock}{Analisi dell'errore}
+La clausola \texttt{WHERE} agisce \textbf{prima} del calcolo della media. La query sopra citata scarterebbe tutti i voti inferiori o uguali a 8 \textit{prima} di raggruppare, calcolando quindi la media solo sui voti eccellenti. Il risultato non sarebbe la "media della materia", ma la "media dei soli voti alti".
+\end{alertblock}
+\end{frame}
+
+%%==============================================================================
+\begin{frame}[fragile]{La Soluzione: Clausola HAVING}
+Per filtrare i risultati prodotti dalle funzioni di aggregazione (\texttt{AVG, SUM, COUNT}, ecc.), è necessario utilizzare la clausola \textbf{\texttt{HAVING}}.
+
+\medskip
+Questa clausola permette di applicare una condizione di ricerca a gruppi di righe o ad aggregati, agendo logicamente \textbf{dopo} il raggruppamento dei dati.
+
+\begin{verbatim}
+SELECT materia, AVG(voto) AS media
+FROM verifiche
+GROUP BY materia
+HAVING AVG(voto) > 8;
+\end{verbatim}
+
+\begin{exampleblock}{Logica Operativa}
+Mentre il \texttt{WHERE} definisce quali record atomici partecipano al calcolo, l'\texttt{HAVING} definisce quali gruppi risultanti devono essere visualizzati nel report finale.
+\end{exampleblock}
+\end{frame}
+
+%%==============================================================================
+\begin{frame}[fragile]{Ordine di Esecuzione e Flusso Dati}
+L'ordine logico con cui il DBMS processa la query chiarisce la distinzione tra i due filtri:
+
+\begin{center}
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Ordine} & \textbf{Clausola} & \textbf{Azione} \\ \hline
+1 & \texttt{FROM / JOIN} & Identificazione delle tabelle \\ \hline
+2 & \textbf{\texttt{WHERE}} & \textbf{Filtro sulle righe originali} \\ \hline
+3 & \texttt{GROUP BY} & Formazione dei gruppi \\ \hline
+4 & \textbf{\texttt{HAVING}} & \textbf{Filtro sui gruppi prodotti} \\ \hline
+5 & \texttt{SELECT} & Proiezione delle colonne e calcoli \\ \hline
+6 & \texttt{ORDER BY} & Ordinamento finale \\ \hline
+\end{tabular}
+\end{center}
+
+\medskip
+\textbf{Nota:} Poiché l'\texttt{HAVING} viene valutato dopo il \texttt{GROUP BY}, è possibile utilizzarvi le funzioni di aggregazione, operazione vietata all'interno del \texttt{WHERE}.
+\end{frame}
+
+%%==============================================================================
+\begin{frame}[fragile]{Casi d'Uso: Filtrare sul Conteggio (COUNT)}
+L'\texttt{HAVING} risulta fondamentale per analisi statistiche basate sulla numerosità dei gruppi.
+
+\medskip
+\textbf{Esempio:}
+\begin{verbatim}
+SELECT classe, COUNT(id_studente) AS numero_studenti
+FROM studenti
+GROUP BY classe
+HAVING COUNT(id_studente) > 20;
+\end{verbatim}
+
+\begin{itemize}
+    \item Il \texttt{GROUP BY} crea i blocchi per classe.
+    \item L'\texttt{HAVING} scarta le classi con pochi studenti.
+\end{itemize}
+\end{frame}
+
+%%==============================================================================
+\begin{frame}[fragile]{Casi d'Uso: Filtrare sulla Somma (SUM)}
+In contesti finanziari o di inventario, l'uso combinato di \texttt{WHERE} e \texttt{HAVING} permette analisi granulari.
+
+\medskip
+\textbf{Esempio:} Studenti con media voti superiore a 8:
+
+\begin{verbatim}
+SELECT id_studente, AVG(voto) AS media_voti
+FROM verifiche
+GROUP BY id_studente
+HAVING AVG(voto) > 8;
+\end{verbatim}
+
+\medskip
+Si osservi come il \texttt{HAVING} selezioni solo gli studenti con media elevata.
+\end{frame}
+
+%%==============================================================================
+\begin{frame}[fragile]{Casi d'Uso: Condizioni Multiple}
+È possibile utilizzare operatori logici (\texttt{AND, OR}) anche all'interno della clausola \texttt{HAVING}.
+
+\medskip
+\textbf{Esempio:}
+\begin{verbatim}
+SELECT classe, COUNT(id_studente) AS numero_studenti,
+       MAX(voto) AS voto_max
+FROM verifiche
+GROUP BY classe
+HAVING COUNT(id_studente) BETWEEN 10 AND 30
+   AND MAX(voto) < 10;
+\end{verbatim}
+\end{frame}
+
+%%%==============================================================================
+%\begin{frame}[fragile]{Unire le Tabelle: JOIN}
+%Il \texttt{JOIN} permette di navigare le relazioni (Chiave Esterna $\rightarrow$ Chiave %Primaria).
 %
 %\begin{verbatim}
-%SELECT AVG(voto) AS media_generale
-%FROM voto;
+%SELECT s.cognome, m.nome_materia, v.voto
+%FROM studente s
+%JOIN voto v ON s.id_studente = v.studente_id
+%JOIN materia m ON v.materia_id = m.id_materia;
 %\end{verbatim}
 %
-%Altre funzioni comuni:
 %\begin{itemize}
-%    \item COUNT(voto) → conteggio dei voti
-%    \item SUM(voto) → somma dei voti
-%    \item MIN(voto) → voto minimo
-%    \item MAX(voto) → voto massimo
+%    \item \textbf{Alias (\texttt{s, v, m})}: Fondamentali per la leggibilità e per evitare %ambiguità se due tabelle hanno colonne con lo stesso nome.
+%    \item \textbf{Condizione \texttt{ON}}: Il "ponte" che collega le tabelle.
 %\end{itemize}
 %\end{frame}
 %
-%%==============================================================================
-%\begin{frame}[fragile]{Raggruppare con GROUP BY}
-%Esempio: media dei voti per materia:
-%
-%\begin{verbatim}
-%SELECT m.nome_materia, AVG(v.voto) AS media_materia
-%FROM materia m
-%JOIN voto v ON m.id_materia = v.materia_id
-%GROUP BY m.id_materia;
-%\end{verbatim}
-%
-%\medskip
-%Il database raggruppa le righe e calcola l’aggregazione per ciascun gruppo.
-%\end{frame}
-%
-%%==============================================================================
-%\begin{frame}[fragile]{Filtrare gruppi con HAVING}
-%HAVING filtra i risultati dei gruppi dopo GROUP BY:
-%
-%\begin{verbatim}
-%SELECT m.nome_materia, AVG(v.voto) AS media_materia
-%FROM materia m
-%JOIN voto v ON m.id_materia = v.materia_id
-%GROUP BY m.id_materia
-%HAVING AVG(v.voto) > 7;
-%\end{verbatim}
-%
-%\medskip
-%\textbf{WHERE} → filtra singole righe prima del raggruppamento.  
-%\textbf{HAVING} → filtra gruppi di righe dopo il raggruppamento.
-%\end{frame}
-%
-%%==============================================================================
 %\begin{frame}[fragile]{Unire tabelle: JOIN}
 %Esempio: elenco delle lezioni con docente e materia:
 %
@@ -421,7 +735,7 @@ ORDER BY cognome ASC;
 %\medskip
 %Il JOIN combina righe di tabelle diverse usando le chiavi esterne.
 %\end{frame}
-%
+
 %%==============================================================================
 %\begin{frame}[fragile]{Selezioni complesse: studenti con voti alti}
 %Esempio: studenti con media superiore a 8:
@@ -438,5 +752,139 @@ ORDER BY cognome ASC;
 %Mostra come combinare JOIN, GROUP BY e HAVING per interrogazioni più complesse.
 %\end{frame} 
 
+
+
+\begin{frame}[fragile]{Esercizi}
+
+\centering
+\texbf{Esercizi}
+
+\end{frame}
+
+
+% --- SLIDE 1: SELEZIONI SEMPLICI ---
+\begin{frame}{Database SCUOLA - Selezioni e Filtri}
+
+    \vfill
+    \begin{enumerate}
+        \item Elenco di nome, cognome e matricola di tutti gli studenti.
+        \item Ricerca di tutti i docenti che hanno una mail registrata con dominio "@scuola.it".
+        \item Estrazione delle sessioni di verifica di tipo 'Scritto' svolte dopo il 1° Gennaio 2026.
+        \item Visualizzazione degli studenti nati prima dell'anno 2008.
+    \end{enumerate}
+    \vfill
+\end{frame}
+
+% --- SLIDE 2: JOIN ---
+\begin{frame}{Database SCUOLA - Relazioni e Join}
+
+    \vfill
+    \begin{enumerate}
+        \setcounter{enumi}{4}
+        \item Elenco degli studenti con il relativo nome della classe di appartenenza.
+        \item Visualizzazione di tutte le materie e del cognome del docente che le insegna.
+        \item Estrazione della data di verifica, nome della materia e tipo per ogni sessione registrata.
+        \item Elenco dei voti comprensivo di cognome dello studente e commento del docente.
+    \end{enumerate}
+    \vfill
+\end{frame}
+
+% --- SLIDE 3: AGGREGAZIONI ---
+\begin{frame}{Database SCUOLA - Funzioni di Aggregazione}
+
+    \vfill
+    \begin{enumerate}
+        \setcounter{enumi}{8}
+        \item Conteggio del numero di studenti iscritti per ogni classe.
+        \item Calcolo della media voti generale per ogni singola materia.
+        \item Calcolo del voto più alto e più basso registrato per lo studente con matricola 'M-1-01'.
+        \item Somma del numero di verifiche effettuate da ogni docente nelle proprie materie.
+    \end{enumerate}
+    \vfill
+\end{frame}
+
+% --- SLIDE 4: ANALISI AVANZATA ---
+\begin{frame}{Database SCUOLA - Raggruppamenti Complessi}
+
+    \vfill
+    \begin{enumerate}
+        \setcounter{enumi}{12}
+        \item Classifica delle classi in base alla media dei voti, in ordine decrescente.
+        \item Elenco degli studenti che hanno una media voti superiore a 8.0 nella materia 'Informatica'.
+        \item Identificazione delle materie che hanno una media voti complessiva inferiore al 6.0.
+        \item Elenco delle date in cui si sono svolte più di 3 verifiche contemporaneamente.
+    \end{enumerate}
+    \vfill
+\end{frame}
+
+% --- SLIDE 1: SELEZIONI E FILTRI ---
+\begin{frame}{Database NEGOZIO - Selezioni e Filtri}
+
+    \vfill
+    \begin{enumerate}
+        \item Estrazione di tutti i dati relativi ai modelli dei prodotti a catalogo.
+        \item Visualizzazione di nome e prezzo di tutti i modelli a catalogo.
+        \item Ricerca di tutti i modelli con prezzo di listino inferiore a 600€.
+        \item Selezione dei modelli che contengono la stringa 'Samsung' nel nome.
+        \item Elenco dei clienti il cui nome termina con la lettera 'a'.
+    \end{enumerate}
+    \vfill
+\end{frame}
+
+% --- SLIDE 2: ORDINAMENTO E DISTINZIONE ---
+\begin{frame}{Database NEGOZIO - Ordinamento e Distinzione}
+
+    \vfill
+    \begin{enumerate}
+        \setcounter{enumi}{5}
+        \item Elenco dei modelli ordinati dal prezzo più elevato al più basso.
+        \item Visualizzazione delle categorie di prodotti disponibili senza ripetizioni.
+        \item Estrazione dei primi 10 prodotti arrivati in magazzino in ordine cronologico.
+        \item Elenco dei clienti ordinati alfabeticamente per cognome e successivamente per nome.
+    \end{enumerate}
+    \vfill
+\end{frame}
+
+% --- SLIDE 3: RELAZIONI E JOIN ---
+\begin{frame}{Database NEGOZIO - Relazioni e Join}
+
+    \vfill
+    \begin{enumerate}
+        \setcounter{enumi}{9}
+        \item Ricerca di tutti gli ordini effettuati nel mese di giugno 2024.
+        \item Elenco dei codici seriali in magazzino associati al nome del relativo modello.
+        \item Ricostruzione dello scontrino: ID ordine, cognome cliente, nome modello e seriale venduto.
+        \item Visualizzazione dello stato della garanzia per ogni codice seriale venduto.
+    \end{enumerate}
+    \vfill
+\end{frame}
+
+% --- SLIDE 4: AGGREGAZIONI E STATISTICHE ---
+\begin{frame}{Database NEGOZIO - Aggregazioni e Statistiche}
+
+    \vfill
+    \begin{enumerate}
+        \setcounter{enumi}{13}
+        \item Conteggio dei pezzi fisici disponibili in magazzino per ogni categoria di prodotto.
+        \item Calcolo del totale incassato per ogni cliente basato sulla somma degli ordini effettuati.
+        \item Determinazione del prezzo medio di listino per ogni categoria di prodotto a catalogo.
+        \item Identificazione del numero di prodotti venduti per ogni tipologia di garanzia (attiva, scaduta, in assistenza).
+    \end{enumerate}
+    \vfill
+\end{frame}
+
+% --- SLIDE 5: FILTRI AVANZATI ---
+\begin{frame}{Database NEGOZIO - Filtri Avanzati}
+
+    \vfill
+    \begin{enumerate}
+        \setcounter{enumi}{17}
+        \item Elenco dei clienti che hanno effettuato una spesa complessiva superiore a 2000€.
+        \item Identificazione delle categorie che hanno più di 50 prodotti registrati a catalogo.
+        \item Visualizzazione degli ordini il cui prezzo totale è superiore alla media di tutti gli ordini.
+        \item Elenco dei modelli che non sono mai stati venduti (assenti nella tabella dettagli\_ordine).
+    \end{enumerate}
+    \vfill
+\end{frame}
 
 \end{document}
