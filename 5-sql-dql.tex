@@ -705,54 +705,247 @@ HAVING COUNT(id_studente) BETWEEN 10 AND 30
 \end{lstlisting}
 \end{frame}
 
-%%%==============================================================================
-%\begin{frame}[fragile]{Unire le Tabelle: JOIN}
-%Il \texttt{JOIN} permette di navigare le relazioni (Chiave Esterna $\rightarrow$ Chiave %Primaria).
-%
-%\begin{lstlisting}[language=SQL]
-%SELECT s.cognome, m.nome_materia, v.voto
-%FROM studente s
-%JOIN voto v ON s.id_studente = v.studente_id
-%JOIN materia m ON v.materia_id = m.id_materia;
-%\end{lstlisting}
-%
-%\begin{itemize}
-%    \item \textbf{Alias (\texttt{s, v, m})}: Fondamentali per la leggibilità e per evitare %ambiguità se due tabelle hanno colonne con lo stesso nome.
-%    \item \textbf{Condizione \texttt{ON}}: Il "ponte" che collega le tabelle.
-%\end{itemize}
-%\end{frame}
-%
-%\begin{frame}[fragile]{Unire tabelle: JOIN}
-%Esempio: elenco delle lezioni con docente e materia:
-%
-%\begin{lstlisting}[language=SQL]
-%SELECT l.giorno, l.orario, p.nome, p.cognome, m.nome_materia
-%FROM lezione l
-%JOIN professore p ON l.professore_id = p.id_professore
-%JOIN materia m ON l.materia_id = m.id_materia;
-%\end{lstlisting}
-%
-%\medskip
-%Il JOIN combina righe di tabelle diverse usando le chiavi esterne.
-%\end{frame}
+%==============================================================================
+\section{Unire le tabelle: JOIN}
+%==============================================================================
 
-%%==============================================================================
-%\begin{frame}[fragile]{Selezioni complesse: studenti con voti alti}
-%Esempio: studenti con media superiore a 8:
-%
-%\begin{lstlisting}[language=SQL]
-%SELECT s.nome, s.cognome, AVG(v.voto) AS media
-%FROM studente s
-%JOIN voto v ON s.id_studente = v.studente_id
-%GROUP BY s.id_studente
-%HAVING AVG(v.voto) > 8;
-%\end{lstlisting}
-%
-%\medskip
-%Mostra come combinare JOIN, GROUP BY e HAVING per interrogazioni più complesse.
-%\end{frame} 
+\begin{frame}[fragile]{Unire tabelle: JOIN}
+In un database relazionale, i dati sono spesso distribuiti in tabelle diverse per evitare ridondanze e organizzare meglio le informazioni.
 
+\medskip
+\textbf{Esempio:}
+\begin{columns}
+\begin{column}{0.45\textwidth}
+\centering
+\textbf{Tabella \texttt{studenti}}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{id} & \textbf{nome} & \textbf{id\_classe} \\ \hline
+1 & Luca & 10 \\ \hline
+2 & Anna & 20 \\ \hline
+3 & Paolo & 10 \\ \hline
+\end{tabular}
+\end{column}
+\begin{column}{0.45\textwidth}
+\centering
+\textbf{Tabella \texttt{classi}}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{id} & \textbf{sezione} \\ \hline
+10 & 4A \\ \hline
+20 & 5B \\ \hline
+\end{tabular}
+\end{column}
+\end{columns}
 
+\bigskip
+Se vogliamo sapere in quale classe si trova Luca, dobbiamo collegare la chiave esterna \texttt{id\_classe} della tabella \texttt{studenti} con la chiave primaria della tabella \texttt{classi}.
+\end{frame}
+
+%==============================================================================
+
+\begin{frame}[fragile]{Prodotto cartesiano}
+Cosa succede se inseriamo due tabelle nella clausola \texttt{FROM} senza specificare una condizione di collegamento?
+
+\begin{lstlisting}[language=SQL]
+SELECT studenti.nome, classi.sezione
+FROM studenti, classi;
+\end{lstlisting}
+
+\textbf{Risultato:} il sistema combina \textbf{ogni riga} della prima tabella con \textbf{ogni riga} della seconda.
+
+\begin{center}
+\begin{tabular}{|c|c|l|}
+\hline
+\textbf{nome} & \textbf{sezione} & \textbf{Nota} \\ \hline
+Luca & 4A & Corretto \\ \hline
+Luca & 5B & \color{red} Errato \\ \hline
+Anna & 4A & \color{red} Errato \\ \hline
+Anna & 5B & Corretto \\ \hline
+... & ... & ... \\ \hline
+\end{tabular}
+\end{center}
+
+\medskip
+Se abbiamo 100 studenti e 10 classi, otterremo \textbf{1000 righe}. Questo risultato prende il nome di \textbf{prodotto cartesiano}.
+\end{frame}
+
+%==============================================================================
+
+\begin{frame}[fragile]{Filtrare il prodotto cartesiano}
+Per ottenere soltanto le combinazioni corrette, è necessario aggiungere una condizione nella clausola \texttt{WHERE} che colleghi le chiavi.
+
+\begin{lstlisting}[language=SQL]
+SELECT studenti.nome, classi.sezione
+FROM studenti, classi
+WHERE studenti.id_classe = classi.id;
+\end{lstlisting}
+
+\textbf{Logica:} vengono mantenute solo le coppie di righe in cui l'identificativo della classe coincide.
+
+\medskip
+\textbf{Risultato corretto:}
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{nome} & \textbf{sezione} \\ \hline
+Luca & 4A \\ \hline
+Anna & 5B \\ \hline
+Paolo & 4A \\ \hline
+\end{tabular}
+\end{center}
+\end{frame}
+
+%==============================================================================
+
+\begin{frame}[fragile]{La sintassi moderna: JOIN ... ON}
+Oggi si preferisce una sintassi più chiara e leggibile, che separa la logica di unione dal filtro dei dati. Esistono diverse tipologie di JOIN a seconda del risultato desiderato.
+
+\begin{lstlisting}[language=SQL]
+SELECT studenti.nome, classi.sezione
+FROM studenti
+JOIN classi ON studenti.id_classe = classi.id;
+\end{lstlisting}
+
+\begin{itemize}
+    \item \textbf{JOIN}: indica quale tabella si vuole unire
+    \item \textbf{ON}: specifica la condizione di collegamento tra le tabelle
+\end{itemize}
+
+\medskip
+\begin{block}{Regola}
+La clausola \texttt{ON} gestisce l'unione, mentre il \texttt{WHERE} rimane dedicato esclusivamente al filtraggio dei record.
+\end{block}
+\end{frame}
+
+%==============================================================================
+
+\begin{frame}[fragile]{Utilizzare gli alias}
+Usare degli alias è fondamentale per rendere il codice più compatto, specialmente quando i nomi delle tabelle sono lunghi o ripetitivi.
+
+\begin{lstlisting}[language=SQL]
+SELECT s.nome, c.sezione
+FROM studenti AS s
+JOIN classi AS c ON s.id_classe = c.id
+WHERE c.sezione = '4A';
+\end{lstlisting}
+
+\begin{itemize}
+    \item \texttt{s} abbreviativo di \texttt{studenti}
+    \item \texttt{c} abbreviativo di \texttt{classi}
+\end{itemize}
+\end{frame}
+
+%==============================================================================
+
+\begin{frame}[fragile]{INNER JOIN}
+
+\begin{center}
+\begin{tikzpicture}
+    \draw (0,0) circle (1cm) node[left=0.2cm] {A};
+    \draw (1,0) circle (1cm) node[right=0.2cm] {B};
+    \clip (0,0) circle (1cm);
+    \fill[blue!30, opacity=0.5] (1,0) circle (1cm);
+\end{tikzpicture}
+\end{center}
+
+\begin{itemize}
+    \item Restituisce solo i record che hanno una corrispondenza in \textbf{entrambe} le tabelle.
+    \item Se uno studente non ha una classe assegnata, \textbf{non compare} nel risultato.
+    \item Se una classe non ha studenti associati, \textbf{non compare} nel risultato.
+\end{itemize}
+\end{frame}
+
+%==============================================================================
+
+\begin{frame}[fragile]{LEFT JOIN}
+Viene utilizzata quando vogliamo conservare tutti i dati della tabella "principale" (quella a sinistra), anche se non hanno una corrispondenza.
+
+\begin{lstlisting}[language=SQL]
+SELECT s.nome, c.sezione
+FROM studenti s
+LEFT JOIN classi c ON s.id_classe = c.id;
+\end{lstlisting}
+
+\textbf{Risultato:}
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{nome} & \textbf{sezione} \\ \hline
+Luca & 4A \\ \hline
+Anna & 5B \\ \hline
+\textbf{Marco} & \textbf{NULL} \\ \hline
+\end{tabular}
+\end{center}
+
+\begin{itemize}
+    \item \textbf{LEFT} conserva tutte le righe della tabella a sinistra.
+    \item Se non esiste una corrispondenza a destra, i campi della seconda tabella saranno \texttt{NULL}.
+\end{itemize}
+\end{frame}
+
+%==============================================================================
+
+\begin{frame}[fragile]{RIGHT JOIN}
+È speculare alla \texttt{LEFT JOIN}: garantisce che vengano mostrate tutte le righe della tabella indicata a destra.
+
+\begin{lstlisting}[language=SQL]
+SELECT s.nome, c.sezione
+FROM studenti s
+RIGHT JOIN classi c ON s.id_classe = c.id;
+\end{lstlisting}
+
+\begin{itemize}
+    \item Vengono mostrate \textbf{tutte le classi}, anche quelle prive di studenti.
+    \item Per le classi vuote, i campi relativi allo studente (nome, id) saranno \texttt{NULL}.
+\end{itemize}
+
+\medskip
+\textit{Nota: nella pratica la \texttt{LEFT JOIN} è la più utilizzata; basta invertire l'ordine delle tabelle per ottenere lo stesso effetto di una \texttt{RIGHT}.}
+\end{frame}
+
+%==============================================================================
+
+\begin{frame}[fragile]{JOIN su più tabelle}
+Le JOIN possono essere concatenate per "navigare" attraverso il database e raccogliere dati da tre o più tabelle.
+
+\begin{lstlisting}[language=SQL]
+-- Visualizzare studente, classe, materia e voto
+SELECT s.nome, c.sezione, m.nome_materia, v.voto
+FROM studenti s
+JOIN classi c ON s.id_classe = c.id
+JOIN voti v ON v.id_studente = s.id
+JOIN materie m ON v.id_materia = m.id;
+\end{lstlisting}
+
+\end{frame}
+
+%==============================================================================
+
+\begin{frame}[fragile]{Riepilogo visivo}
+\begin{center}
+\begin{tabular}{cc}
+    \textbf{INNER JOIN} & \textbf{LEFT JOIN} \\
+    \begin{tikzpicture}[scale=0.7]
+        \draw (0,0) circle (1cm); \draw (1.2,0) circle (1cm);
+        \begin{scope} \clip (0,0) circle (1cm); \fill[blue!30] (1.2,0) circle (1cm); \end{scope}
+    \end{tikzpicture} & 
+    \begin{tikzpicture}[scale=0.7]
+        \fill[blue!30] (0,0) circle (1cm); \draw (0,0) circle (1cm); \draw (1.2,0) circle (1cm);
+    \end{tikzpicture} \\
+    Solo le corrispondenze & Sinistra + corrispondenze \\
+    & \\ 
+    \textbf{RIGHT JOIN} & \textbf{FULL OUTER JOIN} \\
+    \begin{tikzpicture}[scale=0.7]
+        \fill[blue!30] (1.2,0) circle (1cm); \draw (0,0) circle (1cm); \draw (1.2,0) circle (1cm);
+    \end{tikzpicture} & 
+    \begin{tikzpicture}[scale=0.7]
+        \fill[blue!30] (0,0) circle (1cm); \fill[blue!30] (1.2,0) circle (1cm); \draw (0,0) circle (1cm); \draw (1.2,0) circle (1cm);
+    \end{tikzpicture} \\
+    Destra + corrispondenze & Tutte le righe \\
+\end{tabular}
+\end{center}
+\end{frame}
 
 \begin{frame}[fragile]{Esercizi}
 
