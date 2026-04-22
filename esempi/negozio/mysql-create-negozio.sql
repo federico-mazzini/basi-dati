@@ -1,5 +1,5 @@
 -- Tabella modelli (Catalogo)
-CREATE TABLE 4CTL_modelli_prodotto (
+CREATE TABLE modelli_prodotto (
     id_modello INT AUTO_INCREMENT PRIMARY KEY,
     cod_modello VARCHAR(50) NOT NULL UNIQUE, 
     nome VARCHAR(100) NOT NULL,
@@ -10,7 +10,7 @@ CREATE TABLE 4CTL_modelli_prodotto (
 ) ENGINE=InnoDB;
 
 -- Tabella prodotti (Magazzino fisico)
-CREATE TABLE 4CTL_prodotti (
+CREATE TABLE prodotti (
     id_prodotto INT AUTO_INCREMENT PRIMARY KEY,
     id_modello INT NOT NULL,
     cod_seriale VARCHAR(50) NOT NULL UNIQUE,
@@ -18,13 +18,13 @@ CREATE TABLE 4CTL_prodotti (
     disponibilita CHAR(1) DEFAULT 'S',
     CONSTRAINT fk_prod_modello 
         FOREIGN KEY (id_modello) 
-        REFERENCES 4CTL_modelli_prodotto(id_modello),
+        REFERENCES modelli_prodotto(id_modello),
     CONSTRAINT chk_disp 
         CHECK (disponibilita IN ('S', 'N'))
 ) ENGINE=InnoDB;
 
 -- Tabella Clienti
-CREATE TABLE 4CTL_clienti (
+CREATE TABLE clienti (
     id_cliente INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(50) NOT NULL,
     cognome VARCHAR(50) NOT NULL,
@@ -33,32 +33,32 @@ CREATE TABLE 4CTL_clienti (
 ) ENGINE=InnoDB;
 
 -- Testata Ordine
-CREATE TABLE 4CTL_ordini (
+CREATE TABLE ordini (
     id_ordine INT AUTO_INCREMENT PRIMARY KEY,
     id_cliente INT NOT NULL,
     data_ordine DATETIME DEFAULT CURRENT_TIMESTAMP,
     prezzo_totale_pagato DECIMAL(10, 2) NOT NULL,
     CONSTRAINT fk_ordini_clienti 
         FOREIGN KEY (id_cliente) 
-        REFERENCES 4CTL_clienti(id_cliente)
+        REFERENCES clienti(id_cliente)
 ) ENGINE=InnoDB;
 
 -- Dettagli Ordine (una riga per ogni pezzo fisico)
-CREATE TABLE 4CTL_dettagli_ordine (
+CREATE TABLE dettagli_ordine (
     id_dettaglio INT AUTO_INCREMENT PRIMARY KEY,
     id_ordine INT NOT NULL,
     id_prodotto INT NOT NULL UNIQUE,
     prezzo_vendita_effettivo DECIMAL(10, 2) NOT NULL,
     CONSTRAINT fk_det_ordine 
         FOREIGN KEY (id_ordine) 
-        REFERENCES 4CTL_ordini(id_ordine),
+        REFERENCES ordini(id_ordine),
     CONSTRAINT fk_det_prodotto 
         FOREIGN KEY (id_prodotto) 
-        REFERENCES 4CTL_prodotti(id_prodotto)
+        REFERENCES prodotti(id_prodotto)
 ) ENGINE=InnoDB;
 
 -- Garanzie
-CREATE TABLE 4CTL_garanzie (
+CREATE TABLE garanzie (
     id_garanzia INT AUTO_INCREMENT PRIMARY KEY,
     id_prodotto INT NOT NULL UNIQUE,
     data_inizio DATE NOT NULL,
@@ -66,7 +66,7 @@ CREATE TABLE 4CTL_garanzie (
     stato_garanzia VARCHAR(20) NOT NULL,
     CONSTRAINT fk_gar_prod 
         FOREIGN KEY (id_prodotto) 
-        REFERENCES 4CTL_prodotti(id_prodotto),
+        REFERENCES prodotti(id_prodotto),
     CONSTRAINT chk_stati 
         CHECK (stato_garanzia IN ('attiva', 'scaduta', 'in assistenza'))
 ) ENGINE=InnoDB;

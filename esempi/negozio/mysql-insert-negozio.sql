@@ -1,5 +1,5 @@
 -- 1. Inserimento Modelli (Pool di elettronica reale)
-INSERT INTO 4CTL_modelli_prodotto (cod_modello, nome, descrizione, categoria, prezzo_listino) VALUES
+INSERT INTO modelli_prodotto (cod_modello, nome, descrizione, categoria, prezzo_listino) VALUES
 ('IPH15P', 'iPhone 15 Pro', 'Smartphone Apple 128GB Titanio', 'Smartphone', 1239.00),
 ('SAM-S24', 'Samsung Galaxy S24', 'Smartphone Android 256GB', 'Smartphone', 929.00),
 ('MAC-M3', 'MacBook Air M3', 'Laptop 13 pollici 8GB RAM', 'Computer', 1349.00),
@@ -12,7 +12,7 @@ INSERT INTO 4CTL_modelli_prodotto (cod_modello, nome, descrizione, categoria, pr
 ('BO-QC45', 'Bose QuietComfort', 'Cuffie Bluetooth', 'Audio', 269.00);
 
 -- 2. Inserimento Clienti
-INSERT INTO 4CTL_clienti (nome, cognome, data_nascita, email) VALUES
+INSERT INTO clienti (nome, cognome, data_nascita, email) VALUES
 ('Mario', 'Rossi', DATE '2000-10-10', 'mario.rossi@email.it'),
 ('Luca', 'Bianchi', DATE '1999-10-10', 'l.bianchi@gmail.com'),
 ('Elena', 'Verdi', DATE '1983-10-10', 'elena.verdi@outlook.com'),
@@ -20,7 +20,7 @@ INSERT INTO 4CTL_clienti (nome, cognome, data_nascita, email) VALUES
 
 -- 3. Inserimento Prodotti (Pezzi fisici in magazzino con seriali casuali)
 -- Creiamo più pezzi per lo stesso modello per simulare lo stock
-INSERT INTO 4CTL_prodotti (id_modello, cod_seriale, data_arrivo, disponibilita) VALUES
+INSERT INTO prodotti (id_modello, cod_seriale, data_arrivo, disponibilita) VALUES
 (1, 'SER-IPH-001', '2023-10-10', 'N'), 
 (1, 'SER-IPH-002', '2023-10-10', 'N'), 
 (1, 'SER-IPH-003', '2024-01-15', 'S'),
@@ -52,7 +52,7 @@ INSERT INTO 4CTL_prodotti (id_modello, cod_seriale, data_arrivo, disponibilita) 
 (9, 'SN-WAT-H2', '2024-05-15', 'N');
 
 -- 4. Inserimento Ordini (Date casuali ultimo anno)
-INSERT INTO 4CTL_ordini (id_cliente, data_ordine, prezzo_totale_pagato) VALUES
+INSERT INTO ordini (id_cliente, data_ordine, prezzo_totale_pagato) VALUES
 (1, '2023-11-15 10:30:00', 1588.00),
 (2, '2024-02-14 16:45:00', 2278.00),
 (3, '2024-03-01 09:15:00', 1198.00),
@@ -65,7 +65,7 @@ INSERT INTO 4CTL_ordini (id_cliente, data_ordine, prezzo_totale_pagato) VALUES
 (4, '2024-07-20 12:30:00', 1068.00);
 
 -- 5. Inserimento Dettagli Ordine (Colleghiamo i pezzi fisici agli ordini)
-INSERT INTO 4CTL_dettagli_ordine (id_ordine, id_prodotto, prezzo_vendita_effettivo) VALUES
+INSERT INTO dettagli_ordine (id_ordine, id_prodotto, prezzo_vendita_effettivo) VALUES
 (1, 1, 1239.00),
 (1, 6, 349.00),
 (4, 17, 1349.00), 
@@ -78,14 +78,13 @@ INSERT INTO 4CTL_dettagli_ordine (id_ordine, id_prodotto, prezzo_vendita_effetti
 (9, 25, 549.00), 
 (9, 18, 549.00), 
 (9, 19, 549.00),
-(10, 19, 719.00), 
 (10, 26, 349.00),
 (2, 2, 1239.00),
 (3, 4, 929.00),
 (3, 9, 269.00);
 
 -- 6. Inserimento Garanzie (Solo per alcuni prodotti venduti)
-INSERT INTO 4CTL_garanzie (id_prodotto, data_inizio, durata_mesi, stato_garanzia) VALUES
+INSERT INTO garanzie (id_prodotto, data_inizio, durata_mesi, stato_garanzia) VALUES
 (1, '2023-11-15', 24, 'attiva'),
 (2, '2024-02-14', 24, 'attiva'),
 (4, '2024-03-01', 24, 'attiva'),
